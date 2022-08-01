@@ -1,0 +1,30 @@
+C:\Users\todor.zagorov\source\repos\c-sharp-advanced\DefiningClasses\SpecialCars\bin\Debug\net6.0\SpecialCars.exe
+C:\Users\todor.zagorov\source\repos\c-sharp-advanced\DefiningClasses\SpecialCars\bin\Debug\net6.0\SpecialCars.deps.json
+C:\Users\todor.zagorov\source\repos\c-sharp-advanced\DefiningClasses\SpecialCars\bin\Debug\net6.0\SpecialCars.runtimeconfig.json
+C:\Users\todor.zagorov\source\repos\c-sharp-advanced\DefiningClasses\SpecialCars\bin\Debug\net6.0\SpecialCars.dll
+C:\Users\todor.zagorov\source\repos\c-sharp-advanced\DefiningClasses\SpecialCars\bin\Debug\net6.0\SpecialCars.pdb
+C:\Users\todor.zagorov\source\repos\c-sharp-advanced\DefiningClasses\SpecialCars\obj\Debug\net6.0\SpecialCars.csproj.AssemblyReference.cache
+C:\Users\todor.zagorov\source\repos\c-sharp-advanced\DefiningClasses\SpecialCars\obj\Debug\net6.0\SpecialCars.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\todor.zagorov\source\repos\c-sharp-advanced\DefiningClasses\SpecialCars\obj\Debug\net6.0\SpecialCars.AssemblyInfoInputs.cache
+C:\Users\todor.zagorov\source\repos\c-sharp-advanced\DefiningClasses\SpecialCars\obj\Debug\net6.0\SpecialCars.AssemblyInfo.cs
+C:\Users\todor.zagorov\source\repos\c-sharp-advanced\DefiningClasses\SpecialCars\obj\Debug\net6.0\SpecialCars.csproj.CoreCompileInputs.cache
+C:\Users\todor.zagorov\source\repos\c-sharp-advanced\DefiningClasses\SpecialCars\obj\Debug\net6.0\SpecialCars.dll
+C:\Users\todor.zagorov\source\repos\c-sharp-advanced\DefiningClasses\SpecialCars\obj\Debug\net6.0\refint\SpecialCars.dll
+C:\Users\todor.zagorov\source\repos\c-sharp-advanced\DefiningClasses\SpecialCars\obj\Debug\net6.0\SpecialCars.pdb
+C:\Users\todor.zagorov\source\repos\c-sharp-advanced\DefiningClasses\SpecialCars\obj\Debug\net6.0\SpecialCars.genruntimeconfig.cache
+C:\Users\todor.zagorov\source\repos\c-sharp-advanced\DefiningClasses\SpecialCars\obj\Debug\net6.0\ref\SpecialCars.dll
+C:\Users\todor.zagorov\source\repos\c-sharp-oop\Defining Classes - Lab\SpecialCars\bin\Debug\net6.0\SpecialCars.exe
+C:\Users\todor.zagorov\source\repos\c-sharp-oop\Defining Classes - Lab\SpecialCars\bin\Debug\net6.0\SpecialCars.deps.json
+C:\Users\todor.zagorov\source\repos\c-sharp-oop\Defining Classes - Lab\SpecialCars\bin\Debug\net6.0\SpecialCars.runtimeconfig.json
+C:\Users\todor.zagorov\source\repos\c-sharp-oop\Defining Classes - Lab\SpecialCars\bin\Debug\net6.0\SpecialCars.dll
+C:\Users\todor.zagorov\source\repos\c-sharp-oop\Defining Classes - Lab\SpecialCars\bin\Debug\net6.0\SpecialCars.pdb
+C:\Users\todor.zagorov\source\repos\c-sharp-oop\Defining Classes - Lab\SpecialCars\obj\Debug\net6.0\SpecialCars.csproj.AssemblyReference.cache
+C:\Users\todor.zagorov\source\repos\c-sharp-oop\Defining Classes - Lab\SpecialCars\obj\Debug\net6.0\SpecialCars.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\todor.zagorov\source\repos\c-sharp-oop\Defining Classes - Lab\SpecialCars\obj\Debug\net6.0\SpecialCars.AssemblyInfoInputs.cache
+C:\Users\todor.zagorov\source\repos\c-sharp-oop\Defining Classes - Lab\SpecialCars\obj\Debug\net6.0\SpecialCars.AssemblyInfo.cs
+C:\Users\todor.zagorov\source\repos\c-sharp-oop\Defining Classes - Lab\SpecialCars\obj\Debug\net6.0\SpecialCars.csproj.CoreCompileInputs.cache
+C:\Users\todor.zagorov\source\repos\c-sharp-oop\Defining Classes - Lab\SpecialCars\obj\Debug\net6.0\SpecialCars.dll
+C:\Users\todor.zagorov\source\repos\c-sharp-oop\Defining Classes - Lab\SpecialCars\obj\Debug\net6.0\refint\SpecialCars.dll
+C:\Users\todor.zagorov\source\repos\c-sharp-oop\Defining Classes - Lab\SpecialCars\obj\Debug\net6.0\SpecialCars.pdb
+C:\Users\todor.zagorov\source\repos\c-sharp-oop\Defining Classes - Lab\SpecialCars\obj\Debug\net6.0\SpecialCars.genruntimeconfig.cache
+C:\Users\todor.zagorov\source\repos\c-sharp-oop\Defining Classes - Lab\SpecialCars\obj\Debug\net6.0\ref\SpecialCars.dll

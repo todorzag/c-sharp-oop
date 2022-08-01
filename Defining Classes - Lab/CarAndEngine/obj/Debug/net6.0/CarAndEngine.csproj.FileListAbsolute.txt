@@ -1,0 +1,15 @@
+C:\Users\todor.zagorov\source\repos\c-sharp-advanced\DefiningClasses\CarAndEngine\bin\Debug\net6.0\CarAndEngine.exe
+C:\Users\todor.zagorov\source\repos\c-sharp-advanced\DefiningClasses\CarAndEngine\bin\Debug\net6.0\CarAndEngine.deps.json
+C:\Users\todor.zagorov\source\repos\c-sharp-advanced\DefiningClasses\CarAndEngine\bin\Debug\net6.0\CarAndEngine.runtimeconfig.json
+C:\Users\todor.zagorov\source\repos\c-sharp-advanced\DefiningClasses\CarAndEngine\bin\Debug\net6.0\CarAndEngine.dll
+C:\Users\todor.zagorov\source\repos\c-sharp-advanced\DefiningClasses\CarAndEngine\bin\Debug\net6.0\CarAndEngine.pdb
+C:\Users\todor.zagorov\source\repos\c-sharp-advanced\DefiningClasses\CarAndEngine\obj\Debug\net6.0\CarAndEngine.csproj.AssemblyReference.cache
+C:\Users\todor.zagorov\source\repos\c-sharp-advanced\DefiningClasses\CarAndEngine\obj\Debug\net6.0\CarAndEngine.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\todor.zagorov\source\repos\c-sharp-advanced\DefiningClasses\CarAndEngine\obj\Debug\net6.0\CarAndEngine.AssemblyInfoInputs.cache
+C:\Users\todor.zagorov\source\repos\c-sharp-advanced\DefiningClasses\CarAndEngine\obj\Debug\net6.0\CarAndEngine.AssemblyInfo.cs
+C:\Users\todor.zagorov\source\repos\c-sharp-advanced\DefiningClasses\CarAndEngine\obj\Debug\net6.0\CarAndEngine.csproj.CoreCompileInputs.cache
+C:\Users\todor.zagorov\source\repos\c-sharp-advanced\DefiningClasses\CarAndEngine\obj\Debug\net6.0\CarAndEngine.dll
+C:\Users\todor.zagorov\source\repos\c-sharp-advanced\DefiningClasses\CarAndEngine\obj\Debug\net6.0\refint\CarAndEngine.dll
+C:\Users\todor.zagorov\source\repos\c-sharp-advanced\DefiningClasses\CarAndEngine\obj\Debug\net6.0\CarAndEngine.pdb
+C:\Users\todor.zagorov\source\repos\c-sharp-advanced\DefiningClasses\CarAndEngine\obj\Debug\net6.0\CarAndEngine.genruntimeconfig.cache
+C:\Users\todor.zagorov\source\repos\c-sharp-advanced\DefiningClasses\CarAndEngine\obj\Debug\net6.0\ref\CarAndEngine.dll
