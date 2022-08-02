@@ -31,7 +31,7 @@
         // Default value of Efficiency is "n/a" and the default value of Displacment is -1 
         public static Engine CreateEngine(string line)
         {
-            string[] split = line.Split(" ");
+            string[] split = line.Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
             string model = split[0];
             int power = int.Parse(split[1]);
@@ -40,13 +40,13 @@
 
             for (int i = 2; i < split.Length; i++)
             {
-                if (int.TryParse(split[i], out weight))
+                if (int.TryParse(split[i], out _))
                 {
-                    weight = int.Parse(split[i]);
+                    displacment = int.Parse(split[i]);
                 }
                 else
                 {
-                    color = split[i];
+                    efficiency = split[i];
                 }
             }
 
@@ -56,7 +56,7 @@
         // Default value of Color is "n/a" and the default value of Weight is -1
         public static Car CreateCar(string line, List<Engine> engines)
         {
-            string[] split = line.Split(" ");
+            string[] split = line.Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
             string model = split[0];
             Engine engine = FindEngine(split[1], engines);
@@ -65,7 +65,7 @@
 
             for (int i = 2; i < split.Length; i++)
             {
-                if (int.TryParse(split[i], out weight))
+                if (int.TryParse(split[i], out _))
                 {
                     weight = int.Parse(split[i]);
                 }
@@ -88,6 +88,7 @@
             foreach (Car car in cars)
             {
                 string displacment = car.Engine.Displacment == -1 ? "n/a" : car.Engine.Displacment.ToString();
+
                 string weight = car.Weight == -1 ? "n/a" : car.Weight.ToString();
 
                 Console.WriteLine($"{car.Model}:\n" +

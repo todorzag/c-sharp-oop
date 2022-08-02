@@ -16,7 +16,8 @@ namespace RawData
 
         public Tire[] Tires = new Tire[4];
 
-        public Car(string model, int engineSpeed, int enginePower, string cargoType, int cargoWeight, Tire[] tires)
+        public Car(string model, int engineSpeed, int enginePower, 
+            string cargoType, int cargoWeight, Tire[] tires)
         {
             Model = model;
             Engine = new Engine(engineSpeed, enginePower);
