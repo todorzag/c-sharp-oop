@@ -10,7 +10,7 @@ namespace PokemonTrainer
     {
         private List<Pokemon> _pokemons = new List<Pokemon>();
 
-        public string Name { get; set; }
+        public string Name { get; }
 
         public int NumberOfBadges { get; set; }
 

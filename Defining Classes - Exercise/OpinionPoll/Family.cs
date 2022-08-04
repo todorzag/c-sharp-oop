@@ -8,7 +8,7 @@ namespace OpinionPoll
 {
     internal class Family
     {
-        private List<Person> People { get; set; }
+        private List<Person> People { get; }
 
         public Family()
         {

@@ -8,11 +8,11 @@ namespace SpeedRacing
 {
     internal class Car
     {
-        public string Model { get; set; }
+        public string Model { get; }
 
         public double FuelAmount { get; set; }
 
-        public double FuelConsumptionPerKilometer { get; set; }
+        public double FuelConsumptionPerKilometer { get; }
 
         private double TravelledDistance { get; set; }
 

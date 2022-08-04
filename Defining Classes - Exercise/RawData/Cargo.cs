@@ -8,9 +8,9 @@ namespace RawData
 {
     public class Cargo
     {
-        public string CargoType { get; set; }
+        public string CargoType { get; }
 
-        public int CargoWeight { get; set; }
+        public int CargoWeight { get; }
 
         public Cargo(string cargoType, int cargoWeight)
         {
