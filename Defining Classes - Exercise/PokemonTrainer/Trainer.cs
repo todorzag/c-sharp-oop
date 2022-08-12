@@ -44,10 +44,10 @@ namespace PokemonTrainer
                 pokemon.Health -= 10;
             }
 
-            KillPokemon();
+            SetAlivePokemon();
         }
 
-        private void KillPokemon()
+        private void SetAlivePokemon()
         {
             Pokemons = Pokemons.Where(pokemon => pokemon.Health > 0).ToList();
         }

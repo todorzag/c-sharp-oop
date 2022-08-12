@@ -9,7 +9,6 @@ namespace RawData
     public class Tire
     {
         public int Age { get; }
-
         public float Pressure { get; }
 
         public Tire(int age, float pressure)

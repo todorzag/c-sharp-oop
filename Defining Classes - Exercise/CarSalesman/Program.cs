@@ -59,7 +59,9 @@
             string[] split = line.Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
             string model = split[0];
+
             Engine engine = FindEngine(split[1], engines);
+
             int weight = -1;
             string color = "n/a";
 

@@ -9,7 +9,6 @@ namespace OldestFamilyMember
     internal class Family
     {
         private List<Person> People { get; set; }
-
         public Family()
         {
             People = new List<Person>();
