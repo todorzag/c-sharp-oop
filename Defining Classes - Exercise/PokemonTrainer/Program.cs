@@ -4,13 +4,13 @@
     {
         static void Main(string[] args)
         {
-            string line = Console.ReadLine();
+            string input = Console.ReadLine();
 
             List<Trainer> trainers = new List<Trainer>();
 
-            while (line != "Tournament")
+            while (input != "Tournament")
             {
-                string[] split = line.Split(" ");
+                string[] split = input.Split(" ");
 
                 string trainerName = split[0];
                 string pokemonName = split[1];
@@ -29,16 +29,16 @@
                     trainer.AddPokemon(new Pokemon(pokemonName, pokemonElement, pokemonHealth));
                 }
 
-                line = Console.ReadLine();
+                input = Console.ReadLine();
             }
 
-            line = Console.ReadLine();
+            input = Console.ReadLine();
 
-            while (line != "End")
+            while (input != "End")
             {
-                AllTrainersTournamentBattle(trainers, line);
+                AllTrainersTournamentBattle(trainers, input);
 
-                line = Console.ReadLine();
+                input = Console.ReadLine();
             }
 
             List<Trainer> sortedTrainers = SortTrainers(trainers);
