@@ -8,9 +8,9 @@ namespace RawData
 {
     public class Engine
     {
-        public int EngineSpeed { get; set; }
+        public int EngineSpeed { get; }
 
-        public int EnginePower { get; set; }
+        public int EnginePower { get; }
 
         public Engine(int engineSpeed, int enginePower)
         {
