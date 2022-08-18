@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FootballTeamGenerator
 {
-    internal class Validator
+    public class Validator
     {
         private static Validator validator;
 
@@ -21,15 +21,6 @@ namespace FootballTeamGenerator
         }
 
         public bool Validate(int stat)
-        {
-            bool result = true;
-
-            if (stat < 0 || stat > 100)
-            {
-                result = false;
-            }
-
-            return result;
-        }
+            => stat < 0 || stat > 100 ? false : true;
     }
 }
