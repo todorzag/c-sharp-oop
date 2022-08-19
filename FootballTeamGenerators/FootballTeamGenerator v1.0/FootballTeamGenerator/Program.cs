@@ -45,7 +45,7 @@ namespace FootballTeamGenerator
                     {
                         case "Add":
                             playerName = input[2];
-                            List<IStat> stats = GenerateStats(input);
+                            List<IStat> stats = GeneratePlayer(input);
 
                             Player player = new Player(playerName, stats);
                             team.AddPlayer(player);
@@ -77,7 +77,7 @@ namespace FootballTeamGenerator
         }
 
         // Create class Stat with name and value
-        private static List<IStat> GenerateStats(string[] input)
+        private static List<IStat> GeneratePlayer(string[] input)
         {
             List<IStat> stats = new List<IStat>();
 
