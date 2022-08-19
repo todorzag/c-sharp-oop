@@ -41,15 +41,13 @@ namespace FootballTeamGenerator
             Name = name;
         }
 
-        public void AddPlayer(Player player)
-        {
+        public void AddPlayer(Player player) =>
             _players.Add(player);
-        }
 
-        public void RemovePlayerByName(string playerName)
-        {
+
+        public void RemovePlayerByName(string playerName) => 
             _players.Remove(_players.Find(player => player.Name == playerName));
-        }
+
 
         public void CheckIfPlayerInTeam(string playerName, string teamName)
         {
