@@ -32,11 +32,11 @@ namespace FootballTeamGenerator
 
             init
             {
-                Validator validator = Validator.GetInstance();
-
                 foreach (var stat in value)
                 {
-                    if (!validator.Validate(stat.Value))
+                    bool notInRange = stat.Value < 0 || stat.Value > 100;
+
+                    if (notInRange)
                     {
                         Console.WriteLine($"{stat.Name} should be between 0 and 100.");
                         stat.Value = 0;
