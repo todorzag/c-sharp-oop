@@ -11,7 +11,6 @@ namespace FootballTeamGenerator
         private string _name;
         private List<Player> _players = new List<Player>();
 
-        // add method for player count
         public string Name
         {
             get => _name;
