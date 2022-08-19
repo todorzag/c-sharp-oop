@@ -47,10 +47,9 @@ namespace FootballTeamGenerator
         public void RemovePlayerByName(string playerName) => 
             _players.Remove(_players.Find(player => player.Name == playerName));
 
-
         public void CheckIfPlayerInTeam(string playerName, string teamName)
         {
-            bool notInTeam = _players.Find(x => x.Name == playerName) == null;
+            bool notInTeam = _players.Find(player => player.Name == playerName) == null;
 
             if (notInTeam)
             {

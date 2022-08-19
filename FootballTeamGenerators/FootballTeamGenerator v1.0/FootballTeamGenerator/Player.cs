@@ -59,6 +59,6 @@ namespace FootballTeamGenerator
         }
 
         private decimal CalculateOverall() => 
-            Math.Ceiling((decimal)Stats.Average(x => x.Value));
+            Math.Ceiling((decimal)Stats.Average(stat => stat.Value));
     }
 }
