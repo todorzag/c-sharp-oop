@@ -9,21 +9,8 @@ using System.Threading.Tasks;
 namespace FootballTeamGenerator.UnitTests
 {
     [TestClass()]
-    public class TeamTests
+    public class TeamTests : TestData
     {
-        public static string mockTeamName = "Spartak Shturkovo";
-
-        public static List<IStat> mockStats = new List<IStat>
-            {
-                new Endurance(12),
-                new Sprint(22),
-                new Dribble(53),
-                new Passing(43),
-                new Shooting(3)
-            };
-
-        public static string mockPlayerName = "Kircho";
-
         [TestMethod()]
         public void SetTeamName_NameIsValid_TeamNameIsSet()
         {
@@ -37,10 +24,7 @@ namespace FootballTeamGenerator.UnitTests
         {
             string name = " ";
 
-            Action createTeam = () =>
-            {
-                Team team = new Team(name);
-            };
+            Action createTeam = () => CreateTeam(name);
 
             Assert.ThrowsException<ArgumentException>(createTeam);
         }
@@ -50,10 +34,7 @@ namespace FootballTeamGenerator.UnitTests
         {
             string name = null;
 
-            Action createTeam = () =>
-            {
-                Team team = new Team(name);
-            };
+            Action createTeam = () => CreateTeam(name);
 
             Assert.ThrowsException<ArgumentException>(createTeam);
         }
@@ -61,8 +42,8 @@ namespace FootballTeamGenerator.UnitTests
         [TestMethod()]
         public void AddPlayer_PlayerIsValid_PlayerIsAdded()
         {
-            Team team = new Team(mockTeamName);
-            Player player = new Player(mockPlayerName, mockStats);
+            Team team = CreateTeam();
+            Player player = CreatePlayer();
 
             team.AddPlayer(player);
 
@@ -72,8 +53,8 @@ namespace FootballTeamGenerator.UnitTests
         [TestMethod()]
         public void RemovePlayer_PlayerIsValid_PlayerIsRemoved()
         {
-            Team team = new Team(mockTeamName);
-            Player player = new Player(mockPlayerName, mockStats);
+            Team team = CreateTeam();
+            Player player = CreatePlayer();
 
             team.AddPlayer(player);
             team.RemovePlayerByName(mockPlayerName);
@@ -84,9 +65,9 @@ namespace FootballTeamGenerator.UnitTests
         [TestMethod()]
         public void GetTeamRating_EverythingIsValid_ReturnAverageOfPlayerOveralls()
         {
-            Team team = new Team(mockTeamName);
-            Player player1 = new Player("Ronaldo", mockStats);
-            Player player2 = new Player("Messi", mockStats);
+            Team team = CreateTeam();
+            Player player1 = CreatePlayer("Ronaldo");
+            Player player2 = CreatePlayer("Messi");
 
             team.AddPlayer(player1);
             team.AddPlayer(player2);
@@ -98,28 +79,18 @@ namespace FootballTeamGenerator.UnitTests
         }
 
         [TestMethod()]
-        public void CheckIfPlayerInTeam_PlayerInTeam_ReturnTrue()
+        public void CheckIfPlayerInTeam_PlayerIsNotInTeam_ThrowArgumentError()
         {
-            Team team = new Team(mockTeamName);
-            Player player = new Player(mockPlayerName, mockStats);
-
-            team.AddPlayer(player);
-
-            bool isInTeam = team.CheckIfPlayerInTeam(mockPlayerName);
-            Assert.IsTrue(isInTeam);
-        }
-
-        [TestMethod()]
-        public void CheckIfPlayerInTeam_PlayerIsNotInTeam_ReturnFalse()
-        {
-            Team team = new Team(mockTeamName);
-            Player player = new Player(mockPlayerName, mockStats);
+            Team team = CreateTeam();
+            Player player = CreatePlayer();
             string notInTeam = "Ronaldo";
 
             team.AddPlayer(player);
 
-            bool isInTeam = team.CheckIfPlayerInTeam(notInTeam);
-            Assert.IsFalse(isInTeam);
+            Action CheckPlayer = () =>
+            team.CheckIfPlayerInTeam(notInTeam, mockTeamName);
+
+            Assert.ThrowsException<ArgumentException>(CheckPlayer);
         }
     }
 }

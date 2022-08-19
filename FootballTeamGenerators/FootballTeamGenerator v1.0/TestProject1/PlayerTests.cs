@@ -4,45 +4,28 @@ using FootballTeamGenerator.Stats;
 namespace FootballTeamGenerator.UnitTests
 {
     [TestClass]
-    public class PlayerTests
+    public class PlayerTests : TestData
     {
-        public static List<IStat> mockStats = new List<IStat>
-            {
-                new Endurance(12),
-                new Sprint(22),
-                new Dribble(53),
-                new Passing(43),
-                new Shooting(3)
-            };
-
-        public static string mockName = "Kircho";
-
         [TestMethod()]
         public void SetName_NameValidString_PlayerNameEqualToName()
         {
             // Aranged default
 
             // Act 
-            Player player = new Player(mockName, mockStats);
+            Player player = CreatePlayer();
 
             // Assert
-            Assert.AreEqual(mockName, player.Name);
+            Assert.AreEqual(mockPlayerName, player.Name);
 
         }
 
         [TestMethod()]
         public void SetName_NameIsEmpty_ThrowArgumentExeption()
         {
-            // Arange
             string name = " ";
 
-            // Act 
-            Action createPlayer = () =>
-            {
-                Player player = new Player(name, mockStats);
-            };
+            Action createPlayer = () => CreatePlayer(name);
 
-            // Assert
             Assert.ThrowsException<ArgumentException>(createPlayer);
         }
 
@@ -53,10 +36,7 @@ namespace FootballTeamGenerator.UnitTests
             string name = null;
 
             // Act 
-            Action createPlayer = () =>
-            {
-                Player player = new Player(name, mockStats);
-            };
+            Action createPlayer = () => CreatePlayer(name);
 
             // Assert
             Assert.ThrowsException<ArgumentException>(createPlayer);
@@ -65,7 +45,7 @@ namespace FootballTeamGenerator.UnitTests
         [TestMethod()]
         public void SetStats_StatsAreInRange_StatsAreSet()
         {
-            Player player = new Player(mockName, mockStats);
+            Player player = CreatePlayer();
 
             Assert.AreEqual(player.Stats, mockStats);
         }
@@ -82,12 +62,10 @@ namespace FootballTeamGenerator.UnitTests
                 new Shooting(3)
             };
 
-            
-
             var stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
 
-            Player player = new Player(mockName, stats);
+            Player player = CreatePlayer(stats);
 
             var output = stringWriter.ToString();
 
@@ -108,7 +86,7 @@ namespace FootballTeamGenerator.UnitTests
                 new Shooting(3)
             };
 
-            Player player = new Player(mockName, stats);
+            Player player = CreatePlayer(stats);
 
             var endurance = player.Stats.Find(stat => stat.Name == "Endurance");
             var passing = player.Stats.Find(stat => stat.Name == "Passing");
@@ -132,7 +110,7 @@ namespace FootballTeamGenerator.UnitTests
             var stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
 
-            Player player = new Player(mockName, stats);
+            Player player = CreatePlayer(stats);
 
             var output = stringWriter.ToString();
 
@@ -153,7 +131,7 @@ namespace FootballTeamGenerator.UnitTests
                 new Shooting(3)
             };
 
-            Player player = new Player(mockName, stats);
+            Player player = CreatePlayer(stats);
 
             var endurance = player.Stats.Find(stat => stat.Name == "Endurance");
             var passing = player.Stats.Find(stat => stat.Name == "Passing");
@@ -165,7 +143,8 @@ namespace FootballTeamGenerator.UnitTests
         [TestMethod()]
         public void GetOverall_EverythingIsValid_AverageOfPlayerStats()
         {
-            Player player = new Player(mockName, mockStats);
+            Player player = CreatePlayer();
+
             decimal expected = Math.Ceiling((decimal)mockStats.Average(x => x.Value));
 
             Assert.AreEqual(expected, player.Overall);

@@ -21,82 +21,55 @@ namespace FootballTeamGenerator
             while (line != "END")
             {
                 string[] input = line.Split(";");
+
                 string action = input[0];
-
                 string teamName = input[1];
+
+                Team team;
                 string playerName;
-                bool teamExists;
 
-                switch (action)
+                try
                 {
-                    case "Team":
-                        try
-                        {
-                            teams.Add(new Team(teamName));
-                        }
-                        catch (ArgumentException e)
-                        {
-                            Console.WriteLine(e.Message);
-                        }
-                        
-                        break;
+                    if (action == "Team")
+                    {
+                        team = new Team(teamName);
+                        teams.Add(team);
+                    }
+                    else
+                    {
+                        CheckIfTeamExists(teams, teamName);
+                        team = FindTeam(teams, teamName);
+                    }
 
-                    case "Add":
-                        Team? teamToAdd = FindTeam(teams, teamName);
-                        teamExists = teamToAdd != null;
-
-                        if (teamExists)
-                        {
+                    switch (action)
+                    {
+                        case "Add":
                             playerName = input[2];
                             List<IStat> stats = GenerateStats(input);
 
-                            try
-                            {
-                                Player player = new Player(playerName, stats);
+                            Player player = new Player(playerName, stats);
+                            team.AddPlayer(player);
 
-                                teamToAdd.AddPlayer(player);
-                            }
-                            catch (ArgumentException e)
-                            {
-                                Console.WriteLine(e.Message);
-                            }
-                        }
+                            break;
 
-                        break;
-
-                    case "Remove":
-                        Team? teamToRemoveFrom = FindTeam(teams, teamName);
-                        teamExists = teamToRemoveFrom != null;
-
-                        if (teamExists)
-                        {
+                        case "Remove":
                             playerName = input[2];
-                            bool inTeam = teamToRemoveFrom.CheckIfPlayerInTeam(playerName);
 
-                            if (inTeam)
-                            {
-                                teamToRemoveFrom.RemovePlayerByName(playerName);
-                            }
-                            else
-                            {
-                                Console.WriteLine($"Player {playerName} is not in {teamName} team.");
-                            }
-                        }
+                            team.CheckIfPlayerInTeam(playerName, teamName);
+                            team.RemovePlayerByName(playerName);
 
-                        break;
+                            break;
 
-                    case "Rating":
-                        Team? teamToFind = FindTeam(teams, teamName);
-                        teamExists = teamToFind != null;
+                        case "Rating":
+                            Console.WriteLine($"{team.Name} - {team.Rating}");
 
-                        if (teamExists)
-                        {
-                            Console.WriteLine($"{teamName} - {teamToFind.Rating}");
-                        }
-
-                        break;
+                            break;
+                    }
                 }
-
+                catch (ArgumentException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
 
                 line = Console.ReadLine();
 
@@ -122,17 +95,18 @@ namespace FootballTeamGenerator
 
             return stats;
         }
-
-        private static Team? FindTeam(List<Team> teams, string teamName)
+        private static void CheckIfTeamExists(List<Team> teams, string teamName)
         {
-            Team team = teams.Find(team => team.Name == teamName);
+            bool teamDoesntExist = !teams.Any(team => team.Name == teamName);
 
-            if (team == null)
+            if (teamDoesntExist)
             {
-                Console.WriteLine($"Team {teamName} does not exist.");
+                throw new ArgumentException($"Team {teamName} does not exist.");
             }
-
-            return team;
         }
+
+        private static Team? FindTeam(List<Team> teams, string teamName) =>
+            teams.Find(team => team.Name == teamName);
+
     }
 }

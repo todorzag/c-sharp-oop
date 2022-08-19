@@ -51,18 +51,14 @@ namespace FootballTeamGenerator
             _players.Remove(_players.Find(player => player.Name == playerName));
         }
 
-        public bool CheckIfPlayerInTeam(string name)
+        public void CheckIfPlayerInTeam(string playerName, string teamName)
         {
-            bool result = true;
+            bool notInTeam = _players.Find(x => x.Name == playerName) == null;
 
-            Player player = _players.Find(x => x.Name == name);
-
-            if (player == null)
+            if (notInTeam)
             {
-                result = false;
+                throw new ArgumentException($"Player {playerName} is not in {teamName} team.");
             }
-
-            return result;
         }
 
         private decimal CalculateRating() => 
