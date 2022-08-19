@@ -30,6 +30,7 @@ namespace FootballTeamGenerator
 
                 try
                 {
+                    // Only one that doesn't require CheckIfTeamExists() and FindTeam()
                     if (action == "Team")
                     {
                         team = new Team(teamName);
@@ -45,9 +46,8 @@ namespace FootballTeamGenerator
                     {
                         case "Add":
                             playerName = input[2];
-                            List<IStat> stats = GeneratePlayer(input);
+                            Player player = GeneratePlayer(input);
 
-                            Player player = new Player(playerName, stats);
                             team.AddPlayer(player);
 
                             break;
@@ -77,8 +77,10 @@ namespace FootballTeamGenerator
         }
 
         // Create class Stat with name and value
-        private static List<IStat> GeneratePlayer(string[] input)
+        private static Player GeneratePlayer(string[] input)
         {
+            string playerName = input[2];
+
             List<IStat> stats = new List<IStat>();
 
             int endurance = int.Parse(input[3]);
@@ -93,7 +95,7 @@ namespace FootballTeamGenerator
             stats.Add(new Passing(passing));
             stats.Add(new Shooting(shooting));
 
-            return stats;
+            return new Player(playerName, stats);
         }
         private static void CheckIfTeamExists(List<Team> teams, string teamName)
         {
