@@ -8,30 +8,25 @@ namespace CarExtension
 {
     internal class Car
     {
-        private string make;
-        private string model;
-        private int year;
-        private double fuelQuantity;
-        private double fuelConsumption;
+   
 
-
-        public string Make { get { return this.make; } set { this.make = value; } }
+        public string Make { get; set; }
 
         public string Model { get; set; }
 
         public int Year { get; set; }
 
-        public double FuelQuantity { get { return this.fuelQuantity; } set { this.fuelQuantity = value; } }
+        public double FuelQuantity { get; set; }
 
-        public double FuelConsumption { get { return this.fuelConsumption; } set { this.fuelConsumption = value; } }
+        public double FuelConsumption { get; set; }
 
         public void Drive(double distance)
         {
-            double result = distance * fuelConsumption;
+            double result = distance * FuelConsumption;
 
-            if (fuelQuantity - result >= 0)
+            if (FuelQuantity - result >= 0)
             {
-                fuelQuantity -= result;
+                FuelQuantity -= result;
             }
             else
             {
