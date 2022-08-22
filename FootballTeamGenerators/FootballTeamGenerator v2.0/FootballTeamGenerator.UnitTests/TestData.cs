@@ -26,5 +26,15 @@ namespace FootballTeamGenerator.UnitTests
         public static Player CreatePlayer(int endurance, int passing) =>
             new Player(stubPlayerName, endurance, stubSprint, stubDribble, passing, stubShooting);
 
+        // Team with players
+        public static Team CreateTeamWithPlayers()
+        {
+            Team team = new Team(stubTeamName);
+            team.AddPlayer(CreatePlayer(stubPlayerName));
+            team.AddPlayer(CreatePlayer(stubPlayerName));
+            team.AddPlayer(CreatePlayer(stubPlayerName));
+
+            return team;
+        }
     }
 }

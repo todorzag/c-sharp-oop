@@ -72,5 +72,13 @@ public class TeamTests : TestData
             (_defaultTeam.HasPlayer(mockPlayerNameNotInTeam, _defaultTeam.Name),
             Is.False);
     }
+
+    [Test]
+    public void CalculateRating_TeamIsValid_ReturnsAverageOfPlayerOverall()
+    {
+        Team teamWithPlayers = CreateTeamWithPlayers();
+
+        Assert.That(teamWithPlayers.Rating, Is.EqualTo(13));
+    }
 }
 
