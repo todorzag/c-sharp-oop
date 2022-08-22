@@ -10,8 +10,10 @@
 
             for (int i = 0; i < numberOfEngines; i++)
             {
-                string line = Console.ReadLine();
-                engines.Add(CreateEngine(line));
+                string input = Console.ReadLine();
+                string[] split = input.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+
+                engines.Add(CreateEngine(split));
             }
 
             int numberOfCars = int.Parse(Console.ReadLine());
@@ -21,7 +23,10 @@
             for (int i = 0; i < numberOfCars; i++)
             {
                 string line = Console.ReadLine();
-                cars.Add(CreateCar(line, engines));
+                string[] split = line.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+
+                Car car = CreateCar(split, engines);
+                cars.Add(car);
             }
 
             PrintCars(cars);
@@ -29,54 +34,47 @@
 
 
         // Default value of Efficiency is "n/a" and the default value of Displacment is -1 
-        public static Engine CreateEngine(string line)
+        public static Engine CreateEngine(string[] split)
         {
-            string[] split = line.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-
             string model = split[0];
             int power = int.Parse(split[1]);
-            int displacment = -1;
-            string efficiency = "n/a";
 
-            for (int i = 2; i < split.Length; i++)
-            {
-                if (int.TryParse(split[i], out _))
-                {
-                    displacment = int.Parse(split[i]);
-                }
-                else
-                {
-                    efficiency = split[i];
-                }
-            }
+            (int displacment, string efficiency) = CheckForOptionalArguments(split);
 
             return new Engine(model, power, displacment, efficiency);
         }
 
         // Default value of Color is "n/a" and the default value of Weight is -1
-        public static Car CreateCar(string line, List<Engine> engines)
+        public static Car CreateCar(string[] split, List<Engine> engines)
         {
-            string[] split = line.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-
             string model = split[0];
             Engine engine = FindEngine(split[1], engines);
-            int weight = -1;
-            string color = "n/a";
+            
+            (int weight, string color) = CheckForOptionalArguments(split);
+
+            return new Car(model, engine, weight, color);
+        }
+
+        private static (int, string) CheckForOptionalArguments(string[] split)
+        {
+            int intArgument = -1;
+            string stringArgument = "n/a";
 
             for (int i = 2; i < split.Length; i++)
             {
                 if (int.TryParse(split[i], out _))
                 {
-                    weight = int.Parse(split[i]);
+                    intArgument = int.Parse(split[i]);
                 }
                 else
                 {
-                    color = split[i];
+                    stringArgument = split[i];
                 }
             }
 
-            return new Car(model, engine, weight, color);
+            return (intArgument, stringArgument);
         }
+
 
         public static Engine FindEngine(string engineToFind ,List<Engine> engines)
         {
