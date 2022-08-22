@@ -13,7 +13,8 @@
                 string input = Console.ReadLine();
                 string[] split = input.Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
-                engines.Add(CreateEngine(split));
+                Engine engine = CreateEngineFromInput(split);
+                engines.Add(engine);
             }
 
             int numberOfCars = int.Parse(Console.ReadLine());
@@ -25,7 +26,7 @@
                 string line = Console.ReadLine();
                 string[] split = line.Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
-                Car car = CreateCar(split, engines);
+                Car car = CreateCarFromInput(split, engines);
                 cars.Add(car);
             }
 
@@ -34,7 +35,7 @@
 
 
         // Default value of Efficiency is "n/a" and the default value of Displacment is -1 
-        public static Engine CreateEngine(string[] split)
+        public static Engine CreateEngineFromInput(string[] split)
         {
             string model = split[0];
             int power = int.Parse(split[1]);
@@ -45,7 +46,7 @@
         }
 
         // Default value of Color is "n/a" and the default value of Weight is -1
-        public static Car CreateCar(string[] split, List<Engine> engines)
+        public static Car CreateCarFromInput(string[] split, List<Engine> engines)
         {
             string model = split[0];
             Engine engine = FindEngine(split[1], engines);
