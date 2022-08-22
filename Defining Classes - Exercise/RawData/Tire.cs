@@ -8,13 +8,13 @@ namespace RawData
 {
     public class Tire
     {
-        public float Pressure { get; }
         public int Age { get; }
+        public float Pressure { get; }
 
-        public Tire(float pressure, int age)
+        public Tire(int age, float pressure)
         {
-            Pressure = pressure;
             Age = age;
+            Pressure = pressure;
         }
     }
 }

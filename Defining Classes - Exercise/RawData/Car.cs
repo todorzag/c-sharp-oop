@@ -8,12 +8,9 @@ namespace RawData
 {
     public class Car
     {
-        public string Model { get; set; }
-
-        public Engine Engine { get; set; }
-
-        public Cargo Cargo { get; set; }
-
+        public string Model { get; }
+        public Engine Engine { get;  }
+        public Cargo Cargo { get; }
         public Tire[] Tires = new Tire[4];
 
         public Car(string model, int engineSpeed, int enginePower, 
