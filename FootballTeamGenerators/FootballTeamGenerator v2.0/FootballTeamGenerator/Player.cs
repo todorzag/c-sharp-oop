@@ -18,41 +18,64 @@ namespace FootballTeamGenerator
         private int _passing;
         private int _shooting;
 
-
         public string Name
         {
             get => _name;
-            init => _name = ValidateName(value);
+            init
+            {
+                ValidateNameThrowException(value);
+                _name = value;
+            }
         }
 
         public int Endurance
         {
             get => _endurance;
-            set => _endurance = ValidateStat(value, nameof(Endurance));  
+            init
+            {
+                ValidateStatThrowException(value, nameof(Endurance));
+                _endurance = value;
+            }  
         }
 
         public int Sprint
         {
             get => _sprint;
-            set => _sprint = ValidateStat(value, nameof(Sprint));
+            init
+            {
+                ValidateStatThrowException(value, nameof(Sprint));
+                _sprint = value;
+            }
         }
 
         public int Dribble
         {
             get => _dribble;
-            set => _dribble = ValidateStat(value, nameof(Dribble));
+            init
+            {
+                ValidateStatThrowException(value, nameof(Dribble));
+                _dribble = value;
+            }
         }
 
         public int Passing
         {
             get => _passing;
-            set => _passing = ValidateStat(value, nameof(Passing));
+            init
+            {
+                ValidateStatThrowException(value, nameof(Passing));
+                _passing = value;
+            }
         }
 
         public int Shooting
         {
             get => _shooting;
-            set => _shooting = ValidateStat(value, nameof(Shooting));
+            init
+            {
+                ValidateStatThrowException(value, nameof(Shooting));
+                _shooting = value;
+            }
         }
 
         public decimal Overall
@@ -74,7 +97,7 @@ namespace FootballTeamGenerator
         private decimal CalculateOverall() =>
             (decimal)(_endurance + _sprint + _dribble + _passing + _shooting) / _statCount;
 
-        private int ValidateStat(int stat, string name)
+        private void ValidateStatThrowException(int stat, string name)
         {
             bool statNotInRange = stat < 0 || stat > 100;
 
@@ -82,11 +105,9 @@ namespace FootballTeamGenerator
             {
                 throw new ArgumentException($"{name} should be between 0 and 100.");
             }
-
-            return stat;
         }
 
-        private string ValidateName(string name)
+        private void ValidateNameThrowException(string name)
         {
             bool isEmptyOrNull = name == " " || name == null;
 
@@ -94,8 +115,6 @@ namespace FootballTeamGenerator
             {
                 throw new ArgumentException("A name should not be empty.");
             }
-
-            return name;
         }
     }
 }

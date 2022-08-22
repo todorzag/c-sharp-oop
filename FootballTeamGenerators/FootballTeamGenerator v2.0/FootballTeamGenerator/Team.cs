@@ -14,7 +14,12 @@ namespace FootballTeamGenerator
         public string Name
         {
             get => _name;
-            init => _name = ValidateNameThrowException(value);
+            init
+            {
+                ValidateNameThrowException(value);
+                _name = value;
+            }
+            
         }
 
         public decimal Rating
@@ -35,19 +40,16 @@ namespace FootballTeamGenerator
         public void AddPlayer(Player player) => 
             _players.Add(player);
  
-
         public void RemovePlayer(string playerName) => 
             _players.Remove(_players.Find(player => player.Name == playerName));
         
-
         public bool HasPlayer(string playerName, string teamName) => 
             _players.Find(x => x.Name == playerName) != null;
-
 
         private decimal CalculateRating() =>
             Math.Ceiling(_players.Average(player => player.Overall));
 
-        private string ValidateNameThrowException(string name)
+        private void ValidateNameThrowException(string name)
         {
             bool isEmptyOrNull = name == " " || name == null;
 
@@ -55,8 +57,6 @@ namespace FootballTeamGenerator
             {
                 throw new ArgumentException("A name should not be empty.");
             }
-
-            return name;
         }
     }
 }
