@@ -2,6 +2,8 @@
 {
     public class Program
     {
+        public static Dictionary<string, Team> teams = new Dictionary<string, Team>();
+
         public static void Main()
         {
             /*
@@ -14,8 +16,6 @@
 
             string line = Console.ReadLine();
 
-            List<Team> teams = new List<Team>();
-
             while (line != "END")
             {
                 string[] input = line.Split(";");
@@ -23,34 +23,24 @@
                 string action = input[0];
                 string teamName = input[1];
 
-                Team team;
-
                 try
                 {
-                    // Only action that doesn't require CheckIfTeamExists() and FindTeam();
-                    if (action == "Team")
-                    {
-                        team = new Team(teamName);
-                        teams.Add(team);
-                    }
-                    else
-                    {
-                        CheckIfTeamExists(teams, teamName);
-                        team = FindTeam(teams, teamName);
-                    }
-
                     switch (action)
                     {
+                        case "Team":
+                            CreateTeam(teamName);
+                            break;
+
                         case "Add":
-                            AddPlayerToTeam(input, team);
+                            AddPlayerToTeam(input, teamName);
                             break;
 
                         case "Remove":
-                            RemovePlayerFromTeam(input, team);
+                            RemovePlayerFromTeam(input, teamName);
                             break;
 
                         case "Rating":
-                            PrintTeamRating(team);
+                            PrintTeamRating(teamName);
                             break;
                     }
                 }
@@ -77,34 +67,61 @@
             return new Player
                 (playerName, endurance, sprint, dribble, passing, shooting);
         }
-        private static void CheckIfTeamExists(List<Team> teams, string teamName)
+       
+        private static void CreateTeam(string teamName)
         {
-            bool teamDoesntExist = !teams.Any(team => team.Name == teamName);
+            Team team = new Team(teamName);
+            teams.Add(teamName, team);
+        }
 
-            if (teamDoesntExist)
+        private static void AddPlayerToTeam(string[] input, string teamName)
+        {
+            if (teams.ContainsKey(teamName))
+            {
+                Player player = CreatePlayerFromInput(input);
+                teams[teamName].AddPlayer(player);
+            }
+            else
+            {
+                throw new ArgumentException($"Team {teamName} does not exist.");
+            }  
+        }
+
+        private static void RemovePlayerFromTeam(string[] input, string teamName)
+        {
+            string playerName = input[2];
+          
+            if (teams.ContainsKey(teamName))
+            {
+                Team team = teams[teamName];
+
+                if (team.HasPlayer(playerName, team.Name))
+                {
+                    team.RemovePlayer(playerName);
+                }
+                else
+                {
+                    throw new ArgumentException($"Player {playerName} is not in {team.Name} team.");
+                }
+            }
+            else
             {
                 throw new ArgumentException($"Team {teamName} does not exist.");
             }
         }
 
-        private static Team? FindTeam(List<Team> teams, string teamName) => 
-            teams.Find(team => team.Name == teamName);
-
-        private static void AddPlayerToTeam(string[] input, Team team)
+        private static void PrintTeamRating(string teamName)
         {
-            Player player = CreatePlayerFromInput(input);
-            team.AddPlayer(player);
-        }
-
-        private static void RemovePlayerFromTeam(string[] input, Team team)
-        {
-            string playerName = input[2];
-            team.CheckIfPlayerInTeam(playerName, team.Name);
-
-            team.RemovePlayer(playerName);
-        }
-
-        private static void PrintTeamRating(Team team) => 
-            Console.WriteLine($"{team.Name} - {team.Rating}");
+            if (teams.ContainsKey(teamName))
+            {
+                Team team = teams[teamName];
+                Console.WriteLine($"{team.Name} - {team.Rating}");
+            }
+            else
+            {
+                throw new ArgumentException($"Team {teamName} does not exist.");
+            }
+        } 
+            
     }
 }

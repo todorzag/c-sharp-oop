@@ -78,18 +78,27 @@ namespace FootballTeamGenerator.UnitTests
         }
 
         [TestMethod()]
-        public void CheckIfPlayerInTeam_PlayerIsNotInTeam_ThrowArgumentError()
+        public void CheckIfPlayerInTeam_PlayerIsInTeam_ReturnTrue()
         {
             Team team = CreateTeam();
             Player player = CreatePlayer();
-            string notInTeam = "Ronaldo";
 
             team.AddPlayer(player);
 
-            Action CheckPlayer = () =>
-            team.CheckIfPlayerInTeam(notInTeam, mockTeamName);
+            bool hasPlayer = team.HasPlayer(mockPlayerName, mockTeamName);
 
-            Assert.ThrowsException<ArgumentException>(CheckPlayer);
+            Assert.IsTrue(hasPlayer);
         }
+
+        [TestMethod()]
+        public void CheckIfPlayerInTeam_PlayerIsNotInTeam_ReturnFalse()
+        {
+            Team team = CreateTeam();
+
+            bool hasPlayer = team.HasPlayer(mockPlayerName, mockTeamName);
+
+            Assert.IsFalse(hasPlayer);
+        }
+
     }
 }

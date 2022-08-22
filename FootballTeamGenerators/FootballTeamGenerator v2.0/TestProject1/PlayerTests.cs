@@ -71,7 +71,7 @@ namespace FootballTeamGenerator.UnitTests
             Player player = CreatePlayer();
 
             decimal average =
-                (decimal)((mockEndurance + mockSprint + mockDribble + mockPassing + mockShooting) / mockStatCount);
+                (decimal)(mockEndurance + mockSprint + mockDribble + mockPassing + mockShooting) / mockStatCount;
 
             decimal expected = 
                 Math.Ceiling(average);

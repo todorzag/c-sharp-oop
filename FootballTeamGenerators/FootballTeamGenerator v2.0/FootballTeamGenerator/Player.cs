@@ -8,12 +8,7 @@ namespace FootballTeamGenerator
 {
     public class Player
     {
-        private static List<string> restrictedProperties =
-            new List<string>
-            {
-                "Name",
-                "Overall"
-            };
+        private static int _statCount = 5;
 
         private string _name;
 
@@ -27,7 +22,6 @@ namespace FootballTeamGenerator
         public string Name
         {
             get => _name;
-
             init => _name = ValidateName(value);
         }
 
@@ -77,17 +71,8 @@ namespace FootballTeamGenerator
             Shooting = shooting;
         }
 
-        private decimal CalculateOverall()
-        {
-            var properties = GetType()
-                    .GetProperties()
-                    .Where(prop => !restrictedProperties.Contains(prop.Name))
-                    .ToList();
-
-            return properties
-                .Average(property => 
-                decimal.Parse(property.GetValue(this, null).ToString()));
-        }
+        private decimal CalculateOverall() =>
+            (decimal)(_endurance + _sprint + _dribble + _passing + _shooting) / _statCount;
 
         private int ValidateStat(int stat, string name)
         {
