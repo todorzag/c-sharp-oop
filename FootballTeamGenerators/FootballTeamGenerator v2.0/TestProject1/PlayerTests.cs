@@ -44,63 +44,25 @@ namespace FootballTeamGenerator.UnitTests
         }
 
         [TestMethod()]
-        public void SetStats_StatsAreUnder0_WritesMessageOnConsoleForRange()
+        public void SetStats_StatsAreUnder0_ThrowsException()
         {
             int endurance = -42;
             int passing = -1;
 
-            var stringWriter = new StringWriter();
-            Console.SetOut(stringWriter);
+            Action createPlayer = () => CreatePlayer(endurance, passing);
 
-            Player player = CreatePlayer(endurance, passing);
-
-            var output = stringWriter.ToString();
-
-            Assert.AreEqual("Endurance should be between 0 and 100.\r\n" +
-                "Passing should be between 0 and 100.\r\n", output);
-            
+            Assert.ThrowsException<ArgumentException>(createPlayer);
         }
 
         [TestMethod()]
-        public void SetStats_StatsAreUnder0_InvalidStatsShouldEqual0()
-        {
-            int endurance = -42;
-            int passing = -1;
-
-            Player player = CreatePlayer(endurance, passing);
-
-            Assert.AreEqual(0, player.Endurance);
-            Assert.AreEqual(0, player.Passing);
-        }
-
-        [TestMethod()]
-        public void SetStats_StatsAreOver100_WritesMessageOnConsoleForRange()
+        public void SetStats_StatsAreOver100_ThrowsExcpetion()
         {
             int endurance = 123;
             int passing = 9999;
 
-            var stringWriter = new StringWriter();
-            Console.SetOut(stringWriter);
+            Action createPlayer = () => CreatePlayer(endurance, passing);
 
-            Player player = CreatePlayer(endurance, passing);
-
-            var output = stringWriter.ToString();
-
-            Assert.AreEqual("Endurance should be between 0 and 100.\r\n" +
-                "Passing should be between 0 and 100.\r\n", output);
-
-        }
-
-        [TestMethod()]
-        public void SetStats_StatsAreOver100_InvalidStatsShouldEqual0()
-        {
-            int endurance = 123;
-            int passing = 9999;
-
-            Player player = CreatePlayer(endurance, passing);
-
-            Assert.AreEqual(0, player.Endurance);
-            Assert.AreEqual(0, player.Passing);
+            Assert.ThrowsException<ArgumentException>(createPlayer);
         }
 
         [TestMethod()]

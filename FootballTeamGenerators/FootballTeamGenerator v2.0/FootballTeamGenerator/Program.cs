@@ -9,13 +9,12 @@
               - Doesn't create Team or Player
 
             • Stats should be in the range 0..100. If not, print "[Stat name] should be between 0 and 100."
-              - Sets stat to zero
+              - Doesn't create Player
             */
 
             string line = Console.ReadLine();
 
             List<Team> teams = new List<Team>();
-
 
             while (line != "END")
             {
@@ -28,6 +27,7 @@
 
                 try
                 {
+                    // Only action that doesn't require CheckIfTeamExists() and FindTeam();
                     if (action == "Team")
                     {
                         team = new Team(teamName);
@@ -42,22 +42,15 @@
                     switch (action)
                     {
                         case "Add":
-                            Player player = CreatePlayerFromInput(input);
-                            team.AddPlayer(player);
-
+                            AddPlayerToTeam(input, team);
                             break;
 
                         case "Remove":
-                            string playerName = input[2];
-                            team.CheckIfPlayerInTeam(playerName, teamName);
-
-                            team.RemovePlayer(playerName);
-
+                            RemovePlayerFromTeam(input, team);
                             break;
 
                         case "Rating":
-                            Console.WriteLine($"{team.Name} - {team.Rating}");
-
+                            PrintTeamRating(team);
                             break;
                     }
                 }
@@ -97,5 +90,21 @@
         private static Team? FindTeam(List<Team> teams, string teamName) => 
             teams.Find(team => team.Name == teamName);
 
+        private static void AddPlayerToTeam(string[] input, Team team)
+        {
+            Player player = CreatePlayerFromInput(input);
+            team.AddPlayer(player);
+        }
+
+        private static void RemovePlayerFromTeam(string[] input, Team team)
+        {
+            string playerName = input[2];
+            team.CheckIfPlayerInTeam(playerName, team.Name);
+
+            team.RemovePlayer(playerName);
+        }
+
+        private static void PrintTeamRating(Team team) => 
+            Console.WriteLine($"{team.Name} - {team.Rating}");
     }
 }

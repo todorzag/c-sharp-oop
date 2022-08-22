@@ -28,45 +28,37 @@ namespace FootballTeamGenerator
         {
             get => _name;
 
-            init
-            {
-                if (value == " " || value == null)
-                {
-                    throw new ArgumentException("A name should not be empty.");
-                }
-
-                _name = value;
-            }
+            init => _name = ValidateName(value);
         }
 
         public int Endurance
         {
             get => _endurance;
-            set => _endurance = StatHandler(value, nameof(Endurance));  
+            set => _endurance = ValidateStat(value, nameof(Endurance));  
         }
 
         public int Sprint
         {
             get => _sprint;
-            set => _sprint = StatHandler(value, nameof(Sprint));
+            set => _sprint = ValidateStat(value, nameof(Sprint));
         }
 
         public int Dribble
         {
             get => _dribble;
-            set => _dribble = StatHandler(value, nameof(Dribble));
+            set => _dribble = ValidateStat(value, nameof(Dribble));
         }
 
         public int Passing
         {
             get => _passing;
-            set => _passing = StatHandler(value, nameof(Passing));
+            set => _passing = ValidateStat(value, nameof(Passing));
         }
 
         public int Shooting
         {
             get => _shooting;
-            set => _shooting = StatHandler(value, nameof(Shooting));
+            set => _shooting = ValidateStat(value, nameof(Shooting));
         }
 
         public decimal Overall
@@ -97,19 +89,28 @@ namespace FootballTeamGenerator
                 decimal.Parse(property.GetValue(this, null).ToString()));
         }
 
-        private int StatHandler(int stat, string name)
+        private int ValidateStat(int stat, string name)
         {
-            bool statInRange = stat >= 0 && stat <= 100;
+            bool statNotInRange = stat < 0 || stat > 100;
 
-            if (statInRange)
+            if (statNotInRange)
             {
-                return stat;
+                throw new ArgumentException($"{name} should be between 0 and 100.");
             }
-            else
+
+            return stat;
+        }
+
+        private string ValidateName(string name)
+        {
+            bool isEmptyOrNull = name == " " || name == null;
+
+            if (isEmptyOrNull)
             {
-                Console.WriteLine($"{name} should be between 0 and 100.");
-                return 0;
+                throw new ArgumentException("A name should not be empty.");
             }
+
+            return name;
         }
     }
 }
