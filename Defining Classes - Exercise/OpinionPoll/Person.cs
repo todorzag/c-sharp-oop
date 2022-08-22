@@ -8,9 +8,14 @@ namespace OpinionPoll
 {
     internal class Person
     {
+<<<<<<< HEAD
+        public string Name { get; }
+        public int Age { get; }
+=======
         public string Name { get; set; }
 
         public int Age { get; set; }
+>>>>>>> master
 
         public Person()
         {

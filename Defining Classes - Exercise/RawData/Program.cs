@@ -24,7 +24,7 @@ namespace RawData
                 int cargoWeight = int.Parse(split[3]);
                 string cargoType = split[4];
 
-                string[] tires = split[5..split.Length];
+                Tire[] tires = GetTiresInput(split);
 
                 Car car = new Car(model, engineSpeed, enginePower, cargoType, cargoWeight, tires);
 
@@ -62,6 +62,25 @@ namespace RawData
         public static void PrintCars(List<Car> cars)
         {
             foreach (Car car in cars) { Console.WriteLine(car.Model); }
+        }
+
+        public static Tire[] GetTiresInput(string[] split)
+        {
+            Tire[] tires = new Tire[4];
+
+            int counter = 0;
+
+            for (int i = 5; i < split.Length; i += 2)
+            {
+                float tirePressure = float.Parse(split[i]);
+                int tireAge = int.Parse(split[i + 1]);
+     
+                tires[counter] = new Tire(tireAge, tirePressure);
+
+                counter++;
+            }
+
+            return tires;
         }
     }
 }

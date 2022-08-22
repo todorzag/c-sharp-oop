@@ -8,13 +8,13 @@ namespace CarSalesman
 {
     internal class Car
     {
-        public string Model { get; set; }
+        public string Model { get; }
 
-        public Engine Engine { get; set; }
+        public Engine Engine { get; }
 
-        public int Weight { get; set; }
+        public int Weight { get; }
 
-        public string Color { get; set; }
+        public string Color { get; }
 
         public Car(string model, Engine engine, int weight, string color)
         {
