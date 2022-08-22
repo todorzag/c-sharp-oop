@@ -8,17 +8,14 @@ namespace CarAndEngine
 {
     internal class Engine
     {
-        private int horsePower;
-        private double cubicCapacity;
+        public int HorsePower { get; set; }
 
-        public int HorsePower { get { return horsePower; } set { horsePower = value; } }
-
-        public double CubicCapacity { get { return cubicCapacity; } set { cubicCapacity = value; } }
+        public double CubicCapacity { get; set; }
 
         public Engine(int horsePower, double cubicCapacity)
         {
-            this.horsePower = horsePower;
-            this.cubicCapacity = cubicCapacity;
+            HorsePower = horsePower;
+            CubicCapacity = cubicCapacity;
         }
     }
 }

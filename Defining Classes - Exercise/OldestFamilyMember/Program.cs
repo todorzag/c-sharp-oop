@@ -6,6 +6,15 @@
         {
             int numberOfPeople = int.Parse(Console.ReadLine());
 
+            Family family = GenerateFamily(numberOfPeople);
+
+            Person oldestFamilyMember = family.GetOldestMember();
+
+            Console.WriteLine(oldestFamilyMember.WhoAmI());
+        }
+
+        public static Family GenerateFamily(int numberOfPeople)
+        {
             Family family = new Family();
 
             for (int i = 0; i < numberOfPeople; i++)
@@ -17,9 +26,7 @@
                 family.AddMember(new Person(name, age));
             }
 
-            Person oldestFamilyMember = family.GetOldestMember();
-
-            Console.WriteLine(oldestFamilyMember.WhoAmI());
+            return family;
         }
     }
 }

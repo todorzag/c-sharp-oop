@@ -8,52 +8,45 @@ namespace CarConstructors
 {
     internal class Car
     {
-        private string make;
-        private string model;
-        private int year;
-        private double fuelQuantity;
-        private double fuelConsumption;
+        public string Make { get; set; }
 
+        public string Model { get; set; }
 
-        public string Make { get { return this.make; } set { this.make = value; } }
+        public int Year { get; set; }
 
-        public string Model { get { return this.model; } set { this.model = value; } }
+        public double FuelQuantity { get; set; }
 
-        public int Year { get { return this.year; } set { this.year = value; } }
-
-        public double FuelQuantity { get { return this.fuelQuantity; } set { this.fuelQuantity = value; } }
-
-        public double FuelConsumption { get { return this.fuelConsumption; } set { this.fuelConsumption = value; } }
+        public double FuelConsumption { get; set; }
 
         public Car()
         {
-            make = "VW";
-            model = " MK3";
-            year = 1992;
-            fuelQuantity = 200;
-            fuelConsumption = 10;
+            Make = "VW";
+            Model = " MK3";
+            Year = 1992;
+            FuelQuantity = 200;
+            FuelConsumption = 10;
         }
 
         public Car(string make, string model, int year) : this()
         {
-            this.make = make;
-            this.model = model;
-            this.year = year;
+            Make = make;
+            Model = model;
+            Year = year;
         }
 
         public Car(string make, string model, int year, double fuelQuantity, double fuelConsumption) : this(make, model, year)
         {
-            this.fuelQuantity = fuelQuantity;
-            this.fuelConsumption = fuelConsumption;
+            FuelQuantity = fuelQuantity;
+            FuelConsumption = fuelConsumption;
         }
 
         public void Drive(double distance)
         {
-            double result = distance * fuelConsumption;
+            double result = distance * FuelConsumption;
 
-            if (fuelQuantity - result >= 0)
+            if (FuelQuantity - result >= 0)
             {
-                fuelQuantity -= result;
+                FuelQuantity -= result;
             }
             else
             {
