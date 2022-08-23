@@ -21,13 +21,8 @@ public class PlayerTests : TestData
     }
 
     [TestCase(" ")]
-    public void ValidateName_NameIsEmpty_ThrowException(string mockName)
-    {
-        Assert.Throws<ArgumentException>(() => CreatePlayer(mockName));
-    }
-
     [TestCase(null)]
-    public void ValidateName_NameIsNull_ThrowException(string mockName)
+    public void ValidateName_NameIsFalsy_ThrowException(string mockName)
     {
         Assert.Throws<ArgumentException>(() => CreatePlayer(mockName));
     }

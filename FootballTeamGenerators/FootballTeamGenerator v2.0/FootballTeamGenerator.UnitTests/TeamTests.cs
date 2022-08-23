@@ -23,13 +23,8 @@ public class TeamTests : TestData
     }
 
     [TestCase(" ")]
-    public void ValidateName_NameIsEmpty_ThrowException(string mockName)
-    {
-        Assert.Throws<ArgumentException>(() => new Team(mockName));
-    }
-
     [TestCase(null)]
-    public void ValidateName_NameIsNull_ThrowException(string mockName)
+    public void ValidateName_NameIsFalsy_ThrowException(string mockName)
     {
         Assert.Throws<ArgumentException>(() => new Team(mockName));
     }
