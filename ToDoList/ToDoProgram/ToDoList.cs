@@ -8,17 +8,16 @@ namespace ToDoListProgram
 {
     public class ToDoList
     {
-        private int idCounter = 1;
-        public List<ToDo> toDoList = new List<ToDo>();
-
-        public ToDoList()
-        {
-        }
-
-        public record ToDo(string Content)
+        public List<ToDoItem> toDoList = new List<ToDoItem>();
+        public record ToDoItem(string Content)
         {
             public int Id { get; set; }
             public bool IsCompleted { get; set; } = false;
+        }
+        private int idCounter = 1;
+
+        public ToDoList()
+        {
         }
 
         public void Add(string content)
@@ -28,12 +27,12 @@ namespace ToDoListProgram
                 throw new ArgumentNullException("Content cannot be null or empty");
             }
 
-            toDoList.Add(new ToDo (content) with { Id = idCounter++ });
+            toDoList.Add(new ToDoItem(content) with { Id = idCounter++ });
         }
 
         public void Complete(int id)
         {
-            ToDo toDo = toDoList.Find(t => t.Id == id);
+            ToDoItem toDo = toDoList.Find(t => t.Id == id);
             toDo.IsCompleted = true;
         }
     }
