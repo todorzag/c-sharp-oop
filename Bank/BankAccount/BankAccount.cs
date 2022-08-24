@@ -12,6 +12,19 @@ namespace Bank
         private readonly decimal _minimumBalance;
         private List<Transaction> _allTransactions = new List<Transaction>();
 
+        public BankAccount(string name, decimal initialBalance)
+            : this(name, initialBalance, 0) { }
+
+        public BankAccount(string name, decimal initialBalance, decimal minimumBalance)
+        {
+            accountNumberSeed++;
+            Number = accountNumberSeed.ToString();
+
+            Owner = name;
+            _minimumBalance = minimumBalance;
+            InitialBalance = initialBalance;
+        }
+
         public string Number { get; }
         public string Owner { get; set; }
         public decimal Balance
@@ -34,19 +47,6 @@ namespace Bank
                 ValidateInitialBalanceThrowException(value);
                 MakeDeposit(value, "Initial balance");
             }
-        }
-
-        public BankAccount(string name, decimal initialBalance)
-            : this(name, initialBalance, 0) { }
-
-        public BankAccount(string name, decimal initialBalance, decimal minimumBalance)
-        {
-            accountNumberSeed++;
-            Number = accountNumberSeed.ToString();
-
-            Owner = name;
-            _minimumBalance = minimumBalance;
-            InitialBalance = initialBalance;
         }
 
         public void MakeDeposit(decimal amount, string note)

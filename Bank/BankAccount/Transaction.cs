@@ -9,10 +9,10 @@ namespace Bank
     public class Transaction
     {
         private string _note;
-        private string _type;
 
         public decimal Amount { get; }
         public DateTime Date { get; }
+        public string Type { get; }
         public string Note 
         { 
             get => _note;
@@ -27,7 +27,7 @@ namespace Bank
         {
             Amount = amount;
             Date = date;
-            _type = type;
+            Type = type;
             Note = note;
         }
 
