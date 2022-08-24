@@ -26,10 +26,10 @@ namespace ToDoListUnitTests
             var dummyContent2 = "Reformat code!";
 
             _defaultToDoList.Add(dummyContent1);
-            Assert.That(_defaultToDoList.list[0].Content, Is.EqualTo("Buy bananas"));
+            Assert.That(_defaultToDoList.toDoList[0].Content, Is.EqualTo("Buy bananas"));
             
             _defaultToDoList.Add(dummyContent2);
-            Assert.That(_defaultToDoList.list[1].Content, Is.EqualTo("Reformat code!"));
+            Assert.That(_defaultToDoList.toDoList[1].Content, Is.EqualTo("Reformat code!"));
         }
 
         [Test]
@@ -42,10 +42,10 @@ namespace ToDoListUnitTests
             int expectedIdCount2 = 2;
 
             _defaultToDoList.Add(dummyContent1);
-            Assert.That(_defaultToDoList.list[0].Id, Is.EqualTo(expectedIdCount1));
+            Assert.That(_defaultToDoList.toDoList[0].Id, Is.EqualTo(expectedIdCount1));
 
             _defaultToDoList.Add(dummyContent2);
-            Assert.That(_defaultToDoList.list[1].Id, Is.EqualTo(expectedIdCount2));   
+            Assert.That(_defaultToDoList.toDoList[1].Id, Is.EqualTo(expectedIdCount2));   
         }
 
 
@@ -54,7 +54,7 @@ namespace ToDoListUnitTests
         {
             _defaultToDoList.Add(stubString);
 
-            Assert.That(_defaultToDoList.list[0].IsCompleted, Is.False);
+            Assert.That(_defaultToDoList.toDoList[0].IsCompleted, Is.False);
         }
 
         [TestCase("Valid Dummy Content")]
@@ -64,7 +64,7 @@ namespace ToDoListUnitTests
 
             _defaultToDoList.Complete(1);
 
-            Assert.That(_defaultToDoList.list[0].IsCompleted, Is.True);
+            Assert.That(_defaultToDoList.toDoList[0].IsCompleted, Is.True);
         }
 
     }
