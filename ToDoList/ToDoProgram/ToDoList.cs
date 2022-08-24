@@ -30,7 +30,7 @@ namespace ToDoListProgram
                 throw new ArgumentNullException("Content cannot be null or empty");
             }
 
-            list.Add(new ToDo(content) with { Id = idCounter++ });
+            list.Add(new ToDo (content) with { Id = idCounter++ });
         }
 
         public void Complete(int idCount)
