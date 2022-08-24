@@ -9,9 +9,7 @@ namespace Bank
     public class BankAccount
     {
         private static int accountNumberSeed = 1;
-
         private readonly decimal _minimumBalance;
-
         private List<Transaction> _allTransactions = new List<Transaction>();
 
         public string Number { get; }
@@ -38,8 +36,18 @@ namespace Bank
             }
         }
 
-        public virtual void PerformEndOfMonthTransactions() { }
+        public BankAccount(string name, decimal initialBalance)
+            : this(name, initialBalance, 0) { }
 
+        public BankAccount(string name, decimal initialBalance, decimal minimumBalance)
+        {
+            accountNumberSeed++;
+            Number = accountNumberSeed.ToString();
+
+            Owner = name;
+            _minimumBalance = minimumBalance;
+            InitialBalance = initialBalance;
+        }
 
         public void MakeDeposit(decimal amount, string note)
         {
@@ -102,27 +110,14 @@ namespace Bank
                     : transaction.Amount;
 
                 accountHistory.AppendLine($"A {transaction.Type} was made on: {transaction.Date}");
-
                 accountHistory.AppendLine($"For: {transactionAmount}");
-
                 accountHistory.AppendLine($"Note: {transaction.Note}");
             }
 
             return accountHistory.ToString();
         }
 
-        public BankAccount(string name, decimal initialBalance)
-            : this(name, initialBalance, 0) { }
-
-        public BankAccount(string name, decimal initialBalance, decimal minimumBalance)
-        {
-            accountNumberSeed++;
-            Number = accountNumberSeed.ToString();
-
-            Owner = name;
-            _minimumBalance = minimumBalance;
-            InitialBalance = initialBalance;
-        }
+        public virtual void PerformEndOfMonthTransactions() { }
 
         private void ValidateInitialBalanceThrowException(decimal initialBalance)
         {

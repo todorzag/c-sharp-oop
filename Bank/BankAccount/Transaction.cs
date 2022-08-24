@@ -8,13 +8,6 @@ namespace Bank
 {
     public class Transaction
     {
-        private readonly static List<string> _allowedTypes
-            = new List<string>
-            {
-                "deposit",
-                "withdrawal"
-            };
-
         private string _note;
         private string _type;
 
@@ -29,21 +22,12 @@ namespace Bank
                 _note = value;
             }
         }
-        public string Type 
-        { 
-            get => _type;
-            init
-            {
-                ValidateTypeThrowException(value);
-                _type = value;
-            }
-        }
 
         public Transaction(decimal amount, DateTime date, string type, string note)
         {
             Amount = amount;
             Date = date;
-            Type = type;
+            _type = type;
             Note = note;
         }
 
@@ -53,15 +37,6 @@ namespace Bank
             {
                 throw new ArgumentNullException
                     (nameof(note), "Note cannot be empty or null!");
-            }
-        }
-
-        private void ValidateTypeThrowException(string type)
-        {
-            if (!_allowedTypes.Contains(type))
-            {
-                throw new InvalidOperationException
-                    ("Invalid Transactiion Type!");
             }
         }
     }
