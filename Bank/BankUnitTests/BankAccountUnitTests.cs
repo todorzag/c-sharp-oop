@@ -12,6 +12,14 @@ namespace BankUnitTests
             _defaultBankAccount = new BankAccount("Kircho", 100);
         }
 
+        [TestCase(100)]
+        public void SetInitialBalance_InitalBalanceIsValid_AccountIsCreated(int initalBalance)
+        {
+            BankAccount bankAccount = new BankAccount("Kircho", initalBalance);
+
+            Assert.That(bankAccount.Balance, Is.EqualTo(initalBalance));
+        }
+
         [TestCase(-1)]
         [TestCase(-999)]
         [TestCase(0)]
@@ -21,12 +29,13 @@ namespace BankUnitTests
                 => new BankAccount("Kircho", initalBalance));
         }
 
-        [Test]
-        public void MakeDeposit_EverythingValid_AddAmountToBalance()
+        [TestCase(100, 200)]
+        [TestCase(50, 150)]
+        public void MakeDeposit_EverythingValid_AddAmountToBalance(int amount, int expected)
         {
-            _defaultBankAccount.MakeDeposit(100, "test");
+            _defaultBankAccount.MakeDeposit(amount, "test");
 
-            Assert.That(_defaultBankAccount.Balance, Is.EqualTo(200));
+            Assert.That(_defaultBankAccount.Balance, Is.EqualTo(expected));
         }
 
         [TestCase(-1)]
@@ -38,12 +47,13 @@ namespace BankUnitTests
                 => _defaultBankAccount.MakeDeposit(amount, "test"));
         }
 
-        [Test]
-        public void MakeWithdrawal_EverythingValid_RemoveAmountFromBalance()
+        [TestCase(99, 1)]
+        [TestCase(50, 50)]
+        public void MakeWithdrawal_EverythingValid_RemoveAmountFromBalance(int amount, int expected)
         {
-            _defaultBankAccount.MakeWithdrawal(99, "test");
+            _defaultBankAccount.MakeWithdrawal(amount, "test");
 
-            Assert.That(_defaultBankAccount.Balance, Is.EqualTo(1));
+            Assert.That(_defaultBankAccount.Balance, Is.EqualTo(expected));
         }
 
         [TestCase(-1)]

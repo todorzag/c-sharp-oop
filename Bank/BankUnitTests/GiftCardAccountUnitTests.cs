@@ -13,14 +13,15 @@ namespace BankUnitTests
                 => new GiftCardAccount("Kircho", 100, amount));
         }
 
-        [Test]
-        public void PerformEndOfMonthTransactions_MonthlyDepositIsNotZero_MakeDeposit()
+        [TestCase(20, 120)]
+        [TestCase(100, 200)]
+        public void PerformEndOfMonthTransactions_MonthlyDepositIsValid_MakeDeposit(int amount, int expected)
         {
-            GiftCardAccount account = new GiftCardAccount("Kircho", 100, 20);
+            GiftCardAccount account = new GiftCardAccount("Kircho", 100, amount);
 
             account.PerformEndOfMonthTransactions();
 
-            Assert.That(account.Balance, Is.EqualTo(120));
+            Assert.That(account.Balance, Is.EqualTo(expected));
         }
     }
 }

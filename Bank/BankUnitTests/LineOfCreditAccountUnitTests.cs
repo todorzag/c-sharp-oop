@@ -4,13 +4,11 @@ namespace BankUnitTests
 {
     internal class LineOfCreditAccountUnitTests
     {
-        [TestCase(101)]
-        [TestCase(111)]
-        public void PerformEndOfMonthTransactions_BalanceIsNegative_MakeWithdrawal(int amount)
+        [TestCase(101, -1.07)]
+        [TestCase(150, -53.5)]
+        public void PerformEndOfMonthTransactions_BalanceIsNegative_MakeWithdrawal(int amount, decimal expected)
         {
-            LineOfCreditAccount account = new LineOfCreditAccount("Kircho", 100, -100);
-            decimal balance = 100 - amount;
-            decimal expected = balance + (balance * 0.07m);
+            LineOfCreditAccount account = new LineOfCreditAccount("Kircho", 100, -200);
 
             account.MakeWithdrawal(amount, "test");
             account.PerformEndOfMonthTransactions();
@@ -18,13 +16,11 @@ namespace BankUnitTests
             Assert.That(account.Balance, Is.EqualTo(expected));
         }
 
-        [TestCase(199)]
-        [TestCase(200)]
-        public void CheckWithdrawalLimit_IsOverdrawnTrue_MakeWithdrawal(int amount)
+        [TestCase(199, -125.93)]
+        [TestCase(200, -127)]
+        public void CheckWithdrawalLimit_IsOverdrawnTrue_MakeWithdrawal(int amount, decimal expected)
         {
             LineOfCreditAccount account = new LineOfCreditAccount("Kircho", 100, -100);
-            decimal balance = 100 - amount;
-            decimal expected = balance + (balance * 0.07m) - 20;
 
             account.MakeWithdrawal(amount, "test");
             account.PerformEndOfMonthTransactions();
@@ -32,13 +28,11 @@ namespace BankUnitTests
             Assert.That(account.Balance, Is.EqualTo(expected));
         }
 
-        [TestCase(201)]
-        [TestCase(900)]
-        public void CheckWithdrawalLimit_IsOverdrawnTrueAndBalanceIsNegative_MakeWithdrawal(int amount)
+        [TestCase(201, -149.47)]
+        [TestCase(900 , -897.4)]
+        public void CheckWithdrawalLimit_IsOverdrawnTrueAndBalanceIsNegative_MakeWithdrawal(int amount, decimal expected)
         {
             LineOfCreditAccount account = new LineOfCreditAccount("Kircho", 100, -100);
-            decimal balance = 100 - amount - 20;
-            decimal expected = balance + (balance * 0.07m) - 20;
 
             account.MakeWithdrawal(amount, "test");
             account.PerformEndOfMonthTransactions();
