@@ -25,44 +25,25 @@ namespace CalculatorProgram
         {
         }
 
-        public decimal Calculate(string equation)
-        {
-            (int num1, string operation, int num2) = ExtractInfoFromInput(equation);
+        public decimal Add(decimal num1, decimal num2) 
+            => num1 + num2;
 
-            switch (operation)
+        public decimal Subtract(decimal num1, decimal num2)
+            => num1 - num2;
+
+        public decimal Multiply(decimal num1, decimal num2)
+            => num1 * num2;
+
+        public decimal Divide(decimal num1, decimal num2)
+        {
+            try
             {
-                case "+":
-                    return num1 + num2;
-
-                case "-":
-                    return num1 - num2;
-
-                case "*":
-                    return num1 * num2;
-
-                case "/":
-                    try
-                    {
-                        return num1 / num2;
-                    }
-                    catch (DivideByZeroException)
-                    {
-                        return 0;
-                    }  
+                return num1 / num2;
             }
-
-            return default;
-        }
-
-        private (int, string, int) ExtractInfoFromInput(string equation)
-        {
-            string[] split = equation.Split(" ");
-
-            int num1 = int.Parse(split[0]);
-            string operation = split[1];
-            int num2 = int.Parse(split[2]);
-
-            return (num1, operation, num2);
+            catch (DivideByZeroException)
+            {
+                return 0;
+            }
         }
     }
 }
