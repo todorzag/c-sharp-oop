@@ -68,7 +68,7 @@ namespace NumberToWord
 
             if (number < 100)
             {
-                return GetTwoDigitWord(number);
+                return GetUnderThreeDigitWord(number);
             }
             else if (number < 1000)
             {
@@ -78,34 +78,42 @@ namespace NumberToWord
             return word;
         }
 
-        private string GetTwoDigitWord(int number)
+        private string GetUnderThreeDigitWord(int number)
         {
+            string word = String.Empty;
+
             if (number < 20)
             {
-                return SpecialNamed[number];
+                word = SpecialNamed[number];
             }
             else
             {
-                return _digits[0] == 0
+                word = _digits[0] == 0
                     ? Dozens[_digits[1]]
-                    : $"{Dozens[_digits[1]]} {SpecialNamed[_digits[0]]}";
+                    : $"{Dozens[_digits[1]]} {SpecialNamed[_digits[0]].ToLower()}";
             }
+
+            return word;
         }
 
         private string GetThreeDigitWord(int number)
         {
-            string word = $"{SpecialNamed[_digits[2]]} Hundred";
+            string word = String.Empty;
 
             if (_digits[1] == 0 && _digits[0] == 0)
             {
-                return word;
+                word = $"{SpecialNamed[_digits[2]]} hundred";
             }
             else
             {
                 int lastTwoDigitsNumber = number - (_digits[2] * 100);
 
-                return word += $" And {GetTwoDigitWord(lastTwoDigitsNumber)}";
+                word = 
+                    $"{SpecialNamed[_digits[2]]} hundred " +
+                    $"and {GetUnderThreeDigitWord(lastTwoDigitsNumber).ToLower()}";
             }
+
+            return word;
         }
 
         private IEnumerable<int> GetDigits(int number)
