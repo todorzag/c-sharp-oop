@@ -11,7 +11,7 @@ namespace SnakeGame
     {
         private List<SnakePart> _snakeBody;
         private SnakePart _snakeHead;
-        private (int, int) lastSnakePosition;
+        private (int, int) lastSnakePartPosition;
 
         public Snake()
         {
@@ -35,13 +35,13 @@ namespace SnakeGame
             }
         }
 
-        public void ClearSnakePart(string[,] board)
+        public void ClearLastSnakePart(string[,] board)
         {
             SnakePart lastSnakePart = _snakeBody.Last();
 
             (int x, int y) = lastSnakePart.Position;
 
-            lastSnakePosition = (x, y);
+            lastSnakePartPosition = (x, y);
 
             board[x, y] = " ";
         }
@@ -88,7 +88,7 @@ namespace SnakeGame
 
         public void AddSnakePart()
         {
-            (int x, int y) = lastSnakePosition;
+            (int x, int y) = lastSnakePartPosition;
 
             _snakeBody.Add(new SnakePart(x, y));
         }

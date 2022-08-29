@@ -14,12 +14,12 @@ namespace SnakeGame
         {
             Console.OutputEncoding = System.Text.Encoding.Unicode;
 
-            RenderGame();
-
             string keyPressed = "RightArrow";
 
-            while (true)
+            do
             {
+                RenderGame();
+
                 if (CheckEndGame())
                     break;
 
@@ -30,12 +30,12 @@ namespace SnakeGame
 
                 game.Wait(250);
 
+                MakeMove(keyPressed);
+
                 if (appleSpawner.isEaten)
                     appleSpawner.SpawnApple(gameBoard.Board);
-
-                MakeMove(keyPressed);
-                RenderGame();
             }
+            while (true);
         }
 
         private static bool CheckEndGame()
@@ -48,9 +48,7 @@ namespace SnakeGame
 
         private static void MakeMove(string keyPressed)
         {
-            Console.Clear();
-
-            snake.ClearSnakePart(gameBoard.Board);
+            snake.ClearLastSnakePart(gameBoard.Board);
             snake.Turn(keyPressed);
 
             if (snake.OnApple(gameBoard.Board))
@@ -61,6 +59,8 @@ namespace SnakeGame
 
         private static void RenderGame()
         {
+            Console.Clear();
+
             snake.RenderSnake(gameBoard.Board);
             gameBoard.RenderBoard();
         }
