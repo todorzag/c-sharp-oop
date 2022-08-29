@@ -32,8 +32,10 @@ namespace SnakeGame
         {
             GameBeginning();
 
+            Console.Clear();
             do
             {
+                RenderScore();
                 RenderGame();
 
                 if (CheckEndGame())
@@ -50,20 +52,40 @@ namespace SnakeGame
 
                 if (_appleSpawner.isEaten)
                     _appleSpawner.SpawnApple(_gameBoard.Board);
+
+                Console.Clear();
             }
             while (true);
+
+            GameEnd();
         }
 
         private void GameBeginning()
         {
             (int x, int y) = GetBoardSize();
             _gameBoard = new GameBoard(x, y);
+
             Console.Clear();
-
-            PrintStartingLogo();
-
+            Console.WriteLine(Logos.GameStartLogo); 
             Thread.Sleep(2000);
         }
+
+        private void GameEnd()
+        {
+            Console.WriteLine(Logos.GameEndLogo);
+        }
+
+        private void RenderScore()
+        {
+            int score = CalculateScore();
+
+            Console.WriteLine(Logos.ScoreWordLogo);
+            Console.WriteLine(Logos.GenerateScoreLogo(score));
+        }
+
+        // - 3 because Snake starts with 3 parts
+        private int CalculateScore()
+            => (_snake.SnakeParts - 3);
 
         private (int, int) GetBoardSize()
         {
@@ -76,17 +98,6 @@ namespace SnakeGame
             int y = int.Parse(Console.ReadLine());
 
             return (x, y);
-        }
-
-        private void PrintStartingLogo()
-        {
-            Console.WriteLine
-            ("\r\n░██████╗░░█████╗░███╗░░░███╗███████╗  ░██████╗████████╗░█████╗░██████╗░████████╗" +
-             "\r\n██╔════╝░██╔══██╗████╗░████║██╔════╝  ██╔════╝╚══██╔══╝██╔══██╗██╔══██╗╚══██╔══╝" +
-             "\r\n██║░░██╗░███████║██╔████╔██║█████╗░░  ╚█████╗░░░░██║░░░███████║██████╔╝░░░██║░░░" +
-             "\r\n██║░░╚██╗██╔══██║██║╚██╔╝██║██╔══╝░░  ░╚═══██╗░░░██║░░░██╔══██║██╔══██╗░░░██║░░░" +
-             "\r\n╚██████╔╝██║░░██║██║░╚═╝░██║███████╗  ██████╔╝░░░██║░░░██║░░██║██║░░██║░░░██║░░░" +
-             "\r\n░╚═════╝░╚═╝░░╚═╝╚═╝░░░░░╚═╝╚══════╝  ╚═════╝░░░░╚═╝░░░╚═╝░░╚═╝╚═╝░░╚═╝░░░╚═╝░░░");
         }
 
         private bool CheckEndGame()
@@ -110,8 +121,6 @@ namespace SnakeGame
 
         private void RenderGame()
         {
-            Console.Clear();
-
             _snake.RenderSnake(_gameBoard.Board);
             _gameBoard.RenderBoard();
         }

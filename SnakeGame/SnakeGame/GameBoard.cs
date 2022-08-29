@@ -54,6 +54,8 @@ namespace SnakeGame
 
         public void RenderBoard()
         {
+            Console.WriteLine();
+
             for (int x = 0; x < Board.GetLength(0); x++)
             {
                 for (int y = 0; y < Board.GetLength(1); y++)

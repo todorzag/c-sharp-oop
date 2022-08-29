@@ -13,6 +13,11 @@ namespace SnakeGame
         private SnakePart _snakeHead;
         private (int, int) lastSnakePartPosition;
 
+        public int SnakeParts 
+        {
+            get => _snakeBody.Count;
+        }
+
         public Snake()
         {
             _snakeHead = new SnakePart(1, 4, "○");
