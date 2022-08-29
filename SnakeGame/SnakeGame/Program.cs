@@ -6,48 +6,69 @@ namespace SnakeGame
 {
     internal class Program
     {
-        public static GameBoard gameBoard = new GameBoard(20, 20);
+        public static GameBoard gameBoard = new GameBoard(10, 10);
+        public static AppleSpawner appleSpawner = new AppleSpawner();
         public static Snake snake = new Snake();
 
         static void Main(string[] args)
         {
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.OutputEncoding = System.Text.Encoding.Unicode;
 
-            snake.RenderSnake(gameBoard.Board);
-            gameBoard.RenderBoard();
+            RenderGame();
 
-            string keyPressed = String.Empty;
-            string lastPressed = "RightArrow";
+            string keyPressed = "RightArrow";
 
             while (true)
             {
-                Task game = Task.Run(() => {
+                if (CheckEndGame())
+                    break;
+
+                Task game = Task.Run(() =>
+                {
                     keyPressed = Console.ReadKey().Key.ToString();
-                    lastPressed = keyPressed;
                 });
 
-                if (!game.Wait(500))
-                {
-                    keyPressed = lastPressed;
-                }
+                game.Wait(250);
 
-                Console.Clear();
+                if (appleSpawner.isEaten)
+                    appleSpawner.SpawnApple(gameBoard.Board);
 
-                snake.ClearSnakePart(gameBoard.Board);
-                snake.Turn(keyPressed);
-                snake.RenderSnake(gameBoard.Board);
-
-                gameBoard.RenderBoard();
-
-                bool isOutOfBounds = snake.IsOutOfBounds(gameBoard.Board);
-                bool hitItself = snake.HitItself();
-
-                if (isOutOfBounds || hitItself)
-                {
-                    break;
-                }
+                MakeMove(keyPressed);
+                RenderGame();
             }
+        }
 
+        private static bool CheckEndGame()
+        {
+            bool isOutOfBounds = snake.ChexkIfOutOfBounds(gameBoard.Board);
+            bool hitItself = snake.CheckIfHitItself();
+
+            return isOutOfBounds || hitItself;
+        }
+
+        private static void MakeMove(string keyPressed)
+        {
+            Console.Clear();
+
+            snake.ClearSnakePart(gameBoard.Board);
+            snake.Turn(keyPressed);
+
+            if (snake.OnApple(gameBoard.Board))
+            {
+                EatApple();
+            }
+        }
+
+        private static void RenderGame()
+        {
+            snake.RenderSnake(gameBoard.Board);
+            gameBoard.RenderBoard();
+        }
+
+        private static void EatApple()
+        {
+            snake.AddSnakePart();
+            appleSpawner.isEaten = true;
         }
     }
 }

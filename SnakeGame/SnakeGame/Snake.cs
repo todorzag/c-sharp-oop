@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,11 +10,12 @@ namespace SnakeGame
     internal class Snake
     {
         private List<SnakePart> _snakeBody;
-        private SnakeHead _snakeHead;
+        private SnakePart _snakeHead;
+        private (int, int) lastSnakePosition;
 
         public Snake()
         {
-            _snakeHead = new SnakeHead(1, 4);
+            _snakeHead = new SnakePart(1, 4, "○");
 
             _snakeBody = new List<SnakePart>
             {
@@ -35,18 +37,19 @@ namespace SnakeGame
 
         public void ClearSnakePart(string[,] board)
         {
-            SnakePart lastPart = _snakeBody[_snakeBody.Count - 1];
+            SnakePart lastSnakePart = _snakeBody.Last();
 
-            int x = lastPart.X;
-            int y = lastPart.Y;
+            (int x, int y) = lastSnakePart.Position;
+
+            lastSnakePosition = (x, y);
 
             board[x, y] = " ";
         }
 
-        public bool IsOutOfBounds(string[,] board) 
-            => _snakeHead.CheckOutOfBounds(board);
+        public bool ChexkIfOutOfBounds(string[,] board) 
+            => _snakeHead.CheckIfOutOfBounds(board);
 
-        public bool HitItself()
+        public bool CheckIfHitItself()
         {
             foreach (var snakePart in _snakeBody)
             {
@@ -82,6 +85,16 @@ namespace SnakeGame
                     break;
             }
         }
+
+        public void AddSnakePart()
+        {
+            (int x, int y) = lastSnakePosition;
+
+            _snakeBody.Add(new SnakePart(x, y));
+        }
+
+        public bool OnApple(string[,] board) 
+            => board[_snakeHead.X, _snakeHead.Y] == "@";
 
         private void UpdateBodyPosition()
         {
