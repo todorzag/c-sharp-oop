@@ -10,14 +10,6 @@ namespace SnakeGame
 {
     public class Game
     {
-        private static Game _instance = new Game();
-
-        private AppleSpawner _appleSpawner = new AppleSpawner();
-        private Snake _snake = new Snake();
-        private GameBoard _gameBoard;
-
-        private string _keyPressed = "RightArrow";
-
         public static Game GetInstance()
         {
             if (_instance == null)
@@ -26,13 +18,21 @@ namespace SnakeGame
             return _instance;
         }
 
+        private static Game _instance = new Game();
+
+        private AppleSpawner _appleSpawner = new AppleSpawner();
+        private Snake _snake = new Snake();
+        private GameBoard _gameBoard;
+
+        private string _keyPressed = "RightArrow";
+
         private Game() { }
 
         public void Start()
         {
             GameBeginning();
-
             Console.Clear();
+
             do
             {
                 RenderScore();
@@ -40,7 +40,7 @@ namespace SnakeGame
 
                 if (CheckEndGame())
                     break;
-
+                 
                 Task game = Task.Run(() =>
                 {
                     _keyPressed = Console.ReadKey().Key.ToString();
