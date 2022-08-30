@@ -10,125 +10,134 @@ namespace SnakeGame
 {
     public class Game
     {
-        public static Game GetInstance()
-        {
-            if (_instance == null)
-                _instance = new Game();
-
-            return _instance;
-        }
-
-        private static Game _instance = new Game();
-
         private AppleSpawner _appleSpawner = new AppleSpawner();
         private Snake _snake = new Snake();
         private GameBoard _gameBoard;
 
+        private string _user;
         private string _keyPressed = "RightArrow";
 
-        private Game() { }
+        public Game() { }
 
         public void Start()
         {
             GameBeginning();
             Console.Clear();
 
+            // Spawn first apple
+            _appleSpawner.SpawnApple(_gameBoard.Board);
+
             do
             {
-                RenderScore();
                 RenderGame();
 
-                if (CheckEndGame())
-                    break;
-                 
                 Task game = Task.Run(() =>
                 {
                     _keyPressed = Console.ReadKey().Key.ToString();
                 });
 
-                game.Wait(250);
+                game.Wait(150);
 
                 MakeMove(_keyPressed);
 
-                if (_appleSpawner.isEaten)
-                    _appleSpawner.SpawnApple(_gameBoard.Board);
+                OutOfBoundsHandler();
+                HitItselfHandler();
+
+                if (!_snake.isAlive)
+                    break;
+
+                AppleHandler();
 
                 Console.Clear();
             }
             while (true);
 
-            GameEnd();
+            GameOver();
+        }
+
+        private void HitItselfHandler()
+        {
+            _snake.isAlive = !_snake.CheckIfHitItself();
+        }
+
+        private void OutOfBoundsHandler()
+        {
+            bool isOutOfBounds = _snake.CheckIfOutOfBounds(_gameBoard.Board);
+
+            if (isOutOfBounds)
+            {
+                if (_gameBoard.Walls)
+                {
+                    _snake.isAlive = false;
+                }
+                else
+                {
+                    _snake.Teleport(_gameBoard.Board);
+                }
+            }
+        }
+
+        private void AppleHandler()
+        {
+            if (_snake.OnApple(_gameBoard.Board))
+            {
+                _snake.EatApple();
+                _appleSpawner.SpawnApple(_gameBoard.Board);
+            } 
         }
 
         private void GameBeginning()
         {
-            (int x, int y) = GetBoardSize();
-            _gameBoard = new GameBoard(x, y);
+            bool hasWalls = AskHasWalls();
+            _gameBoard = new GameBoard(hasWalls);
+
+            SetUserName();
 
             Console.Clear();
-            Console.WriteLine(Logos.GameStartLogo); 
+            Console.WriteLine(Logos.GameStartLogo);
+
             Thread.Sleep(2000);
         }
 
-        private void GameEnd()
+        private void SetUserName()
         {
-            Console.WriteLine(Logos.GameEndLogo);
+            Console.Write("Please enter username:");
+            _user = Console.ReadLine();
+        }
+
+        private void GameOver()
+        {
+            FileManager.SaveHighScore(_user, _snake.Score);
+
+            Console.WriteLine(Logos.GameOverLogo);
+            RenderScore();
         }
 
         private void RenderScore()
         {
-            int score = CalculateScore();
-
             Console.WriteLine(Logos.ScoreWordLogo);
-            Console.WriteLine(Logos.GenerateScoreLogo(score));
+            Console.WriteLine(Logos.GenerateScoreLogo(_snake.Score));
+            Console.WriteLine();
         }
 
-        // - 3 because Snake starts with 3 parts
-        private int CalculateScore()
-            => (_snake.SnakeParts - 3);
-
-        private (int, int) GetBoardSize()
+        private static bool AskHasWalls()
         {
-            Console.WriteLine("Please enter board size:");
+            Console.WriteLine("Would you like the board to have walls?");
+            bool hasWalls = Console.ReadLine() == "Y";
 
-            Console.Write("Height:");
-            int x = int.Parse(Console.ReadLine());
-
-            Console.Write("Width:");
-            int y = int.Parse(Console.ReadLine());
-
-            return (x, y);
-        }
-
-        private bool CheckEndGame()
-        {
-            bool isOutOfBounds = _snake.ChexkIfOutOfBounds(_gameBoard.Board);
-            bool hitItself = _snake.CheckIfHitItself();
-
-            return isOutOfBounds || hitItself;
+            return hasWalls;
         }
 
         private void MakeMove(string keyPressed)
         {
             _snake.ClearLastSnakePart(_gameBoard.Board);
             _snake.Turn(keyPressed);
-
-            if (_snake.OnApple(_gameBoard.Board))
-            {
-                EatApple();
-            }
         }
 
         private void RenderGame()
         {
             _snake.RenderSnake(_gameBoard.Board);
             _gameBoard.RenderBoard();
-        }
-
-        private void EatApple()
-        {
-            _snake.AddSnakePart();
-            _appleSpawner.isEaten = true;
         }
     }
 }

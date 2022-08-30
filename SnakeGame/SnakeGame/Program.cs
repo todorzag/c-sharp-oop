@@ -9,7 +9,7 @@ namespace SnakeGame
         {
             Console.OutputEncoding = System.Text.Encoding.Unicode;
 
-            var game = Game.GetInstance();
+            var game = new Game();
 
             game.Start();
         }

@@ -53,12 +53,35 @@ namespace SnakeGame
 
         public bool CheckIfOutOfBounds(string[,] board)
         {
-            bool isOutOfBoundX = X == 0 || X == board.GetLength(0) - 1;
-            bool isOutOfBoundY = Y == 0 || Y == board.GetLength(1) - 1;
+            bool isOutOfBoundX = X < 0 || X > board.GetLength(0) - 1;
+            bool isOutOfBoundY = Y < 0 || Y > board.GetLength(1) - 1;
 
             if (isOutOfBoundX || isOutOfBoundY) { return true; }
 
             return false;
+        }
+
+        public void Teleport(string[,] board)
+        {
+            var bottomBorderIndex = board.GetLength(0) - 1;
+            var rightBorderIndex = board.GetLength(1) - 1;
+
+            if (X < 0)
+            {
+                X = bottomBorderIndex;
+            }
+            else if (X > bottomBorderIndex)
+            {
+                X = 0;
+            }
+            else if (Y < 0)
+            {
+                Y = rightBorderIndex;
+            }
+            else if (Y > rightBorderIndex)
+            {
+                Y = 0;
+            }
         }
     }
 }

@@ -13,9 +13,16 @@ namespace SnakeGame
         private SnakePart _snakeHead;
         private (int, int) lastSnakePartPosition;
 
+        public bool isAlive = true;
+
         public int SnakeParts 
         {
             get => _snakeBody.Count;
+        }
+
+        public int Score
+        {
+            get => SnakeParts - 3;
         }
 
         public Snake()
@@ -51,8 +58,11 @@ namespace SnakeGame
             board[x, y] = " ";
         }
 
-        public bool ChexkIfOutOfBounds(string[,] board) 
+        public bool CheckIfOutOfBounds(string[,] board) 
             => _snakeHead.CheckIfOutOfBounds(board);
+
+        public void Teleport(string[,] board)
+            => _snakeHead.Teleport(board);
 
         public bool CheckIfHitItself()
         {
@@ -91,15 +101,17 @@ namespace SnakeGame
             }
         }
 
-        public void AddSnakePart()
+        public void EatApple()
         {
             (int x, int y) = lastSnakePartPosition;
 
             _snakeBody.Add(new SnakePart(x, y));
         }
 
-        public bool OnApple(string[,] board) 
-            => board[_snakeHead.X, _snakeHead.Y] == "@";
+        public bool OnApple(string[,] board)
+        {
+            return board[_snakeHead.X, _snakeHead.Y] == "@";
+        }
 
         private void UpdateBodyPosition()
         {
