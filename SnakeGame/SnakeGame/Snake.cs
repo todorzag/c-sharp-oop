@@ -103,14 +103,14 @@ namespace SnakeGame
             _snakeBody.Add(new SnakePart(x, y));
         }
 
-        public bool OnApple(AppleSpawner apple)
+        public bool OnApple((int,int) applePosition)
         {
-            return apple.Position == _snakeHead.Position;
+            return applePosition == _snakeHead.Position;
         }
 
-        public bool CheckSpawnOnSnake(AppleSpawner apple)
+        public bool CheckSpawnOnSnake((int, int) applePosition)
         {
-            return _snakeBody.Any(x => x.Position == apple.Position);
+            return _snakeBody.Any(x => x.Position == applePosition);
         }
 
         private void UpdateBodyPosition()

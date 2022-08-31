@@ -16,16 +16,13 @@ namespace SnakeGame
         private bool _hasWalls;
         private string _user;
         private string _keyPressed = "RightArrow";
+        private (int, int) _applePosition;
 
         public Game() { }
 
         public void Start()
         {
-            GameStart();
-            Console.Clear();
-
-            // Spawn first apple
-            _appleSpawner.SpawnApple(_snake);
+            Console.CursorVisible = false;
 
             do
             {
@@ -46,8 +43,43 @@ namespace SnakeGame
                 AppleHandler();
             }
             while (true);
+        }
 
-            GameOver();
+        public void GetConfigData()
+        {
+            SetUserName();
+            _hasWalls = AskHasWalls();
+
+            Console.Clear();
+            Console.WriteLine(Logos.GameStartLogo);
+        }
+
+        public void SpawnApple()
+        {
+            Random random = new Random();
+
+            while (true)
+            {
+                int x = random.Next(1, Console.WindowHeight - 1);
+                int y = random.Next(1, Console.WindowWidth - 1);
+
+                _applePosition = (x, y);
+
+                if (!_snake.CheckSpawnOnSnake(_applePosition))
+                {
+                    Console.SetCursorPosition(y, x);
+                    Console.Write("@");
+                    break;
+                }
+            }
+        }
+
+        public void Over()
+        {
+            FileManager.SaveHighScore(_user, _snake.Score);
+
+            Console.WriteLine(Logos.GameOverLogo);
+            RenderScore();
         }
 
         private bool EndGame()
@@ -78,36 +110,17 @@ namespace SnakeGame
 
         private void AppleHandler()
         {
-            if (_snake.OnApple(_appleSpawner))
+            if (_snake.OnApple(_applePosition))
             {
                 _snake.EatApple();
-                _appleSpawner.SpawnApple(_snake);
+                SpawnApple();
             } 
-        }
-
-        private void GameStart()
-        {
-            SetUserName();
-            _hasWalls = AskHasWalls();
-
-            Console.Clear();
-            Console.WriteLine(Logos.GameStartLogo);
-
-            Thread.Sleep(2000);
         }
 
         private void SetUserName()
         {
             Console.Write("Please enter username:");
             _user = Console.ReadLine();
-        }
-
-        private void GameOver()
-        {
-            FileManager.SaveHighScore(_user, _snake.Score);
-
-            Console.WriteLine(Logos.GameOverLogo);
-            RenderScore();
         }
 
         private void RenderScore()

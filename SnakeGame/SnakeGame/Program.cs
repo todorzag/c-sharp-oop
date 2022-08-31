@@ -11,7 +11,16 @@ namespace SnakeGame
 
             var game = new Game();
 
+            game.GetConfigData();
+            Thread.Sleep(2000);
+            Console.Clear();
+
+            game.SpawnApple();
+
             game.Start();
+
+            game.Over();
+            
         }
     }
 }
