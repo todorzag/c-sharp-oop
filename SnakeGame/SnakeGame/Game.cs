@@ -10,7 +10,6 @@ namespace SnakeGame
 {
     public class Game
     {
-        private AppleSpawner _appleSpawner = new AppleSpawner();
         private Snake _snake = new Snake();
 
         private bool _hasWalls;
