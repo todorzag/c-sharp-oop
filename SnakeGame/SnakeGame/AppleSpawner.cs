@@ -6,20 +6,24 @@ using System.Threading.Tasks;
 
 namespace SnakeGame
 {
-    internal class AppleSpawner
+    public class AppleSpawner
     {
         public static Random Random = new Random();
+        public (int, int) Position;
 
-        public void SpawnApple(string[,] board)
+        public void SpawnApple(Snake snake)
         {
             while (true)
             {
-                int x = Random.Next(1, board.GetLength(0) - 1);
-                int y = Random.Next(1, board.GetLength(1) - 1);
+                int x = Random.Next(1, Console.WindowHeight - 1);
+                int y = Random.Next(1, Console.WindowWidth - 1);
 
-                if (board[x, y] == " ")
+                Position = (x, y);
+
+                if (!snake.CheckSpawnOnSnake(this))
                 {
-                    board[x, y] = "@";
+                    Console.SetCursorPosition(y, x);
+                    Console.Write("@");
                     break;
                 }
             }

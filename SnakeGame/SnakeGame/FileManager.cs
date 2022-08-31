@@ -13,7 +13,7 @@ namespace SnakeGame
 
         public static void SaveHighScore(string user, int score)
         {
-            File.AppendAllText(_filePath, $"\r\n{user} - {score} - {DateTime.Now}");
+            File.AppendAllText(_filePath, $"{user} - {score} - {DateTime.Now}\r\n");
         }
     }
 }

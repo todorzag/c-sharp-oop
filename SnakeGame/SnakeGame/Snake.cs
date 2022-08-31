@@ -7,22 +7,20 @@ using System.Threading.Tasks;
 
 namespace SnakeGame
 {
-    internal class Snake
+    public class Snake
     {
         private List<SnakePart> _snakeBody;
         private SnakePart _snakeHead;
         private (int, int) lastSnakePartPosition;
 
-        public bool isAlive = true;
-
-        public int SnakeParts 
+        public int SnakePartsCount 
         {
             get => _snakeBody.Count;
         }
 
         public int Score
         {
-            get => SnakeParts - 3;
+            get => SnakePartsCount - 3;
         }
 
         public Snake()
@@ -37,32 +35,30 @@ namespace SnakeGame
             };
         }
 
-        public void RenderSnake(string[,] board)
+        public void RenderSnake()
         {
-            board[_snakeHead.X, _snakeHead.Y] = _snakeHead.Symbol;
+            WriteAt(_snakeHead.Y, _snakeHead.X, _snakeHead.Symbol);
 
             foreach (var snakePart in _snakeBody)
             {
-                board[snakePart.X, snakePart.Y] = snakePart.Symbol;
+                WriteAt(snakePart.Y, snakePart.X, snakePart.Symbol);
             }
         }
 
-        public void ClearLastSnakePart(string[,] board)
+        public void ClearLastSnakePart()
         {
             SnakePart lastSnakePart = _snakeBody.Last();
-
             (int x, int y) = lastSnakePart.Position;
-
             lastSnakePartPosition = (x, y);
 
-            board[x, y] = " ";
+            WriteAt(y, x, " ");
         }
 
-        public bool CheckIfOutOfBounds(string[,] board) 
-            => _snakeHead.CheckIfOutOfBounds(board);
+        public bool CheckIfOutOfBounds() 
+            => _snakeHead.CheckIfOutOfBounds();
 
-        public void Teleport(string[,] board)
-            => _snakeHead.Teleport(board);
+        public void Teleport()
+            => _snakeHead.Teleport();
 
         public bool CheckIfHitItself()
         {
@@ -104,13 +100,17 @@ namespace SnakeGame
         public void EatApple()
         {
             (int x, int y) = lastSnakePartPosition;
-
             _snakeBody.Add(new SnakePart(x, y));
         }
 
-        public bool OnApple(string[,] board)
+        public bool OnApple(AppleSpawner apple)
         {
-            return board[_snakeHead.X, _snakeHead.Y] == "@";
+            return apple.Position == _snakeHead.Position;
+        }
+
+        public bool CheckSpawnOnSnake(AppleSpawner apple)
+        {
+            return _snakeBody.Any(x => x.Position == apple.Position);
         }
 
         private void UpdateBodyPosition()
@@ -124,6 +124,12 @@ namespace SnakeGame
             }
 
             _snakeBody[0].ChangePosition(_snakeHead.X, _snakeHead.Y);
+        }
+
+        private void WriteAt(int y, int x, string symbol)
+        {
+            Console.SetCursorPosition(y, x);
+            Console.Write(symbol);
         }
     }
 }

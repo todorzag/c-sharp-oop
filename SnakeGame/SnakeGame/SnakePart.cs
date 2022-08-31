@@ -51,20 +51,20 @@ namespace SnakeGame
             Y = y;
         }
 
-        public bool CheckIfOutOfBounds(string[,] board)
+        public bool CheckIfOutOfBounds()
         {
-            bool isOutOfBoundX = X < 0 || X > board.GetLength(0) - 1;
-            bool isOutOfBoundY = Y < 0 || Y > board.GetLength(1) - 1;
+            bool isOutOfBoundX = X < 0 || X > Console.WindowHeight - 1;
+            bool isOutOfBoundY = Y < 0 || Y > Console.WindowWidth - 1;
 
             if (isOutOfBoundX || isOutOfBoundY) { return true; }
 
             return false;
         }
 
-        public void Teleport(string[,] board)
+        public void Teleport()
         {
-            var bottomBorderIndex = board.GetLength(0) - 1;
-            var rightBorderIndex = board.GetLength(1) - 1;
+            var bottomBorderIndex = Console.WindowHeight - 1;
+            var rightBorderIndex = Console.WindowWidth - 1;
 
             if (X < 0)
             {

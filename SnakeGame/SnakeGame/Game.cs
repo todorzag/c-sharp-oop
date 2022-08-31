@@ -12,8 +12,8 @@ namespace SnakeGame
     {
         private AppleSpawner _appleSpawner = new AppleSpawner();
         private Snake _snake = new Snake();
-        private GameBoard _gameBoard;
 
+        private bool _hasWalls;
         private string _user;
         private string _keyPressed = "RightArrow";
 
@@ -21,77 +21,74 @@ namespace SnakeGame
 
         public void Start()
         {
-            GameBeginning();
+            GameStart();
             Console.Clear();
 
             // Spawn first apple
-            _appleSpawner.SpawnApple(_gameBoard.Board);
+            _appleSpawner.SpawnApple(_snake);
 
             do
             {
-                RenderGame();
+                _snake.RenderSnake();
 
                 Task game = Task.Run(() =>
                 {
                     _keyPressed = Console.ReadKey().Key.ToString();
                 });
 
-                game.Wait(150);
+                game.Wait(75);
 
                 MakeMove(_keyPressed);
 
-                OutOfBoundsHandler();
-                HitItselfHandler();
-
-                if (!_snake.isAlive)
+                if (EndGame())
                     break;
 
                 AppleHandler();
-
-                Console.Clear();
             }
             while (true);
 
             GameOver();
         }
 
-        private void HitItselfHandler()
+        private bool EndGame()
         {
-            _snake.isAlive = !_snake.CheckIfHitItself();
-        }
+            bool result = false;
 
-        private void OutOfBoundsHandler()
-        {
-            bool isOutOfBounds = _snake.CheckIfOutOfBounds(_gameBoard.Board);
+            bool isOutOfBounds = _snake.CheckIfOutOfBounds();
+            bool hitItself = _snake.CheckIfHitItself();
 
             if (isOutOfBounds)
             {
-                if (_gameBoard.Walls)
+                if (_hasWalls)
                 {
-                    _snake.isAlive = false;
+                    result = true;
                 }
                 else
                 {
-                    _snake.Teleport(_gameBoard.Board);
+                    _snake.Teleport();
                 }
             }
+            else if (hitItself)
+            {
+                result =  true;
+            }
+
+            return result;
         }
 
         private void AppleHandler()
         {
-            if (_snake.OnApple(_gameBoard.Board))
+            if (_snake.OnApple(_appleSpawner))
             {
                 _snake.EatApple();
-                _appleSpawner.SpawnApple(_gameBoard.Board);
+                _appleSpawner.SpawnApple(_snake);
             } 
         }
 
-        private void GameBeginning()
+        private void GameStart()
         {
-            bool hasWalls = AskHasWalls();
-            _gameBoard = new GameBoard(hasWalls);
-
             SetUserName();
+            _hasWalls = AskHasWalls();
 
             Console.Clear();
             Console.WriteLine(Logos.GameStartLogo);
@@ -123,21 +120,21 @@ namespace SnakeGame
         private static bool AskHasWalls()
         {
             Console.WriteLine("Would you like the board to have walls?");
-            bool hasWalls = Console.ReadLine() == "Y";
+            bool hasWalls = false;
+            string answer = Console.ReadLine();
+
+            if (answer == "Y")
+            {
+                hasWalls = true;
+            }
 
             return hasWalls;
         }
 
         private void MakeMove(string keyPressed)
         {
-            _snake.ClearLastSnakePart(_gameBoard.Board);
+            _snake.ClearLastSnakePart();
             _snake.Turn(keyPressed);
-        }
-
-        private void RenderGame()
-        {
-            _snake.RenderSnake(_gameBoard.Board);
-            _gameBoard.RenderBoard();
         }
     }
 }
