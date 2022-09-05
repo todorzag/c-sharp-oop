@@ -1,7 +1,4 @@
-﻿using System.Xml.Linq;
-using System.Timers;
-
-namespace SnakeGame
+﻿namespace SnakeGame
 {
     internal class Program
     {
