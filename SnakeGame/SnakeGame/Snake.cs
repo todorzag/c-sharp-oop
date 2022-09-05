@@ -54,11 +54,43 @@ namespace SnakeGame
             WriteAt(y, x, " ");
         }
 
-        public bool CheckIfOutOfBounds() 
-            => _snakeHead.CheckIfOutOfBounds();
+        public bool CheckIfOutOfBounds(int consoleHeight, int consoleWidth)
+        {
+            bool isOutOfBounds = false;
 
-        public void Teleport()
-            => _snakeHead.Teleport();
+            bool boundX = _snakeHead.X < 0 || _snakeHead.X > consoleHeight - 1;
+            bool boundY = _snakeHead.Y < 0 || _snakeHead.Y > consoleWidth - 1;
+
+            if (boundX || boundY) { isOutOfBounds = true; }
+
+            return isOutOfBounds;
+        }
+
+        public void Teleport(int consoleHeight, int consoleWidth)
+        {
+            int x = _snakeHead.X;
+            int y = _snakeHead.Y;
+
+            int bottomBorderIndex = consoleHeight - 1;
+            int rightBorderIndex = consoleWidth - 1;
+
+            if (x < 0)
+            {
+                _snakeHead.X = bottomBorderIndex;
+            }
+            else if (x > bottomBorderIndex)
+            {
+                _snakeHead.X = 0;
+            }
+            else if (y < 0)
+            {
+                _snakeHead.Y = rightBorderIndex;
+            }
+            else if (y > rightBorderIndex)
+            {
+                _snakeHead.Y = 0;
+            }
+        }
 
         public bool CheckIfHitItself()
         {
@@ -97,15 +129,15 @@ namespace SnakeGame
             }
         }
 
+        public bool OnApple((int,int) applePosition)
+        {
+            return applePosition == _snakeHead.Position;
+        }
+
         public void EatApple()
         {
             (int x, int y) = lastSnakePartPosition;
             _snakeBody.Add(new SnakePart(x, y));
-        }
-
-        public bool OnApple((int,int) applePosition)
-        {
-            return applePosition == _snakeHead.Position;
         }
 
         public bool CheckSpawnOnSnake((int, int) applePosition)

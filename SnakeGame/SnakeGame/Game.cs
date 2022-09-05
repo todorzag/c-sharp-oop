@@ -12,10 +12,10 @@ namespace SnakeGame
     {
         private Snake _snake = new Snake();
 
-        private bool _hasWalls;
         private string _user;
-        private string _keyPressed = "RightArrow";
+        private bool _hasWalls;
         private (int, int) _applePosition;
+        private string _keyPressed = "RightArrow";
 
         public Game() { }
 
@@ -85,7 +85,10 @@ namespace SnakeGame
         {
             bool result = false;
 
-            bool isOutOfBounds = _snake.CheckIfOutOfBounds();
+            int consoleHeight = Console.WindowHeight;
+            int consoleWidth = Console.WindowWidth;
+
+            bool isOutOfBounds = _snake.CheckIfOutOfBounds(consoleHeight, consoleWidth);
             bool hitItself = _snake.CheckIfHitItself();
 
             if (isOutOfBounds)
@@ -96,7 +99,7 @@ namespace SnakeGame
                 }
                 else
                 {
-                    _snake.Teleport();
+                    _snake.Teleport(consoleHeight, consoleWidth);
                 }
             }
             else if (hitItself)
