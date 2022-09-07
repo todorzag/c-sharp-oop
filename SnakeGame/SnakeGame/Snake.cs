@@ -2,8 +2,9 @@
 {
     public class Snake
     {
+        public SnakePart SnakeHead;
+        public bool IsAlive = true;
         private List<SnakePart> _snakeBody;
-        private SnakePart _snakeHead;
         private (int, int) lastSnakePartPosition;
 
         public int SnakePartsCount 
@@ -18,12 +19,12 @@
 
         public (int, int) CurrentPosition
         {
-            get => _snakeHead.Position;
+            get => SnakeHead.Position;
         }
 
         public Snake()
         {
-            _snakeHead = new SnakePart(1, 4, "○");
+            SnakeHead = new SnakePart(1, 4, "○");
 
             _snakeBody = new List<SnakePart>
             {
@@ -35,7 +36,7 @@
 
         public void RenderSnake()
         {
-            WriteAt(_snakeHead.Y, _snakeHead.X, _snakeHead.Symbol);
+            WriteAt(SnakeHead.Y, SnakeHead.X, SnakeHead.Symbol);
 
             foreach (var snakePart in _snakeBody)
             {
@@ -57,8 +58,8 @@
         {
             bool isOutOfBounds = false;
 
-            bool boundX = _snakeHead.X < 0 || _snakeHead.X > consoleHeight - 1;
-            bool boundY = _snakeHead.Y < 0 || _snakeHead.Y > consoleWidth - 1;
+            bool boundX = SnakeHead.X < 0 || SnakeHead.X > consoleHeight - 1;
+            bool boundY = SnakeHead.Y < 0 || SnakeHead.Y > consoleWidth - 1;
 
             if (boundX || boundY) { isOutOfBounds = true; }
 
@@ -67,27 +68,27 @@
 
         public void Teleport(int consoleHeight, int consoleWidth)
         {
-            int x = _snakeHead.X;
-            int y = _snakeHead.Y;
+            int x = SnakeHead.X;
+            int y = SnakeHead.Y;
 
             int bottomBorderIndex = consoleHeight - 1;
             int rightBorderIndex = consoleWidth - 1;
 
             if (x < 0)
             {
-                _snakeHead.X = bottomBorderIndex;
+                SnakeHead.X = bottomBorderIndex;
             }
             else if (x > bottomBorderIndex)
             {
-                _snakeHead.X = 0;
+                SnakeHead.X = 0;
             }
             else if (y < 0)
             {
-                _snakeHead.Y = rightBorderIndex;
+                SnakeHead.Y = rightBorderIndex;
             }
             else if (y > rightBorderIndex)
             {
-                _snakeHead.Y = 0;
+                SnakeHead.Y = 0;
             }
         }
 
@@ -95,7 +96,7 @@
         {
             foreach (var snakePart in _snakeBody)
             {
-                if (_snakeHead.Position == snakePart.Position)
+                if (SnakeHead.Position == snakePart.Position)
                 {
                     return true;
                 }
@@ -103,35 +104,10 @@
 
             return false;
         }
-        
-
-        public void Turn(string direction)
-        {
-            UpdateBodyPosition();
-
-            switch (direction)
-            {
-                case "RightArrow":
-                    TurnRight();
-                    break;
-
-                case "LeftArrow":
-                    TurnLeft();
-                    break;
-
-                case "DownArrow":
-                    TurnDown();
-                    break;
-
-                case "UpArrow":
-                    TurnUp();
-                    break;
-            }
-        }
 
         public bool OnApple((int,int) applePosition)
         {
-            return applePosition == _snakeHead.Position;
+            return applePosition == SnakeHead.Position;
         }
 
         public void EatApple()
@@ -145,36 +121,29 @@
             return _snakeBody.Any(x => x.Position == applePosition);
         }
 
-        private void UpdateBodyPosition()
+        public void MoveX(int x)
+        {
+            SnakeHead.X += x;
+        }
+
+        public void MoveY(int y)
+        {
+            SnakeHead.Y += y;
+        }
+
+        public void UpdateBodyPosition()
         {
             for (int i = _snakeBody.Count - 1; i > 0; i--)
             {
                 int x = _snakeBody[i - 1].X;
                 int y = _snakeBody[i  - 1].Y;
 
-                _snakeBody[i].ChangePosition(x, y);
+                _snakeBody[i].X = x;
+                _snakeBody[i].Y = y;
             }
 
-            _snakeBody[0].ChangePosition(_snakeHead.X, _snakeHead.Y);
-        }
-        private void TurnRight()
-        {
-            _snakeHead.Y++;
-        }
-
-        private void TurnLeft()
-        {
-            _snakeHead.Y--;
-        }
-
-        private void TurnDown()
-        {
-            _snakeHead.X++;
-        }
-
-        private void TurnUp()
-        {
-            _snakeHead.X--;
+            _snakeBody[0].X = SnakeHead.X;
+            _snakeBody[0].Y = SnakeHead.Y;
         }
 
         private void WriteAt(int y, int x, string symbol)
@@ -182,5 +151,6 @@
             Console.SetCursorPosition(y, x);
             Console.Write(symbol);
         }
+
     }
 }

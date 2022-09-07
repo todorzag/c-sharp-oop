@@ -2,7 +2,23 @@
 {
     public class Game
     {
+        enum Directions
+        {
+            Right,
+            Left,
+            Up,
+            Down
+        }
+
+        public delegate void Del();
+
+        public bool SnakeIsAlive = true;
+
         private Snake _snake = new Snake();
+        private Dictionary<string, Directions> movementDirections;
+
+        private int _consoleHeight = Console.WindowHeight;
+        private int _consoleWidth = Console.WindowWidth;
 
         private string _user;
         private bool _hasWalls;
@@ -14,6 +30,7 @@
         public void Start()
         {
             Console.CursorVisible = false;
+            PopulateDirections();
 
             do
             {
@@ -26,14 +43,9 @@
 
                 game.Wait(75);
 
-                MakeMove(_keyPressed);
-
-                if (EndGame())
-                    break;
-
-                AppleHandler();
+                DirectionHandler(_keyPressed);
             }
-            while (true);
+            while (SnakeIsAlive);
         }
 
         public void GetConfigData()
@@ -73,14 +85,22 @@
             RenderScore();
         }
 
-        private bool EndGame()
+        private void PopulateDirections()
+        {
+            movementDirections = new Dictionary<string, Directions>
+            {
+                {"RightArrow", Directions.Right },
+                {"LeftArrow", Directions.Left },
+                {"DownArrow", Directions.Down },
+                {"UpArrow", Directions.Up }
+            };
+        }
+
+        private bool ShouldEndGame()
         {
             bool result = false;
 
-            int consoleHeight = Console.WindowHeight;
-            int consoleWidth = Console.WindowWidth;
-
-            bool isOutOfBounds = _snake.CheckIfOutOfBounds(consoleHeight, consoleWidth);
+            bool isOutOfBounds = _snake.CheckIfOutOfBounds(_consoleHeight, _consoleWidth);
             bool hitItself = _snake.CheckIfHitItself();
 
             if (isOutOfBounds)
@@ -88,10 +108,6 @@
                 if (_hasWalls)
                 {
                     result = true;
-                }
-                else
-                {
-                    _snake.Teleport(consoleHeight, consoleWidth);
                 }
             }
             else if (hitItself)
@@ -102,9 +118,26 @@
             return result;
         }
 
+        private bool ShouldTeleport()
+        {
+            bool result = false;
+
+            bool isOutOfBounds = _snake.CheckIfOutOfBounds(_consoleHeight, _consoleWidth);
+
+            if (isOutOfBounds)
+            {
+                if (!_hasWalls)
+                {
+                    result = true;
+                }
+            }
+
+            return result;
+        }
+
         private void AppleHandler()
         {
-            if (_snake.OnApple(_applePosition))
+            if (_snake.SnakeHead.OnApple(_applePosition))
             {
                 _snake.EatApple();
                 SpawnApple();
@@ -124,7 +157,7 @@
             Console.WriteLine();
         }
 
-        private static bool AskHasWalls()
+        private bool AskHasWalls()
         {
             Console.WriteLine("Would you like the board to have walls?");
             bool hasWalls = false;
@@ -138,10 +171,51 @@
             return hasWalls;
         }
 
-        private void MakeMove(string keyPressed)
+        private void DirectionHandler(string keyPressed)
+        {
+            // Check if key is in Dict
+            var direction = movementDirections[keyPressed];
+
+            switch (direction)
+            {
+                case Directions.Right:
+                    MoveSnake(1, _snake.MoveY);
+                    break;
+
+                case Directions.Left:
+                    MoveSnake(-1, _snake.MoveY);
+                    break;
+
+                case Directions.Down:
+                    MoveSnake(1, _snake.MoveX);
+                    break;
+
+                case Directions.Up:
+                    MoveSnake(-1, _snake.MoveX);
+                    break;
+            }
+        }
+
+        private void MoveSnake(int directionNum, Action<int> moveMethod)
         {
             _snake.ClearLastSnakePart();
-            _snake.Turn(keyPressed);
+            _snake.UpdateBodyPosition();
+
+            moveMethod(directionNum);
+
+            if (ShouldEndGame())
+            {
+                SnakeIsAlive = false;
+            }
+
+            if (ShouldTeleport())
+            {
+                _snake.Teleport(_consoleHeight, _consoleWidth);
+            }
+
+            AppleHandler();
         }
+
+        
     }
 }

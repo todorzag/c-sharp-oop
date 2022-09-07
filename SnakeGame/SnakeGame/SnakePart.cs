@@ -19,10 +19,9 @@
             Symbol = symbol;
         }
 
-        public void ChangePosition(int x, int y)
+        public bool OnApple((int, int) applePosition)
         {
-            X = x;
-            Y = y;
+            return applePosition == Position;
         }
     }
 }
