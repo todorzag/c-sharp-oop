@@ -18,6 +18,5 @@ namespace MilitaryElite
             FirstName = firstName;
             LastName = lastName;
         }
-
     }
 }

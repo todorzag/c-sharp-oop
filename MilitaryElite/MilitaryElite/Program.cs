@@ -1,4 +1,6 @@
-﻿namespace MilitaryElite
+﻿using MilitaryElite.Soldiers;
+
+namespace MilitaryElite
 {
     public class Program
     {
@@ -32,6 +34,15 @@
                     case "Engineer":
                         AddEngineerToArmy(id, firstName, lastName, salary, secondaryInformation);
                         break;
+
+                    case "Commando":
+                        AddCommandoToArmy(id, firstName, lastName, salary, secondaryInformation);
+                        break;
+
+                    case "Spy":
+                        int codeNumber = int.Parse(split[4]);
+                        AddSpyToArmy(id, firstName, lastName, codeNumber);
+                        break ;
                 }
 
                 input = Console.ReadLine();
@@ -47,43 +58,34 @@
 
         private static void AddLieutenantGeneralToArmy(int id, string firstName, string lastName, decimal salary, string[] secondaryInformation)
         {
-            List<ISoldier> privates = GetPrivatesFromInput(secondaryInformation);
-            Army.Add(new LieutenantGeneral(id, firstName, lastName, salary, privates));
+            LieutenantGeneral lieutenant = new LieutenantGeneral(id, firstName, lastName, salary);
+            lieutenant.AddPrivates(secondaryInformation);
+            Army.Add(lieutenant);
         }
 
         private static void AddEngineerToArmy(int id, string firstName, string lastName, decimal salary, string[] secondaryInformation)
         {
-            string corp = secondaryInformation[0];
-            List<Repair> repairs = GetRepairsFromInput(secondaryInformation);
-            Army.Add(new Engineer(id, firstName, lastName, salary, corp, repairs));
+            string corps = secondaryInformation[0];
+
+            Engineer engineer = new Engineer(id, firstName, lastName, salary, corps);
+            engineer.AddRepairs(secondaryInformation.Skip(1).ToArray());
+
+            Army.Add(engineer);
         }
 
-        private static List<ISoldier> GetPrivatesFromInput(string[] privateIds)
+        private static void AddCommandoToArmy(int id, string firstName, string lastName, decimal salary, string[] secondaryInformation)
         {
-            List<ISoldier> privates = new List<ISoldier>();
+            string corps = secondaryInformation[0];
 
-            foreach (string id in privateIds)
-            {
-                privates.Add(Army.GetPrivateById(int.Parse(id)));
-            }
+            Commando commando = new Commando(id, firstName, lastName, salary, corps);
+            commando.AddMissions(secondaryInformation);
 
-            return privates;
+            Army.Add(commando);
         }
 
-        private static List<Repair> GetRepairsFromInput(string[] repairsInfo)
+        private static void AddSpyToArmy(int id, string firstName, string lastName, int codeNumber)
         {
-            List<Repair> repairs = new List<Repair>();
-
-            // Zero is Corp
-            for (int i = 1; i < repairsInfo.Length; i += 2)
-            {
-                string partName = repairsInfo[i];
-                int hoursWorked = int.Parse(repairsInfo[i + 1]);
-
-                repairs.Add(new Repair(partName, hoursWorked));
-            }
-
-            return repairs;
+            Army.Add(new Spy(id, firstName, lastName, codeNumber));
         }
     }
 }

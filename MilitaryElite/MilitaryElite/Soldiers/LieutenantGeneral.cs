@@ -11,10 +11,23 @@ namespace MilitaryElite
         public List<ISoldier> CommandingPrivates { get; }
 
         public LieutenantGeneral
-            (int id, string firstName, string lastName, decimal salary, List<ISoldier> commandingPrivates)
+            (int id, string firstName, string lastName, decimal salary)
             : base(id, firstName, lastName, salary)
         {
-            CommandingPrivates = commandingPrivates;
+            CommandingPrivates = new List<ISoldier>();
+        }
+
+        public void AddPrivates(string[] privateIds)
+        {
+            foreach (string id in privateIds)
+            {
+                ISoldier privateSoldier = Army.GetPrivateById(int.Parse(id));
+
+                if (privateSoldier != null)
+                {
+                    CommandingPrivates.Add(privateSoldier);
+                }
+            }
         }
 
         public override string ToString()
