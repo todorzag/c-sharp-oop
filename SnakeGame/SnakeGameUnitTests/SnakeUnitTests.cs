@@ -4,100 +4,151 @@ namespace SnakeGameUnitTests
 {
     internal class SnakeUnitTests
     {
-        private Snake _snake;
+        private Snake _mockSnake;
 
         [SetUp]
         public void Setup()
         {
-            _snake = new Snake();
+            _mockSnake = new Snake();
         }
 
         [Test]
         public void CheckifOutOfBounds_NotOutOfBounds_ReturnFalse()
         {
-            _snake.Turn("RightArrow");
-            _snake.Turn("DownArrow");
-            _snake.Turn("RightArrow");
+            _mockSnake.Turn("RightArrow");
+            _mockSnake.Turn("DownArrow");
+            _mockSnake.Turn("RightArrow");
 
-            Assert.IsFalse(_snake.CheckIfOutOfBounds(10, 10));
+            Assert.IsFalse(_mockSnake.CheckIfOutOfBounds(10, 10));
         }
 
         [Test]
         public void CheckifOutOfBounds_IsOutOfBoundsUnder0_ReturnTrue()
         {
-            _snake.Turn("UpArrow");
-            _snake.Turn("UpArrow");
+            _mockSnake.Turn("UpArrow");
+            _mockSnake.Turn("UpArrow");
 
-            Assert.IsTrue(_snake.CheckIfOutOfBounds(10, 10));
+            Assert.IsTrue(_mockSnake.CheckIfOutOfBounds(10, 10));
         }
 
         [Test]
         public void CheckifOutOfBounds_IsOutOfBoundsOverHeight_ReturnTrue()
         {
-            _snake.Turn("DownArrow");
-            _snake.Turn("DownArrow");
-            _snake.Turn("DownArrow");
-            _snake.Turn("DownArrow");
-            _snake.Turn("DownArrow");
-            _snake.Turn("DownArrow");
-            _snake.Turn("DownArrow");
+            _mockSnake.Turn("DownArrow");
+            _mockSnake.Turn("DownArrow");
+            _mockSnake.Turn("DownArrow");
+            _mockSnake.Turn("DownArrow");
+            _mockSnake.Turn("DownArrow");
+            _mockSnake.Turn("DownArrow");
+            _mockSnake.Turn("DownArrow");
 
-            Assert.IsTrue(_snake.CheckIfOutOfBounds(7, 7));
+            Assert.IsTrue(_mockSnake.CheckIfOutOfBounds(7, 7));
         }
 
         [Test]
         public void CheckIfHitItself_NotHit_ReturnFalse()
         {
-            _snake.Turn("RightArrow");
-            _snake.Turn("DownArrow");
-            _snake.Turn("RightArrow");
+            _mockSnake.Turn("RightArrow");
+            _mockSnake.Turn("DownArrow");
+            _mockSnake.Turn("RightArrow");
 
-            Assert.IsFalse(_snake.CheckIfHitItself());
+            Assert.IsFalse(_mockSnake.CheckIfHitItself());
         }
 
         [Test]
         public void CheckIfHitItself_HitItself_ReturnFalse()
         {
-            _snake.Turn("RightArrow");
-            _snake.Turn("LeftArrow");
+            _mockSnake.Turn("RightArrow");
+            _mockSnake.Turn("LeftArrow");
 
-            Assert.IsTrue(_snake.CheckIfHitItself());
+            Assert.IsTrue(_mockSnake.CheckIfHitItself());
+        }
+
+        [Test]
+        public void Teleport_UpperBorder_TeleportsToBottomBorder()
+        {
+            _mockSnake.Turn("UpArrow");
+            _mockSnake.Turn("UpArrow");
+
+            _mockSnake.Teleport(5, 5);
+
+            Assert.That(_mockSnake.CurrentSnakePosition, Is.EqualTo((4, 4)));
+        }
+
+        [Test]
+        public void Teleport_BottomBorder_TeleportsToUpperBorder()
+        {
+            _mockSnake.Turn("DownArrow");
+            _mockSnake.Turn("DownArrow");
+            _mockSnake.Turn("DownArrow");
+            _mockSnake.Turn("DownArrow");
+            _mockSnake.Turn("DownArrow");
+
+            _mockSnake.Teleport(5, 5);
+
+            Assert.That(_mockSnake.CurrentSnakePosition, Is.EqualTo((0, 4)));
+        }
+
+        [Test]
+        public void Teleport_LeftBorder_TeleportsToRightBorder()
+        {
+            _mockSnake.Turn("DownArrow");
+            _mockSnake.Turn("LeftArrow");
+            _mockSnake.Turn("LeftArrow");
+            _mockSnake.Turn("LeftArrow");
+            _mockSnake.Turn("LeftArrow");
+            _mockSnake.Turn("LeftArrow");
+
+            _mockSnake.Teleport(5, 5);
+
+            Assert.That(_mockSnake.CurrentSnakePosition, Is.EqualTo((2, 4)));
+        }
+
+        [Test]
+        public void Teleport_RightBorder_TeleportsToLeftBorder()
+        {
+            _mockSnake.Turn("RightArrow");
+            _mockSnake.Turn("RightArrow");
+
+            _mockSnake.Teleport(5, 5);
+
+            Assert.That(_mockSnake.CurrentSnakePosition, Is.EqualTo((1, 0)));
         }
 
         [Test]
         public void OnApple_SnakeIsNotOnApple_ReturnFalse()
         {
-            Assert.IsFalse(_snake.OnApple((4, 2)));
+            Assert.IsFalse(_mockSnake.OnApple((4, 2)));
         }
 
         [Test]
         public void OnApple_SnakeIsOnApple_ReturnTrue()
         {
-            _snake.Turn("RightArrow");
+            _mockSnake.Turn("RightArrow");
 
-            Assert.IsTrue(_snake.OnApple((1, 5)));
+            Assert.IsTrue(_mockSnake.OnApple((1, 5)));
         }
 
         [Test]
         public void EatApple_SnakeIsOnApple_AddNewSnakePart()
         {
-            _snake.EatApple();
+            _mockSnake.EatApple();
 
-            Assert.That(_snake.SnakePartsCount, Is.EqualTo(4));
+            Assert.That(_mockSnake.SnakePartsCount, Is.EqualTo(4));
         }
 
         [Test]
         public void CheckSpawnOnSnake_NotSpawnedOnSnake_ReturnFalse()
         {
-            Assert.IsFalse(_snake.CheckSpawnOnSnake((4,2)));
+            Assert.IsFalse(_mockSnake.CheckSpawnOnSnake((4,2)));
         }
 
         [Test]
         public void CheckSpawnOnSnake_SpawnedOnSnake_ReturnTrue()
         {
-            _snake.Turn("RightArrow");
+            _mockSnake.Turn("RightArrow");
 
-            Assert.IsTrue(_snake.CheckSpawnOnSnake((1, 4)));
+            Assert.IsTrue(_mockSnake.CheckSpawnOnSnake((1, 4)));
         }
     }
 }

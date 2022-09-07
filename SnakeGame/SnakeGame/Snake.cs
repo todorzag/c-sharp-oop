@@ -16,6 +16,11 @@
             get => SnakePartsCount - 3;
         }
 
+        public (int, int) CurrentSnakePosition
+        {
+            get => _snakeHead.Position;
+        }
+
         public Snake()
         {
             _snakeHead = new SnakePart(1, 4, "○");
@@ -40,6 +45,7 @@
 
         public void ClearLastSnakePart()
         {
+            // Save last snake part position
             SnakePart lastSnakePart = _snakeBody.Last();
             (int x, int y) = lastSnakePart.Position;
             lastSnakePartPosition = (x, y);
