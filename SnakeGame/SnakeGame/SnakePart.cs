@@ -19,26 +19,6 @@
             Symbol = symbol;
         }
 
-        public void TurnRight()
-        {
-            Y++;
-        }
-
-        public void TurnLeft()
-        {
-            Y--;
-        }
-
-        public void TurnDown()
-        {
-            X++;
-        }
-
-        public void TurnUp()
-        {
-            X--;
-        }
-
         public void ChangePosition(int x, int y)
         {
             X = x;

@@ -103,6 +103,7 @@
 
             return false;
         }
+        
 
         public void Turn(string direction)
         {
@@ -111,19 +112,19 @@
             switch (direction)
             {
                 case "RightArrow":
-                    _snakeHead.TurnRight();
+                    TurnRight();
                     break;
 
                 case "LeftArrow":
-                    _snakeHead.TurnLeft();
+                    TurnLeft();
                     break;
 
                 case "DownArrow":
-                    _snakeHead.TurnDown();
+                    TurnDown();
                     break;
 
                 case "UpArrow":
-                    _snakeHead.TurnUp();
+                    TurnUp();
                     break;
             }
         }
@@ -155,6 +156,25 @@
             }
 
             _snakeBody[0].ChangePosition(_snakeHead.X, _snakeHead.Y);
+        }
+        private void TurnRight()
+        {
+            _snakeHead.Y++;
+        }
+
+        private void TurnLeft()
+        {
+            _snakeHead.Y--;
+        }
+
+        private void TurnDown()
+        {
+            _snakeHead.X++;
+        }
+
+        private void TurnUp()
+        {
+            _snakeHead.X--;
         }
 
         private void WriteAt(int y, int x, string symbol)

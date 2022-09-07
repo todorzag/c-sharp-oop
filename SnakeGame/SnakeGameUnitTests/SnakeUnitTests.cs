@@ -64,6 +64,19 @@ namespace SnakeGameUnitTests
             Assert.IsTrue(_mockSnake.CheckIfHitItself());
         }
 
+        [TestCase("RightArrow", 1, 5)]
+        [TestCase("LeftArrow", 1, 3)]
+        [TestCase("UpArrow", 0, 4)]
+        [TestCase("DownArrow", 2, 4)]
+        public void Turn_AllDirections_SnakeTurns(string direction, int x, int y)
+        {
+            (int, int) position = (x, y);
+
+            _mockSnake.Turn(direction);
+
+            Assert.That(_mockSnake.CurrentSnakePosition, Is.EqualTo(position));
+        }
+
         [Test]
         public void Teleport_UpperBorder_TeleportsToBottomBorder()
         {
