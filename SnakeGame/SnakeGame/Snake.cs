@@ -16,7 +16,7 @@
             get => SnakePartsCount - 3;
         }
 
-        public (int, int) CurrentSnakePosition
+        public (int, int) CurrentPosition
         {
             get => _snakeHead.Position;
         }

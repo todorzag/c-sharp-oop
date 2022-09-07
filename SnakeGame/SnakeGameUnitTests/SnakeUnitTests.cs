@@ -74,7 +74,7 @@ namespace SnakeGameUnitTests
 
             _mockSnake.Turn(direction);
 
-            Assert.That(_mockSnake.CurrentSnakePosition, Is.EqualTo(position));
+            Assert.That(_mockSnake.CurrentPosition, Is.EqualTo(position));
         }
 
         [Test]
@@ -85,7 +85,7 @@ namespace SnakeGameUnitTests
 
             _mockSnake.Teleport(5, 5);
 
-            Assert.That(_mockSnake.CurrentSnakePosition, Is.EqualTo((4, 4)));
+            Assert.That(_mockSnake.CurrentPosition, Is.EqualTo((4, 4)));
         }
 
         [Test]
@@ -99,7 +99,7 @@ namespace SnakeGameUnitTests
 
             _mockSnake.Teleport(5, 5);
 
-            Assert.That(_mockSnake.CurrentSnakePosition, Is.EqualTo((0, 4)));
+            Assert.That(_mockSnake.CurrentPosition, Is.EqualTo((0, 4)));
         }
 
         [Test]
@@ -114,7 +114,7 @@ namespace SnakeGameUnitTests
 
             _mockSnake.Teleport(5, 5);
 
-            Assert.That(_mockSnake.CurrentSnakePosition, Is.EqualTo((2, 4)));
+            Assert.That(_mockSnake.CurrentPosition, Is.EqualTo((2, 4)));
         }
 
         [Test]
@@ -125,7 +125,7 @@ namespace SnakeGameUnitTests
 
             _mockSnake.Teleport(5, 5);
 
-            Assert.That(_mockSnake.CurrentSnakePosition, Is.EqualTo((1, 0)));
+            Assert.That(_mockSnake.CurrentPosition, Is.EqualTo((1, 0)));
         }
 
         [Test]
