@@ -21,6 +21,7 @@
         private string _user;
         private bool _hasWalls;
         private (int, int) _applePosition;
+        private Directions _lastDirection;
         private string _keyPressed = "RightArrow";
 
         public Game() { }
@@ -36,7 +37,7 @@
 
                 Task game = Task.Run(() =>
                 {
-                    _keyPressed = Console.ReadKey().Key.ToString();
+                    _keyPressed = Console.ReadKey(true).Key.ToString();
                 });
 
                 game.Wait(75);
@@ -171,28 +172,35 @@
 
         private void DirectionHandler(string keyPressed)
         {
+            Directions direction;
+            
             if (IsKeyInDictionary(keyPressed))
             {
-                var direction = movementDirections[keyPressed];
+                direction = movementDirections[keyPressed];
+                _lastDirection = direction;
+            }
+            else
+            {
+                direction = _lastDirection;
+            }
 
-                switch (direction)
-                {
-                    case Directions.Right:
-                        MoveSnake(1, _snake.MoveY);
-                        break;
+            switch (direction)
+            {
+                case Directions.Right:
+                    MoveSnake(1, _snake.MoveY);
+                    break;
 
-                    case Directions.Left:
-                        MoveSnake(-1, _snake.MoveY);
-                        break;
+                case Directions.Left:
+                    MoveSnake(-1, _snake.MoveY);
+                    break;
 
-                    case Directions.Down:
-                        MoveSnake(1, _snake.MoveX);
-                        break;
+                case Directions.Down:
+                    MoveSnake(1, _snake.MoveX);
+                    break;
 
-                    case Directions.Up:
-                        MoveSnake(-1, _snake.MoveX);
-                        break;
-                }
+                case Directions.Up:
+                    MoveSnake(-1, _snake.MoveX);
+                    break;
             }
         }
 
