@@ -4,6 +4,6 @@
     {
         List<ISoldier> CommandingPrivates { get; }
 
-        void AddPrivates(string[] privateIds);
+        void AddToCommandingPrivates(ISoldier soldier);
     }
 }

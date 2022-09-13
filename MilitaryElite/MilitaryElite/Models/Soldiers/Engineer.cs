@@ -20,15 +20,9 @@ namespace MilitaryElite
             Repairs = new List<Repair>();
         }
 
-        public void AddRepairs(string[] repairsInfo)
+        public void AddRepairs(Repair repair)
         {
-            for (int i = 0; i < repairsInfo.Length; i += 2)
-            {
-                string partName = repairsInfo[i];
-                int hoursWorked = int.Parse(repairsInfo[i + 1]);
-
-                Repairs.Add(new Repair(partName, hoursWorked));
-            }
+            Repairs.Add(repair);
         }
 
         public override string ToString()

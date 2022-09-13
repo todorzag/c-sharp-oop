@@ -17,17 +17,9 @@ namespace MilitaryElite
             CommandingPrivates = new List<ISoldier>();
         }
 
-        public void AddPrivates(string[] privateIds)
+        public void AddToCommandingPrivates(ISoldier soldier)
         {
-            foreach (string id in privateIds)
-            {
-                ISoldier privateSoldier = Army.GetPrivateById(int.Parse(id));
-
-                if (privateSoldier != null)
-                {
-                    CommandingPrivates.Add(privateSoldier);
-                }
-            }
+            CommandingPrivates.Add(soldier);
         }
 
         public override string ToString()

@@ -18,15 +18,9 @@ namespace MilitaryElite.Soldiers
             Missions = new List<Mission>();
         }
 
-        public void AddMissions(string[] missionsInfo)
+        public void AddMissions(Mission mission)
         {
-            for (int i = 0; i < missionsInfo.Length - 1; i += 2)
-            {
-                string codeName = missionsInfo[i];
-                string state = missionsInfo[i + 1];
-
-                Missions.Add(new Mission(codeName, state));
-            }
+            Missions.Add(mission);
         }
 
         public override string ToString()

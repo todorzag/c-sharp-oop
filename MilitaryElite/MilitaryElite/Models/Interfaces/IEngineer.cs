@@ -6,6 +6,6 @@ namespace MilitaryElite.Interfaces
     {
         List<Repair> Repairs { get; }
 
-        void AddRepairs(string[] repairsInfo);
+        void AddRepairs(Repair repair);
     }
 }

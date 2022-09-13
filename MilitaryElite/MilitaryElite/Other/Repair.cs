@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MilitaryElite.Other
 {
-    internal class Repair
+    internal class Repair : IRepair
     {
         public string PartName { get; }
         public int HoursWorked { get; }

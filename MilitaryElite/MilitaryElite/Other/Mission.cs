@@ -8,18 +8,43 @@ namespace MilitaryElite.Other
 {
     internal class Mission
     {
-        public string CodeName { get; }
-        public string State { get; private set; }
+        public enum States
+        {
+            inProgress,
+            Finished
+        }
 
-        public Mission(string codeName, string state)
+        public string CodeName { get; }
+        public States State { get; private set; }
+
+        public Mission(string codeName, string stateString)
         {
             CodeName = codeName;
-            State = state;
+            State = StateFromString(stateString);
+        }
+
+        private States StateFromString(string stateString)
+        {
+            if (Enum.TryParse<States>(stateString, true, out States state))
+            {
+                return state;
+            }
+            else
+            {
+                throw new ArgumentException("Invalid Mission State!");
+            }
         }
 
         public void Complete()
         {
-            State = "Finished";
+            if (State == States.inProgress)
+            {
+                State = States.Finished;
+            }
+            else
+            {
+                Console.WriteLine("Mission is already finished!");
+            }
         }
 
         public override string ToString()
