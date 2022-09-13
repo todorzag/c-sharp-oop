@@ -8,7 +8,7 @@ namespace MilitaryElite
 {
     public abstract class SpecialisedSoldier : Private, ISpecialisedSoldier
     {
-        private static List<string> ValidCorps = 
+        private static readonly List<string> ValidCorps = 
             new List<string> 
             { 
                 "Airforce",

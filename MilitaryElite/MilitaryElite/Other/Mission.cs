@@ -23,18 +23,6 @@ namespace MilitaryElite.Other
             State = StateFromString(stateString);
         }
 
-        private States StateFromString(string stateString)
-        {
-            if (Enum.TryParse<States>(stateString, true, out States state))
-            {
-                return state;
-            }
-            else
-            {
-                throw new ArgumentException("Invalid Mission State!");
-            }
-        }
-
         public void Complete()
         {
             if (State == States.inProgress)
@@ -50,6 +38,18 @@ namespace MilitaryElite.Other
         public override string ToString()
         {
             return $"Code Name: {CodeName}: {State}";
+        }
+
+        private States StateFromString(string stateString)
+        {
+            if (Enum.TryParse(stateString, true, out States state))
+            {
+                return state;
+            }
+            else
+            {
+                throw new ArgumentException("Invalid Mission State!");
+            }
         }
     }
 }

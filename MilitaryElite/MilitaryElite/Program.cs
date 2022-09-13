@@ -28,6 +28,7 @@ namespace MilitaryElite
 
                     case "LieutenantGeneral":
                         string[] privateIds = splitInput[5..splitInput.Length];
+
                         AddLieutenantGeneralToArmy(id, firstName, lastName, salary, privateIds);
                         break;
 
@@ -47,6 +48,7 @@ namespace MilitaryElite
 
                     case "Spy":
                         int codeNumber = int.Parse(splitInput[4]);
+
                         AddSpyToArmy(id, firstName, lastName, codeNumber);
                         break;
                 }
