@@ -10,8 +10,6 @@
             Down
         }
 
-        public delegate void Del();
-
         public bool SnakeIsAlive = true;
 
         private Snake _snake = new Snake();
@@ -173,27 +171,34 @@
 
         private void DirectionHandler(string keyPressed)
         {
-            // Check if key is in Dict
-            var direction = movementDirections[keyPressed];
-
-            switch (direction)
+            if (IsKeyInDictionary(keyPressed))
             {
-                case Directions.Right:
-                    MoveSnake(1, _snake.MoveY);
-                    break;
+                var direction = movementDirections[keyPressed];
 
-                case Directions.Left:
-                    MoveSnake(-1, _snake.MoveY);
-                    break;
+                switch (direction)
+                {
+                    case Directions.Right:
+                        MoveSnake(1, _snake.MoveY);
+                        break;
 
-                case Directions.Down:
-                    MoveSnake(1, _snake.MoveX);
-                    break;
+                    case Directions.Left:
+                        MoveSnake(-1, _snake.MoveY);
+                        break;
 
-                case Directions.Up:
-                    MoveSnake(-1, _snake.MoveX);
-                    break;
+                    case Directions.Down:
+                        MoveSnake(1, _snake.MoveX);
+                        break;
+
+                    case Directions.Up:
+                        MoveSnake(-1, _snake.MoveX);
+                        break;
+                }
             }
+        }
+
+        private bool IsKeyInDictionary(string keyPressed)
+        {
+            return movementDirections.ContainsKey(keyPressed);
         }
 
         private void MoveSnake(int directionNum, Action<int> moveMethod)
