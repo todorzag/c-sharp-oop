@@ -1,4 +1,4 @@
-﻿namespace MilitaryElite.Interfaces
+﻿namespace MilitaryElite.Models.Interfaces
 {
     internal interface ISpy
     {

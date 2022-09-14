@@ -1,5 +1,6 @@
-﻿using MilitaryElite.Other;
-using MilitaryElite.Soldiers;
+﻿using MilitaryElite.Models.Interfaces;
+using MilitaryElite.Models.Items;
+using MilitaryElite.Models.Soldiers;
 
 namespace MilitaryElite
 {
@@ -17,22 +18,26 @@ namespace MilitaryElite
                 int id = int.Parse(splitInput[1]);
                 string firstName = splitInput[2];
                 string lastName = splitInput[3];
-                decimal salary = decimal.Parse(splitInput[4]);
+                decimal salary;
                 string corps;
 
                 switch (soldierType)
                 {
                     case "Private":
+                        salary = decimal.Parse(splitInput[4]);
+
                         AddPrivateToArmy(id, firstName, lastName, salary);
                         break;
 
                     case "LieutenantGeneral":
+                        salary = decimal.Parse(splitInput[4]);
                         string[] privateIds = splitInput[5..splitInput.Length];
 
                         AddLieutenantGeneralToArmy(id, firstName, lastName, salary, privateIds);
                         break;
 
                     case "Engineer":
+                        salary = decimal.Parse(splitInput[4]);
                         corps = splitInput[5];
                         string[] repairInfo = splitInput[6..splitInput.Length];
 
@@ -40,6 +45,7 @@ namespace MilitaryElite
                         break;
 
                     case "Commando":
+                        salary = decimal.Parse(splitInput[4]);
                         corps = splitInput[5];
                         string[] missionInfo = splitInput[6..splitInput.Length];
 

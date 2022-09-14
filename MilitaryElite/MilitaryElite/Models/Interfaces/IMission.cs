@@ -1,4 +1,4 @@
-﻿namespace MilitaryElite.Other
+﻿namespace MilitaryElite.Models.Interfaces
 {
     internal interface IMission
     {

@@ -1,6 +1,6 @@
-﻿namespace MilitaryElite
+﻿namespace MilitaryElite.Models.Interfaces
 {
-    public interface ISpecialisedSoldier: IPrivate
+    public interface ISpecialisedSoldier : IPrivate
     {
         string Corps { get; }
     }

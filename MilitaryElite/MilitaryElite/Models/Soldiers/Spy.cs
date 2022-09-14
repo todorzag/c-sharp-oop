@@ -1,6 +1,6 @@
-﻿using MilitaryElite.Interfaces;
+﻿using MilitaryElite.Models.Interfaces;
 
-namespace MilitaryElite
+namespace MilitaryElite.Models.Soldiers
 {
     internal class Spy : Soldier, ISpy
     {

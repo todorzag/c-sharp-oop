@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MilitaryElite
+namespace MilitaryElite.Models.Interfaces
 {
     public interface ISoldier
     {
         int Id { get; }
         string FirstName { get; }
-        string LastName { get; } 
+        string LastName { get; }
     }
 }

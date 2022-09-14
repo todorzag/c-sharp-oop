@@ -1,6 +1,6 @@
-﻿using MilitaryElite.Other;
+﻿using MilitaryElite.Models.Items;
 
-namespace MilitaryElite.Interfaces
+namespace MilitaryElite.Models.Interfaces
 {
     internal interface IEngineer : ISpecialisedSoldier
     {

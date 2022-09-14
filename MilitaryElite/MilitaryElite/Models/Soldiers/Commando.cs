@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MilitaryElite.Interfaces;
-using MilitaryElite.Other;
+using MilitaryElite.Models.Interfaces;
+using MilitaryElite.Models.Items;
 
-namespace MilitaryElite.Soldiers
+namespace MilitaryElite.Models.Soldiers
 {
     internal class Commando : SpecialisedSoldier, ICommando
     {
         public List<Mission> Missions { get; }
 
-        public Commando(int id, string firstName, string lastName, decimal salary, string corps) 
+        public Commando(int id, string firstName, string lastName, decimal salary, string corps)
             : base(id, firstName, lastName, salary, corps)
         {
             Missions = new List<Mission>();

@@ -4,10 +4,10 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using MilitaryElite.Interfaces;
-using MilitaryElite.Other;
+using MilitaryElite.Models.Interfaces;
+using MilitaryElite.Models.Items;
 
-namespace MilitaryElite
+namespace MilitaryElite.Models.Soldiers
 {
     internal class Engineer : SpecialisedSoldier, IEngineer
     {
