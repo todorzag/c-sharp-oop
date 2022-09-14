@@ -1,32 +1,26 @@
-﻿namespace SnakeGame
+﻿using System.Security.Cryptography;
+
+namespace SnakeGame
 {
     public class Game
     {
-        enum Directions
-        {
-            Right,
-            Left,
-            Up,
-            Down
-        }
+        private static List<string> _legalKeys =
+            new List<string>
+            {
+            "RightArrow",
+            "LeftArrow",
+            "UpArrow",
+            "DownArrow"
+            };
 
         public bool HasEnded = false;
-
-        private Dictionary<string, Directions> movementDirections 
-            = new Dictionary<string, Directions>
-            {
-                {"RightArrow", Directions.Right },
-                {"LeftArrow", Directions.Left },
-                {"DownArrow", Directions.Down },
-                {"UpArrow", Directions.Up }
-            };
 
         private Snake _snake = new Snake(4);
 
         private string _user;
         private (int, int) _applePosition;
-        private Directions _lastDirection;
-        private string _keyPressed = "RightArrow";
+        private string _lastPressed = "RightArrow";
+        private string _keyPressed;
 
         public Game() { }
 
@@ -45,18 +39,33 @@
 
                 game.Wait(75);
 
-                DirectionHandler(_keyPressed);
+                if (_keyPressed == "Escape")
+                {
+                    break;
+                }
+
+                LegalKeyHandler();
+
+                DirectionHandler();
             }
             while (!HasEnded);
+
+            GameOver();
         }
 
         public void GetConfigData()
         {
             SetUserName();
             _snake.GameHasWalls = AskHasWalls();
+        }
 
+        public void WaitForKeyPress()
+        {
             Console.Clear();
             Console.WriteLine(Logos.GameStartLogo);
+
+            while (Console.KeyAvailable == false)
+                Thread.Sleep(250);
         }
 
         public void SpawnApple()
@@ -79,7 +88,7 @@
             }
         }
 
-        public void Over()
+        private void GameOver()
         {
             FileManager.SaveHighScore(_user, _snake.Score);
 
@@ -87,13 +96,25 @@
             RenderScore();
         }
 
+        private void LegalKeyHandler()
+        {
+            if (_legalKeys.Contains(_keyPressed))
+            {
+                _lastPressed = _keyPressed;
+            }
+            else
+            {
+                _keyPressed = _lastPressed;
+            }
+        }
+
         private void AppleHandler()
         {
-            if (_snake.Head.OnApple(_applePosition))
+            if (_applePosition == _snake.Head.Position)
             {
-                _snake.EatApple();
+                _snake.AddSnakePart();
                 SpawnApple();
-            } 
+            }
         }
 
         private void SetUserName()
@@ -123,43 +144,26 @@
             return hasWalls;
         }
 
-        private void DirectionHandler(string keyPressed)
+        private void DirectionHandler()
         {
-            Directions direction;
-            
-            if (IsKeyInDictionary(keyPressed))
+            switch (_keyPressed)
             {
-                direction = movementDirections[keyPressed];
-                _lastDirection = direction;
-            }
-            else
-            {
-                direction = _lastDirection;
-            }
-
-            switch (direction)
-            {
-                case Directions.Right:
+                case "RightArrow":
                     MoveSnake(1, _snake.MoveY);
                     break;
 
-                case Directions.Left:
+                case "LeftArrow":
                     MoveSnake(-1, _snake.MoveY);
                     break;
 
-                case Directions.Down:
+                case "DownArrow":
                     MoveSnake(1, _snake.MoveX);
                     break;
 
-                case Directions.Up:
+                case "UpArrow":
                     MoveSnake(-1, _snake.MoveX);
                     break;
             }
-        }
-
-        private bool IsKeyInDictionary(string keyPressed)
-        {
-            return movementDirections.ContainsKey(keyPressed);
         }
 
         private void MoveSnake(int directionNum, Action<int> moveMethod)
@@ -175,10 +179,9 @@
                 HasEnded = true;
             }
 
-
             AppleHandler();
         }
 
-        
+
     }
 }

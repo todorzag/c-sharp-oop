@@ -145,7 +145,7 @@ namespace SnakeGameUnitTests
         [Test]
         public void EatApple_SnakeIsOnApple_AddNewSnakePart()
         {
-            _mockSnake.EatApple();
+            _mockSnake.AddSnakePart();
 
             Assert.That(_mockSnake.SnakePartsCount, Is.EqualTo(4));
         }

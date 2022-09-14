@@ -10,17 +10,14 @@
 
             game.GetConfigData();
 
-            Thread.Sleep(2000);
+            game.WaitForKeyPress();
+
             Console.Clear();
 
             game.SpawnApple();
 
             game.Start();
 
-            if (game.HasEnded)
-            {
-                game.Over();
-            }     
         }
     }
 }
