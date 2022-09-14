@@ -2,10 +2,15 @@
 {
     public class Snake
     {
-        public SnakePart SnakeHead;
-        public bool IsAlive = true;
+        public SnakePart Head { get => _snakeBody[0]; }
+        public bool GameHasWalls;
+
         private List<SnakePart> _snakeBody;
-        private (int, int) lastSnakePartPosition;
+        private (int, int) _lastSnakePartPosition;
+        private int _startingSnakeLenght;
+
+        private int _consoleHeight = Console.WindowHeight;
+        private int _consoleWidth = Console.WindowWidth;
 
         public int SnakePartsCount 
         {
@@ -14,29 +19,43 @@
 
         public int Score
         {
-            get => SnakePartsCount - 3;
+            get => SnakePartsCount - _startingSnakeLenght;
         }
 
         public (int, int) CurrentPosition
         {
-            get => SnakeHead.Position;
+            get => Head.Position;
         }
 
-        public Snake()
+        public Snake(int snakeLenght)
         {
-            SnakeHead = new SnakePart(1, 4, "○");
+            _snakeBody = GenerateSnakeBody(snakeLenght);
+            _startingSnakeLenght = snakeLenght;
+        }
 
-            _snakeBody = new List<SnakePart>
+        private List<SnakePart> GenerateSnakeBody(int snakeLenght)
+        {
+            List<SnakePart> snakeParts = new List<SnakePart>();
+
+            for (int i = snakeLenght; i >= 1; i--)
             {
-                {new SnakePart(1,3)},
-                {new SnakePart(1,2)},
-                {new SnakePart(1,1)},
-            };
+                if (i != snakeLenght)
+                {
+                    snakeParts.Add(new SnakePart(1, i, "●"));
+                    
+                }
+                else
+                {
+                    snakeParts.Add(new SnakePart(1, i, "○"));
+                }
+            }
+
+            return snakeParts;
         }
 
         public void RenderSnake()
         {
-            WriteAt(SnakeHead.Y, SnakeHead.X, SnakeHead.Symbol);
+            WriteAt(Head.Y, Head.X, Head.Symbol);
 
             foreach (var snakePart in _snakeBody)
             {
@@ -49,54 +68,54 @@
             // Save last snake part position
             SnakePart lastSnakePart = _snakeBody.Last();
             (int x, int y) = lastSnakePart.Position;
-            lastSnakePartPosition = (x, y);
+            _lastSnakePartPosition = (x, y);
 
             WriteAt(y, x, " ");
         }
 
-        public bool CheckIfOutOfBounds(int consoleHeight, int consoleWidth)
+        public bool CheckIfOutOfBounds()
         {
             bool isOutOfBounds = false;
 
-            bool boundX = SnakeHead.X < 0 || SnakeHead.X > consoleHeight - 1;
-            bool boundY = SnakeHead.Y < 0 || SnakeHead.Y > consoleWidth - 1;
+            bool boundX = Head.X < 0 || Head.X > _consoleHeight - 1;
+            bool boundY = Head.Y < 0 || Head.Y > _consoleWidth - 1;
 
             if (boundX || boundY) { isOutOfBounds = true; }
 
             return isOutOfBounds;
         }
 
-        public void Teleport(int consoleHeight, int consoleWidth)
+        public void Teleport()
         {
-            int x = SnakeHead.X;
-            int y = SnakeHead.Y;
+            int x = Head.X;
+            int y = Head.Y;
 
-            int bottomBorderIndex = consoleHeight - 1;
-            int rightBorderIndex = consoleWidth - 1;
+            int bottomBorderIndex = _consoleHeight - 1;
+            int rightBorderIndex = _consoleWidth - 1;
 
             if (x < 0)
             {
-                SnakeHead.X = bottomBorderIndex;
+                Head.X = bottomBorderIndex;
             }
             else if (x > bottomBorderIndex)
             {
-                SnakeHead.X = 0;
+                Head.X = 0;
             }
             else if (y < 0)
             {
-                SnakeHead.Y = rightBorderIndex;
+                Head.Y = rightBorderIndex;
             }
             else if (y > rightBorderIndex)
             {
-                SnakeHead.Y = 0;
+                Head.Y = 0;
             }
         }
 
         public bool CheckIfHitItself()
         {
-            foreach (var snakePart in _snakeBody)
+            foreach (var snakePart in _snakeBody.Skip(1))
             {
-                if (SnakeHead.Position == snakePart.Position)
+                if (Head.Position == snakePart.Position)
                 {
                     return true;
                 }
@@ -107,13 +126,13 @@
 
         public bool OnApple((int,int) applePosition)
         {
-            return applePosition == SnakeHead.Position;
+            return applePosition == Head.Position;
         }
 
         public void EatApple()
         {
-            (int x, int y) = lastSnakePartPosition;
-            _snakeBody.Add(new SnakePart(x, y));
+            (int x, int y) = _lastSnakePartPosition;
+            _snakeBody.Add(new SnakePart(x, y, "●"));
         }
 
         public bool CheckSpawnOnSnake((int, int) applePosition)
@@ -123,16 +142,38 @@
 
         public void MoveX(int x)
         {
-            SnakeHead.X += x;
+            Head.X += x;
+
+            if (ShouldEndGame())
+            {
+                throw new Exception("End Game");
+            }
+
+            if (ShouldTeleport())
+            {
+                Teleport();
+            }
         }
 
         public void MoveY(int y)
         {
-            SnakeHead.Y += y;
+            Head.Y += y;
+
+            if (ShouldEndGame())
+            {
+                throw new Exception("End Game");
+            }
+
+            if (ShouldTeleport())
+            {
+                Teleport();
+            }
         }
 
         public void UpdateBodyPosition()
         {
+            ClearLastSnakePart();
+
             for (int i = _snakeBody.Count - 1; i > 0; i--)
             {
                 int x = _snakeBody[i - 1].X;
@@ -142,8 +183,42 @@
                 _snakeBody[i].Y = y;
             }
 
-            _snakeBody[0].X = SnakeHead.X;
-            _snakeBody[0].Y = SnakeHead.Y;
+            _snakeBody[0].X = Head.X;
+            _snakeBody[0].Y = Head.Y;
+        }
+
+        public bool ShouldEndGame()
+        {
+            bool result = false;
+
+            if (CheckIfOutOfBounds())
+            {
+                if (GameHasWalls)
+                {
+                    result = true;
+                }
+            }
+            else if (CheckIfHitItself())
+            {
+                result = true;
+            }
+
+            return result;
+        }
+
+        private bool ShouldTeleport()
+        {
+            bool result = false;
+
+            if (CheckIfOutOfBounds())
+            {
+                if (!GameHasWalls)
+                {
+                    result = true;
+                }
+            }
+
+            return result;
         }
 
         private void WriteAt(int y, int x, string symbol)

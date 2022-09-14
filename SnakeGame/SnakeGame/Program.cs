@@ -17,7 +17,7 @@
 
             game.Start();
 
-            if (!game.SnakeIsAlive)
+            if (game.HasEnded)
             {
                 game.Over();
             }     

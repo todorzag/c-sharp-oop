@@ -7,11 +7,6 @@
         public string Symbol { get; }
         public (int, int) Position { get => (X, Y); }
 
-        public SnakePart(int x, int y)
-            : this(x, y, "●")
-        {
-        }
-
         public SnakePart(int x, int y, string symbol)
         {
             X = x;
