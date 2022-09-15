@@ -4,15 +4,6 @@ namespace SnakeGame
 {
     public class Game
     {
-        private static List<string> _legalKeys =
-            new List<string>
-            {
-            "RightArrow",
-            "LeftArrow",
-            "UpArrow",
-            "DownArrow"
-            };
-
         public bool HasEnded = false;
 
         private Snake _snake = new Snake(4);
@@ -20,7 +11,7 @@ namespace SnakeGame
         private string _user;
         private (int, int) _applePosition;
         private string _keyPressed;
-        private string _lastPressed = "RightArrow";
+        private Directions _direction = Directions.RightArrow;
 
         public Game() { }
 
@@ -30,7 +21,7 @@ namespace SnakeGame
 
             _snake.RenderSnake();
 
-            do
+            while (!HasEnded)
             {
                 Task keyLogger = Task.Run(() =>
                 {
@@ -44,24 +35,19 @@ namespace SnakeGame
                     break;
                 }
 
-                SetLegalKeyPressed();
+                SetLegalDirection();
 
                 DirectionHandler();
             }
-            while (!HasEnded);
 
             GameOver();
         }
 
-        private void SetLegalKeyPressed()
+        private void SetLegalDirection()
         {
-            if (_legalKeys.Contains(_keyPressed))
+            if (Enum.TryParse<Directions>(_keyPressed, out var legalDirection))
             {
-                _lastPressed = _keyPressed;
-            }
-            else
-            {
-                _keyPressed = _lastPressed;
+                _direction = legalDirection;
             }
         }
 
@@ -146,21 +132,21 @@ namespace SnakeGame
 
         private void DirectionHandler()
         {
-            switch (_keyPressed)
+            switch (_direction)
             {
-                case "RightArrow":
+                case Directions.RightArrow:
                     MoveSnake(1, _snake.MoveY);
                     break;
 
-                case "LeftArrow":
+                case Directions.LeftArrow:
                     MoveSnake(-1, _snake.MoveY);
                     break;
 
-                case "DownArrow":
+                case Directions.DownArrow:
                     MoveSnake(1, _snake.MoveX);
                     break;
 
-                case "UpArrow":
+                case Directions.UpArrow:
                     MoveSnake(-1, _snake.MoveX);
                     break;
             }
