@@ -69,7 +69,7 @@
                 Teleport();
             }
 
-            if (IsPossibleMove(GameHasWalls))
+            if (IsNotPossibleMove(GameHasWalls))
             {
                 throw new Exception("End Game");
             }
@@ -84,7 +84,7 @@
                 Teleport();
             }
 
-            if (IsPossibleMove(GameHasWalls))
+            if (IsNotPossibleMove(GameHasWalls))
             {
                 throw new Exception("End Game");
             }
@@ -116,7 +116,7 @@
             return snakeParts;
         }
 
-        private bool IsPossibleMove(bool hasWalls)
+        private bool IsNotPossibleMove(bool hasWalls)
         {
             bool result = false;
 
