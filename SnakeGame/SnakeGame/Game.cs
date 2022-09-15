@@ -19,8 +19,8 @@ namespace SnakeGame
 
         private string _user;
         private (int, int) _applePosition;
-        private string _lastPressed = "RightArrow";
         private string _keyPressed;
+        private string _lastPressed = "RightArrow";
 
         public Game() { }
 
@@ -28,29 +28,41 @@ namespace SnakeGame
         {
             Console.CursorVisible = false;
 
+            _snake.RenderSnake();
+
             do
             {
-                _snake.RenderSnake();
-
-                Task game = Task.Run(() =>
+                Task keyLogger = Task.Run(() =>
                 {
                     _keyPressed = Console.ReadKey(true).Key.ToString();
                 });
 
-                game.Wait(75);
+                keyLogger.Wait(75);
 
                 if (_keyPressed == "Escape")
                 {
                     break;
                 }
 
-                LegalKeyHandler();
+                SetLegalKeyPressed();
 
                 DirectionHandler();
             }
             while (!HasEnded);
 
             GameOver();
+        }
+
+        private void SetLegalKeyPressed()
+        {
+            if (_legalKeys.Contains(_keyPressed))
+            {
+                _lastPressed = _keyPressed;
+            }
+            else
+            {
+                _keyPressed = _lastPressed;
+            }
         }
 
         public void GetConfigData()
@@ -94,18 +106,6 @@ namespace SnakeGame
 
             Console.WriteLine(Logos.GameOverLogo);
             RenderScore();
-        }
-
-        private void LegalKeyHandler()
-        {
-            if (_legalKeys.Contains(_keyPressed))
-            {
-                _lastPressed = _keyPressed;
-            }
-            else
-            {
-                _keyPressed = _lastPressed;
-            }
         }
 
         private void AppleHandler()
@@ -168,20 +168,26 @@ namespace SnakeGame
 
         private void MoveSnake(int directionNum, Action<int> moveMethod)
         {
-            _snake.UpdateBodyPosition();
-
-            try
+            while (Console.KeyAvailable == false)
             {
-                moveMethod(directionNum);
-            }
-            catch (Exception)
-            {
-                HasEnded = true;
-            }
+                _snake.UpdateBodyPosition();
 
-            AppleHandler();
+                try
+                {
+                    moveMethod(directionNum);
+                }
+                catch (Exception)
+                {
+                    HasEnded = true;
+                    break;
+                }
+
+                AppleHandler();
+
+                _snake.RenderSnake();
+
+                Thread.Sleep(75);
+            }
         }
-
-
     }
 }

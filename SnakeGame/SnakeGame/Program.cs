@@ -6,18 +6,22 @@
         {
             Console.OutputEncoding = System.Text.Encoding.Unicode;
 
-            var game = new Game();
+            Thread thread = new Thread(() =>
+            {
+                var game = new Game();
 
-            game.GetConfigData();
+                game.GetConfigData();
 
-            game.WaitForKeyPress();
+                game.WaitForKeyPress();
 
-            Console.Clear();
+                Console.Clear();
 
-            game.SpawnApple();
+                game.SpawnApple();
 
-            game.Start();
+                game.Start();
+            });
 
+            thread.Start();
         }
     }
 }
