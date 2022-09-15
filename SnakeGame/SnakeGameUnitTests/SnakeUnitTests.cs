@@ -145,15 +145,15 @@ namespace SnakeGameUnitTests
         [Test]
         public void EatApple_SnakeIsOnApple_AddNewSnakePart()
         {
-            _mockSnake.AddSnakePart();
+            _mockSnake.AddPart();
 
-            Assert.That(_mockSnake.SnakePartsCount, Is.EqualTo(4));
+            Assert.That(_mockSnake.BodyPartsCount, Is.EqualTo(4));
         }
 
         [Test]
         public void CheckSpawnOnSnake_NotSpawnedOnSnake_ReturnFalse()
         {
-            Assert.IsFalse(_mockSnake.CheckSpawnOnSnake((4,2)));
+            Assert.IsFalse(_mockSnake.CheckSpawnOnBody((4,2)));
         }
 
         [Test]
@@ -161,7 +161,7 @@ namespace SnakeGameUnitTests
         {
             _mockSnake.Turn("RightArrow");
 
-            Assert.IsTrue(_mockSnake.CheckSpawnOnSnake((1, 4)));
+            Assert.IsTrue(_mockSnake.CheckSpawnOnBody((1, 4)));
         }
     }
 }

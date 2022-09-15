@@ -2,25 +2,23 @@
 {
     public class Snake
     {
-        public ISnakePart Head { get => _snakeBody[0]; }
+        public ISnakePart Head { get => _body[0]; }
 
-        private List<ISnakePart> _snakeBody;
-        private (int, int) _lastSnakePartPosition;
-        private int _startingSnakeLenght;
+        private List<ISnakePart> _body;
+        private (int, int) _lastBodyPartPosition;
+        private int _startingLenght;
 
         private int _consoleHeight = Console.WindowHeight;
         private int _consoleWidth = Console.WindowWidth;
 
-        public bool GameHasWalls { get; set; }
-
-        public int SnakePartsCount
+        public int BodyPartsCount
         {
-            get => _snakeBody.Count;
+            get => _body.Count;
         }
 
         public int Score
         {
-            get => SnakePartsCount - _startingSnakeLenght;
+            get => BodyPartsCount - _startingLenght;
         }
 
         public (int, int) CurrentPosition
@@ -28,19 +26,19 @@
             get => Head.Position;
         }
 
-        public Snake(int snakeLenght)
+        public Snake(int lenght)
         {
-            _snakeBody = GenerateSnakeBody(snakeLenght);
-            _startingSnakeLenght = snakeLenght;
+            _body = GenerateBody(lenght);
+            _startingLenght = lenght;
         }
 
-        public void RenderSnake()
+        public void Render()
         {
-            for (int i = 0; i < SnakePartsCount; i++)
+            for (int i = 0; i < BodyPartsCount; i++)
             {
                 if (i != 0)
                 {
-                    WriteAt(_snakeBody[i].Y, _snakeBody[i].X, "●");
+                    WriteAt(_body[i].Y, _body[i].X, "●");
                 }
                 else
                 {
@@ -49,42 +47,42 @@
             }
         }
 
-        public void AddSnakePart()
+        public void AddPart()
         {
-            (int x, int y) = _lastSnakePartPosition;
-            _snakeBody.Add(new SnakePart(x, y));
+            (int x, int y) = _lastBodyPartPosition;
+            _body.Add(new SnakePart(x, y));
         }
 
-        public bool CheckSpawnOnSnake((int, int) applePosition)
+        public bool CheckSpawnOnBody((int, int) applePosition)
         {
-            return _snakeBody.Any(x => x.Position == applePosition);
+            return _body.Any(x => x.Position == applePosition);
         }
 
-        public void MoveX(int x)
+        public void MoveX(int x, bool gameHasWalls)
         {
             Head.X += x;
 
-            if (CheckTeleport(GameHasWalls))
+            if (CheckTeleport(gameHasWalls))
             {
                 Teleport();
             }
 
-            if (IsNotPossibleMove(GameHasWalls))
+            if (MoveIsNotPossible(gameHasWalls))
             {
                 throw new Exception("End Game");
             }
         }
 
-        public void MoveY(int y)
+        public void MoveY(int y, bool gameHasWalls)
         {
             Head.Y += y;
 
-            if (CheckTeleport(GameHasWalls))
+            if (CheckTeleport(gameHasWalls))
             {
                 Teleport();
             }
 
-            if (IsNotPossibleMove(GameHasWalls))
+            if (MoveIsNotPossible(gameHasWalls))
             {
                 throw new Exception("End Game");
             }
@@ -92,19 +90,19 @@
 
         public void UpdateBodyPosition()
         {
-            ClearLastSnakePart();
+            ClearLastBodyPart();
 
-            for (int i = _snakeBody.Count - 1; i > 0; i--)
+            for (int i = _body.Count - 1; i > 0; i--)
             {
-                int x = _snakeBody[i - 1].X;
-                int y = _snakeBody[i - 1].Y;
+                int x = _body[i - 1].X;
+                int y = _body[i - 1].Y;
 
-                _snakeBody[i].X = x;
-                _snakeBody[i].Y = y;
+                _body[i].X = x;
+                _body[i].Y = y;
             }
         }
 
-        private List<ISnakePart> GenerateSnakeBody(int snakeLenght)
+        private List<ISnakePart> GenerateBody(int snakeLenght)
         {
             List<ISnakePart> snakeParts = new List<ISnakePart>();
 
@@ -116,7 +114,7 @@
             return snakeParts;
         }
 
-        private bool IsNotPossibleMove(bool hasWalls)
+        private bool MoveIsNotPossible(bool hasWalls)
         {
             bool result = false;
 
@@ -143,12 +141,12 @@
             Console.Write(symbol);
         }
 
-        private void ClearLastSnakePart()
+        private void ClearLastBodyPart()
         {
             // Save last snake part position
-            ISnakePart lastSnakePart = _snakeBody.Last();
+            ISnakePart lastSnakePart = _body.Last();
             (int x, int y) = lastSnakePart.Position;
-            _lastSnakePartPosition = (x, y);
+            _lastBodyPartPosition = (x, y);
 
             WriteAt(y, x, " ");
         }
@@ -190,7 +188,7 @@
 
         private bool CheckIfHitItself()
         {
-            foreach (var snakePart in _snakeBody.Skip(1))
+            foreach (var snakePart in _body.Skip(1))
             {
                 if (Head.Position == snakePart.Position)
                 {

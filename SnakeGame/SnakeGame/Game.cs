@@ -4,31 +4,45 @@ namespace SnakeGame
 {
     public class Game
     {
-        public bool HasEnded = false;
+        public bool SnakeIsAlive = true;
 
         private Snake _snake = new Snake(4);
 
         private string _user;
         private (int, int) _applePosition;
         private string _keyPressed;
+        private bool _hasWalls;
         private Directions _direction = Directions.RightArrow;
 
         public Game() { }
 
-        public void Start()
+        public void MainProcess()
         {
             Console.CursorVisible = false;
 
-            _snake.RenderSnake();
+            OpenStartingMenu();
+            // Close starting menu
+            Console.Clear();
 
-            while (!HasEnded)
+            StartingProcesses();
+
+            GameLoop();
+
+            if (!SnakeIsAlive)
             {
-                Task keyLogger = Task.Run(() =>
+                GameOver();
+            }
+        }
+
+        private void GameLoop()
+        {
+            while (SnakeIsAlive)
+            {
+                Task.Run(() =>
                 {
                     _keyPressed = Console.ReadKey(true).Key.ToString();
-                });
 
-                keyLogger.Wait(75);
+                }).Wait(75);
 
                 if (_keyPressed == "Escape")
                 {
@@ -39,8 +53,18 @@ namespace SnakeGame
 
                 DirectionHandler();
             }
+        }
 
-            GameOver();
+        private void StartingProcesses()
+        {
+            SpawnApple();
+            _snake.Render();
+        }
+
+        private void OpenStartingMenu()
+        {
+            GetConfigData();
+            WaitForKeyPress();
         }
 
         private void SetLegalDirection()
@@ -51,13 +75,13 @@ namespace SnakeGame
             }
         }
 
-        public void GetConfigData()
+        private void GetConfigData()
         {
             SetUserName();
-            _snake.GameHasWalls = AskHasWalls();
+            _hasWalls = AskHasWalls();
         }
 
-        public void WaitForKeyPress()
+        private void WaitForKeyPress()
         {
             Console.Clear();
             Console.WriteLine(Logos.GameStartLogo);
@@ -66,7 +90,7 @@ namespace SnakeGame
                 Thread.Sleep(250);
         }
 
-        public void SpawnApple()
+        private void SpawnApple()
         {
             Random random = new Random();
 
@@ -77,7 +101,7 @@ namespace SnakeGame
 
                 _applePosition = (x, y);
 
-                if (!_snake.CheckSpawnOnSnake(_applePosition))
+                if (!_snake.CheckSpawnOnBody(_applePosition))
                 {
                     Console.SetCursorPosition(y, x);
                     Console.Write("@");
@@ -98,7 +122,7 @@ namespace SnakeGame
         {
             if (_applePosition == _snake.Head.Position)
             {
-                _snake.AddSnakePart();
+                _snake.AddPart();
                 SpawnApple();
             }
         }
@@ -152,7 +176,7 @@ namespace SnakeGame
             }
         }
 
-        private void MoveSnake(int directionNum, Action<int> moveMethod)
+        private void MoveSnake(int directionNum, Action<int, bool> moveMethod)
         {
             while (Console.KeyAvailable == false)
             {
@@ -160,17 +184,17 @@ namespace SnakeGame
 
                 try
                 {
-                    moveMethod(directionNum);
+                    moveMethod(directionNum, _hasWalls);
                 }
                 catch (Exception)
                 {
-                    HasEnded = true;
+                    SnakeIsAlive = false;
                     break;
                 }
 
                 AppleHandler();
 
-                _snake.RenderSnake();
+                _snake.Render();
 
                 Thread.Sleep(75);
             }

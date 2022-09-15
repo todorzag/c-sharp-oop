@@ -10,15 +10,7 @@
             {
                 var game = new Game();
 
-                game.GetConfigData();
-
-                game.WaitForKeyPress();
-
-                Console.Clear();
-
-                game.SpawnApple();
-
-                game.Start();
+                game.MainProcess();
             });
 
             thread.Start();
