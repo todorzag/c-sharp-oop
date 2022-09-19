@@ -38,12 +38,6 @@ namespace SnakeGame
         {
             while (SnakeIsAlive)
             {
-                Task.Run(() =>
-                {
-                    _keyPressed = Console.ReadKey(true).Key.ToString();
-
-                }).Wait(75);
-
                 if (_keyPressed == "Escape")
                 {
                     SnakeIsAlive = false;
@@ -174,6 +168,10 @@ namespace SnakeGame
                 case Directions.UpArrow:
                     MoveSnake(-1, _snake.MoveX);
                     break;
+
+                default:
+                    MoveSnake(1, _snake.MoveY);
+                    break;
             }
         }
 
@@ -198,6 +196,11 @@ namespace SnakeGame
                 _snake.Render();
 
                 Thread.Sleep(75);
+            }
+
+            if (SnakeIsAlive)
+            {
+                _keyPressed = Console.ReadKey(true).Key.ToString();
             }
         }
     }
