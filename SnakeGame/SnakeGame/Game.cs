@@ -46,6 +46,7 @@ namespace SnakeGame
 
                 if (_keyPressed == "Escape")
                 {
+                    SnakeIsAlive = false;
                     break;
                 }
 
