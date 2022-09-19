@@ -168,10 +168,6 @@ namespace SnakeGame
                 case Directions.UpArrow:
                     MoveSnake(-1, _snake.MoveX);
                     break;
-
-                default:
-                    MoveSnake(1, _snake.MoveY);
-                    break;
             }
         }
 
