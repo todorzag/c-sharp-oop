@@ -1,10 +1,16 @@
-﻿namespace SnakeGame
+﻿using SnakeGame.Constants;
+using SnakeGame.Interfaces;
+using SnakeGame.Utils;
+
+namespace SnakeGame.Classes
 {
     public class Game
     {
         public bool SnakeIsAlive = true;
 
         private Snake _snake;
+        private IDiffilcultyHandler _diffilcultyHandler = new DiffilcultyHandler();
+        private IScoreManager _scoreManager = new ScoreManager();
 
         private string _user;
         private int _snakeLength;
@@ -28,7 +34,7 @@
 
             GameLoop();
 
-            FileManager.SaveHighScore(_user, _snake.Score);
+            FileManager.SaveHighScore(_user, _scoreManager.Score);
             GameOverScreen();
         }
 
@@ -123,27 +129,19 @@
 
         private void GameOverScreen()
         {
-
             Console.WriteLine(Logos.GameOverLogo);
-            RenderScore();
+            _scoreManager.RenderLogo();
         }
 
         private bool IsOnApple()
         {
-            return _applePosition == _snake.Head.Position);
+            return _applePosition == _snake.Head.Position;
         }
 
         private void SetUserName()
         {
             Console.Write("Please enter username:");
             _user = Console.ReadLine();
-        }
-
-        private void RenderScore()
-        {
-            Console.WriteLine(Logos.ScoreWordLogo);
-            Console.WriteLine(Logos.GenerateScoreLogo(_snake.Score));
-            Console.WriteLine();
         }
 
         private void SetHasWalls()
@@ -184,6 +182,8 @@
         {
             while (Console.KeyAvailable == false)
             {
+                _scoreManager.Render();
+
                 _snake.UpdateBodyPosition();
 
                 try
@@ -196,15 +196,18 @@
                     break;
                 }
 
-                if(IsOnApple())
+                if (IsOnApple())
                 {
                     _snake.AddPart();
+                    _scoreManager.Add(1);
                     SpawnApple();
+
+                    _diffilcultyHandler.CheckToRaiseLevel(_scoreManager.Score);
                 }
 
                 _snake.Render();
 
-                Thread.Sleep(75);
+                Thread.Sleep(_diffilcultyHandler.Miliseconds);
             }
 
             if (SnakeIsAlive)

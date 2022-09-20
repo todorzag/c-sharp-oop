@@ -1,4 +1,6 @@
-﻿namespace SnakeGame
+﻿using SnakeGame.Classes;
+
+namespace SnakeGame.Main
 {
     internal class Program
     {

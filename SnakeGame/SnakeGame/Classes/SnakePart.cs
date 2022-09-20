@@ -1,4 +1,6 @@
-﻿namespace SnakeGame
+﻿using SnakeGame.Interfaces;
+
+namespace SnakeGame.Classes
 {
     public class SnakePart : ISnakePart
     {

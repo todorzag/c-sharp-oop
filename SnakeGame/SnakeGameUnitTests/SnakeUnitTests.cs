@@ -1,4 +1,4 @@
-﻿using SnakeGame;
+﻿using SnakeGame.Classes;
 
 namespace SnakeGameUnitTests
 {

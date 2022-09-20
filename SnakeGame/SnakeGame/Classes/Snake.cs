@@ -1,4 +1,6 @@
-﻿namespace SnakeGame
+﻿using SnakeGame.Interfaces;
+
+namespace SnakeGame.Classes
 {
     public class Snake
     {
@@ -7,16 +9,6 @@
         private List<ISnakePart> _body;
         private (int, int) _lastBodyPartPosition;
         private int _startingLenght;
-
-        public int BodyPartsCount
-        {
-            get => _body.Count;
-        }
-
-        public int Score
-        {
-            get => BodyPartsCount - _startingLenght;
-        }
 
         public (int, int) CurrentPosition
         {
@@ -31,7 +23,7 @@
 
         public void Render()
         {
-            for (int i = 0; i < BodyPartsCount; i++)
+            for (int i = 0; i < _body.Count; i++)
             {
                 if (i != 0)
                 {

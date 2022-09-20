@@ -1,5 +1,5 @@
 ﻿using Moq;
-using SnakeGame;
+using SnakeGame.Classes;
 
 namespace SnakeGameUnitTests
 {

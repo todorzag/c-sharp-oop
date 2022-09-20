@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SnakeGame
+namespace SnakeGame.Constants
 {
-    enum  Directions
+    enum Directions
     {
         RightArrow,
         LeftArrow,
