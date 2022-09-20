@@ -8,9 +8,6 @@
         private (int, int) _lastBodyPartPosition;
         private int _startingLenght;
 
-        private int _consoleHeight = Console.WindowHeight;
-        private int _consoleWidth = Console.WindowWidth;
-
         public int BodyPartsCount
         {
             get => _body.Count;
@@ -62,12 +59,12 @@
         {
             Head.X += x;
 
-            if (CheckTeleport(gameHasWalls))
+            if (ShouldTeleport(gameHasWalls))
             {
                 Teleport();
             }
 
-            if (MoveIsNotPossible(gameHasWalls))
+            if (MoveIsIllegal(gameHasWalls))
             {
                 throw new Exception("End Game");
             }
@@ -77,12 +74,12 @@
         {
             Head.Y += y;
 
-            if (CheckTeleport(gameHasWalls))
+            if (ShouldTeleport(gameHasWalls))
             {
                 Teleport();
             }
 
-            if (MoveIsNotPossible(gameHasWalls))
+            if (MoveIsIllegal(gameHasWalls))
             {
                 throw new Exception("End Game");
             }
@@ -106,7 +103,7 @@
         {
             List<ISnakePart> snakeParts = new List<ISnakePart>();
 
-            for (int i = snakeLenght; i >= 1; i--)
+            for (int i = snakeLenght; i >= 0; i--)
             {
                 snakeParts.Add(new SnakePart(1, i));
             }
@@ -114,7 +111,7 @@
             return snakeParts;
         }
 
-        private bool MoveIsNotPossible(bool hasWalls)
+        private bool MoveIsIllegal(bool hasWalls)
         {
             bool result = false;
 
@@ -130,7 +127,7 @@
             return result;
         }
 
-        private bool CheckTeleport(bool hasWalls)
+        private bool ShouldTeleport(bool hasWalls)
         {
             return CheckIfOutOfBounds() && !hasWalls;
         }
@@ -155,8 +152,8 @@
         {
             bool isOutOfBounds = false;
 
-            bool boundX = Head.X < 0 || Head.X > _consoleHeight - 1;
-            bool boundY = Head.Y < 0 || Head.Y > _consoleWidth - 1;
+            bool boundX = Head.X < 0 || Head.X > Console.WindowHeight - 1;
+            bool boundY = Head.Y < 0 || Head.Y > Console.WindowWidth - 1;
 
             if (boundX || boundY) { isOutOfBounds = true; }
 
@@ -165,8 +162,8 @@
 
         private void Teleport()
         {
-            int bottomBorderIndex = _consoleHeight - 1;
-            int rightBorderIndex = _consoleWidth - 1;
+            int bottomBorderIndex = Console.WindowHeight - 1;
+            int rightBorderIndex = Console.WindowWidth - 1;
 
             if (Head.X < 0)
             {

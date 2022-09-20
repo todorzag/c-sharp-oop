@@ -1,14 +1,13 @@
-﻿using System.Security.Cryptography;
-
-namespace SnakeGame
+﻿namespace SnakeGame
 {
     public class Game
     {
         public bool SnakeIsAlive = true;
 
-        private Snake _snake = new Snake(4);
+        private Snake _snake;
 
         private string _user;
+        private int _snakeLength;
         private (int, int) _applePosition;
         private string _keyPressed;
         private bool _hasWalls;
@@ -21,17 +20,16 @@ namespace SnakeGame
             Console.CursorVisible = false;
 
             OpenStartingMenu();
-            // Close starting menu
-            Console.Clear();
 
-            StartingProcesses();
+            GenerateSnake();
+
+            // First apple spawn
+            SpawnApple();
 
             GameLoop();
 
-            if (!SnakeIsAlive)
-            {
-                GameOver();
-            }
+            FileManager.SaveHighScore(_user, _snake.Score);
+            GameOverScreen();
         }
 
         private void GameLoop()
@@ -50,16 +48,17 @@ namespace SnakeGame
             }
         }
 
-        private void StartingProcesses()
-        {
-            SpawnApple();
-            _snake.Render();
-        }
-
         private void OpenStartingMenu()
         {
             GetConfigData();
+            PrintStartingLogo();
             WaitForKeyPress();
+            Console.Clear();
+        }
+
+        private void GenerateSnake()
+        {
+            _snake = new Snake(_snakeLength);
         }
 
         private void SetLegalDirection()
@@ -73,16 +72,33 @@ namespace SnakeGame
         private void GetConfigData()
         {
             SetUserName();
-            _hasWalls = AskHasWalls();
+            SetHasWalls();
+            SetSnakeLength();
+        }
+
+        private void SetSnakeLength()
+        {
+            Console.WriteLine("How long would you like the snake to be?");
+            Console.WriteLine("Minimum of 0, Maximum of 10");
+            _snakeLength = int.Parse(Console.ReadLine());
+
+            if (_snakeLength < 0 || _snakeLength > 10)
+            {
+                throw new ArgumentOutOfRangeException
+                    ("Snake length must be greater than 0 and lesser than 10");
+            };
         }
 
         private void WaitForKeyPress()
         {
-            Console.Clear();
-            Console.WriteLine(Logos.GameStartLogo);
-
             while (Console.KeyAvailable == false)
                 Thread.Sleep(250);
+        }
+
+        private static void PrintStartingLogo()
+        {
+            Console.Clear();
+            Console.WriteLine(Logos.GameStartLogo);
         }
 
         private void SpawnApple()
@@ -105,21 +121,16 @@ namespace SnakeGame
             }
         }
 
-        private void GameOver()
+        private void GameOverScreen()
         {
-            FileManager.SaveHighScore(_user, _snake.Score);
 
             Console.WriteLine(Logos.GameOverLogo);
             RenderScore();
         }
 
-        private void AppleHandler()
+        private bool IsOnApple()
         {
-            if (_applePosition == _snake.Head.Position)
-            {
-                _snake.AddPart();
-                SpawnApple();
-            }
+            return _applePosition == _snake.Head.Position);
         }
 
         private void SetUserName()
@@ -135,18 +146,16 @@ namespace SnakeGame
             Console.WriteLine();
         }
 
-        private bool AskHasWalls()
+        private void SetHasWalls()
         {
             Console.WriteLine("Would you like the board to have walls?");
-            bool hasWalls = false;
             string answer = Console.ReadLine();
+            _hasWalls = false;
 
             if (answer == "Y")
             {
-                hasWalls = true;
+                _hasWalls = true;
             }
-
-            return hasWalls;
         }
 
         private void DirectionHandler()
@@ -187,7 +196,11 @@ namespace SnakeGame
                     break;
                 }
 
-                AppleHandler();
+                if(IsOnApple())
+                {
+                    _snake.AddPart();
+                    SpawnApple();
+                }
 
                 _snake.Render();
 
