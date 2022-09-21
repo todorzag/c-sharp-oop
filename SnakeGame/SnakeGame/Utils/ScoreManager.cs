@@ -10,12 +10,11 @@ namespace SnakeGame.Utils
 {
     internal class ScoreManager : IScoreManager
     {
-        private int _score = 0;
+        public int Score { get; set; }
 
-        public int Score
+        public ScoreManager()
         {
-            get => _score;
-            set => _score = value;
+            Score = 0;
         }
 
         public void Add(int n)
@@ -25,8 +24,7 @@ namespace SnakeGame.Utils
 
         public void Render()
         {
-            Console.SetCursorPosition(0, 0);
-            Console.Write($"Score: {Score}");
+            Writer.WriteAt(0, 0, $"Score: {Score}");
         }
 
         public void RenderLogo()

@@ -4,38 +4,48 @@ using SnakeGame.Utils;
 
 namespace SnakeGame.Classes
 {
-    public class Game
+    public class Game : IGame
     {
         public bool SnakeIsAlive = true;
 
-        private Snake _snake;
-        private IDiffilcultyHandler _diffilcultyHandler = new DiffilcultyHandler();
-        private IScoreManager _scoreManager = new ScoreManager();
+        private ISnake _snake;
 
-        private string _user;
-        private int _snakeLength;
-        private (int, int) _applePosition;
-        private string _keyPressed;
+        private IScoreManager _scoreManager
+            = Factory.CreateScoreManager();
+
+        private IDiffilcultyHandler _diffilcultyHandler
+            = Factory.CreateDiffilcultyHandler();
+
+        private IPlayer _player;
         private bool _hasWalls;
+        private int _snakeLength;
+
+        private IPoint _apple;
+        private string _keyPressed;
         private Directions _direction = Directions.RightArrow;
 
-        public Game() { }
+        public Game(IPlayer player, bool hasWalls, int snakeLength)
+        {
+            _player = player;
+            _hasWalls = hasWalls;
+            _snakeLength = snakeLength;
+        }
 
         public void MainProcess()
         {
-            Console.CursorVisible = false;
+            Console.CursorVisible = false; ;
 
-            OpenStartingMenu();
+            Menu.StartingScreen();
 
-            GenerateSnake();
+            _snake = Factory.CreateSnake(_snakeLength);
 
             // First apple spawn
-            SpawnApple();
+            _apple = FoodSpawner.SpawnApple(_snake.Body);
 
             GameLoop();
 
-            FileManager.SaveHighScore(_user, _scoreManager.Score);
-            GameOverScreen();
+            FileManager.SaveHighScore(_player, _scoreManager.Score);
+            Menu.GameOverScreen(_scoreManager);
         }
 
         private void GameLoop()
@@ -54,105 +64,11 @@ namespace SnakeGame.Classes
             }
         }
 
-        private void OpenStartingMenu()
-        {
-            GetConfigData();
-            PrintStartingLogo();
-            WaitForKeyPress();
-            Console.Clear();
-        }
-
-        private void GenerateSnake()
-        {
-            _snake = new Snake(_snakeLength);
-        }
-
         private void SetLegalDirection()
         {
             if (Enum.TryParse<Directions>(_keyPressed, out var legalDirection))
             {
                 _direction = legalDirection;
-            }
-        }
-
-        private void GetConfigData()
-        {
-            SetUserName();
-            SetHasWalls();
-            SetSnakeLength();
-        }
-
-        private void SetSnakeLength()
-        {
-            Console.WriteLine("How long would you like the snake to be?");
-            Console.WriteLine("Minimum of 0, Maximum of 10");
-            _snakeLength = int.Parse(Console.ReadLine());
-
-            if (_snakeLength < 0 || _snakeLength > 10)
-            {
-                throw new ArgumentOutOfRangeException
-                    ("Snake length must be greater than 0 and lesser than 10");
-            };
-        }
-
-        private void WaitForKeyPress()
-        {
-            while (Console.KeyAvailable == false)
-                Thread.Sleep(250);
-        }
-
-        private static void PrintStartingLogo()
-        {
-            Console.Clear();
-            Console.WriteLine(Logos.GameStartLogo);
-        }
-
-        private void SpawnApple()
-        {
-            Random random = new Random();
-
-            while (true)
-            {
-                int x = random.Next(1, Console.WindowHeight - 1);
-                int y = random.Next(1, Console.WindowWidth - 1);
-
-                _applePosition = (x, y);
-
-                if (!_snake.CheckSpawnOnBody(_applePosition))
-                {
-                    Console.SetCursorPosition(y, x);
-                    Console.Write("@");
-                    break;
-                }
-            }
-        }
-
-        private void GameOverScreen()
-        {
-            Console.WriteLine(Logos.GameOverLogo);
-            _scoreManager.RenderLogo();
-        }
-
-        private bool IsOnApple()
-        {
-            return _applePosition == _snake.Head.Position;
-        }
-
-        private void SetUserName()
-        {
-            Console.Write("Please enter username:");
-            _user = Console.ReadLine();
-        }
-
-        private void SetHasWalls()
-        {
-            Console.WriteLine("Would you like the board to have walls?");
-            string answer = Console.ReadLine();
-            _hasWalls = false;
-
-            if (answer == "Y")
-            {
-                _hasWalls = true;
             }
         }
 
@@ -196,11 +112,12 @@ namespace SnakeGame.Classes
                     break;
                 }
 
-                if (IsOnApple())
+                if (_apple.Equals(_snake.Head))
                 {
                     _snake.AddPart();
                     _scoreManager.Add(1);
-                    SpawnApple();
+
+                    _apple = FoodSpawner.SpawnApple(_snake.Body);
 
                     _diffilcultyHandler.CheckToRaiseLevel(_scoreManager.Score);
                 }

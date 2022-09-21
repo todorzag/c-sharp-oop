@@ -1,14 +1,14 @@
 ﻿using SnakeGame.Interfaces;
+using SnakeGame.Utils;
 
 namespace SnakeGame.Classes
 {
-    public class Snake
+    public class Snake : ISnake
     {
-        public ISnakePart Head { get => _body[0]; }
-
-        private List<ISnakePart> _body;
         private (int, int) _lastBodyPartPosition;
-        private int _startingLenght;
+
+        public IPoint Head { get => Body[0]; }
+        public List<IPoint> Body { get; private set; }
 
         public (int, int) CurrentPosition
         {
@@ -17,21 +17,20 @@ namespace SnakeGame.Classes
 
         public Snake(int lenght)
         {
-            _body = GenerateBody(lenght);
-            _startingLenght = lenght;
+            Body = GenerateBody(lenght);
         }
 
         public void Render()
         {
-            for (int i = 0; i < _body.Count; i++)
+            for (int i = 0; i < Body.Count; i++)
             {
                 if (i != 0)
                 {
-                    WriteAt(_body[i].Y, _body[i].X, "●");
+                    Writer.WriteAt(Body[i].Y, Body[i].X, "●");
                 }
                 else
                 {
-                    WriteAt(Head.Y, Head.X, "○");
+                    Writer.WriteAt(Head.Y, Head.X, "○");
                 }
             }
         }
@@ -39,41 +38,36 @@ namespace SnakeGame.Classes
         public void AddPart()
         {
             (int x, int y) = _lastBodyPartPosition;
-            _body.Add(new SnakePart(x, y));
+            Body.Add(new Point(x, y));
         }
 
-        public bool CheckSpawnOnBody((int, int) applePosition)
+        public void MoveX(int value, bool gameHasWalls)
         {
-            return _body.Any(x => x.Position == applePosition);
-        }
+            IPoint newPosition 
+                = Factory.CreatePoint(Head.X + value, Head.Y);
 
-        public void MoveX(int x, bool gameHasWalls)
-        {
-            Head.X += x;
-
-            if (ShouldTeleport(gameHasWalls))
+            if (MoveChecker.IsValid(Body, newPosition, gameHasWalls))
             {
-                Teleport();
+                Head.X += value;
             }
-
-            if (MoveIsIllegal(gameHasWalls))
+            else
             {
-                throw new Exception("End Game");
+                Teleport(newPosition);
             }
         }
 
-        public void MoveY(int y, bool gameHasWalls)
+        public void MoveY(int value, bool gameHasWalls)
         {
-            Head.Y += y;
+            IPoint newPosition
+                = Factory.CreatePoint(Head.X, Head.Y + value);
 
-            if (ShouldTeleport(gameHasWalls))
+            if (MoveChecker.IsValid(Body, newPosition, gameHasWalls))
             {
-                Teleport();
+                Head.Y += value;
             }
-
-            if (MoveIsIllegal(gameHasWalls))
+            else
             {
-                throw new Exception("End Game");
+                Teleport(newPosition);
             }
         }
 
@@ -81,111 +75,59 @@ namespace SnakeGame.Classes
         {
             ClearLastBodyPart();
 
-            for (int i = _body.Count - 1; i > 0; i--)
+            for (int i = Body.Count - 1; i > 0; i--)
             {
-                int x = _body[i - 1].X;
-                int y = _body[i - 1].Y;
+                int x = Body[i - 1].X;
+                int y = Body[i - 1].Y;
 
-                _body[i].X = x;
-                _body[i].Y = y;
+                Body[i].X = x;
+                Body[i].Y = y;
             }
         }
 
-        private List<ISnakePart> GenerateBody(int snakeLenght)
+        private List<IPoint> GenerateBody(int snakeLenght)
         {
-            List<ISnakePart> snakeParts = new List<ISnakePart>();
+            List<IPoint> snakeParts = new List<IPoint>();
 
             for (int i = snakeLenght; i >= 0; i--)
             {
-                snakeParts.Add(new SnakePart(1, i));
+                snakeParts.Add(new Point(1, i));
             }
 
             return snakeParts;
         }
 
-        private bool MoveIsIllegal(bool hasWalls)
-        {
-            bool result = false;
-
-            if (CheckIfOutOfBounds() && hasWalls)
-            {
-                result = true;
-            }
-            else if (CheckIfHitItself())
-            {
-                result = true;
-            }
-
-            return result;
-        }
-
-        private bool ShouldTeleport(bool hasWalls)
-        {
-            return CheckIfOutOfBounds() && !hasWalls;
-        }
-
-        private void WriteAt(int y, int x, string symbol)
-        {
-            Console.SetCursorPosition(y, x);
-            Console.Write(symbol);
-        }
-
         private void ClearLastBodyPart()
         {
             // Save last snake part position
-            ISnakePart lastSnakePart = _body.Last();
+            IPoint lastSnakePart = Body.Last();
             (int x, int y) = lastSnakePart.Position;
             _lastBodyPartPosition = (x, y);
 
-            WriteAt(y, x, " ");
+            Writer.WriteAt(y, x, " ");
         }
 
-        private bool CheckIfOutOfBounds()
-        {
-            bool isOutOfBounds = false;
-
-            bool boundX = Head.X < 0 || Head.X > Console.WindowHeight - 1;
-            bool boundY = Head.Y < 0 || Head.Y > Console.WindowWidth - 1;
-
-            if (boundX || boundY) { isOutOfBounds = true; }
-
-            return isOutOfBounds;
-        }
-
-        private void Teleport()
+        private void Teleport(IPoint newPosition)
         {
             int bottomBorderIndex = Console.WindowHeight - 1;
             int rightBorderIndex = Console.WindowWidth - 1;
 
-            if (Head.X < 0)
+            if (newPosition.X < 0)
             {
                 Head.X = bottomBorderIndex;
             }
-            else if (Head.X > bottomBorderIndex)
+            else if (newPosition.X > bottomBorderIndex)
             {
                 Head.X = 0;
             }
-            else if (Head.Y < 0)
+            else if (newPosition.Y < 0)
             {
                 Head.Y = rightBorderIndex;
             }
-            else if (Head.Y > rightBorderIndex)
+            else if (newPosition.Y > rightBorderIndex)
             {
                 Head.Y = 0;
             }
-        }
-
-        private bool CheckIfHitItself()
-        {
-            foreach (var snakePart in _body.Skip(1))
-            {
-                if (Head.Position == snakePart.Position)
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
     }
 }

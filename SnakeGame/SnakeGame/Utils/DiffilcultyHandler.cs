@@ -7,14 +7,15 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Utils
 {
-    internal class DiffilcultyHandler : IDiffilcultyHandler
+    public class DiffilcultyHandler : IDiffilcultyHandler
     {
-        private int _miliseconds = 75;
         private int _level = 1;
 
-        public int Miliseconds
+        public int Miliseconds { get; set; }
+
+        public DiffilcultyHandler()
         {
-            get => _miliseconds;
+            Miliseconds = 75;
         }
 
         public void CheckToRaiseLevel(int score)
@@ -25,11 +26,11 @@ namespace SnakeGame.Utils
             }
         }
 
-        public void LevelUp()
+        private void LevelUp()
         {
-            if (_miliseconds > 10)
+            if (Miliseconds > 10)
             {
-                _miliseconds -= 5;
+                Miliseconds -= 5;
             }
             
             _level++;

@@ -1,9 +1,10 @@
 ﻿namespace SnakeGame.Interfaces
 {
-    public interface ISnakePart
+    public interface IPoint
     {
         (int, int) Position { get; }
         int X { get; set; }
         int Y { get; set; }
+        bool Equals(IPoint point);
     }
 }

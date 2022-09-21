@@ -1,14 +1,16 @@
-﻿namespace SnakeGame.Utils
+﻿using SnakeGame.Interfaces;
+
+namespace SnakeGame.Utils
 {
     public class FileManager
     {
         private static string _filePath
             = @"C:\Users\todor.zagorov\source\repos\c-sharp-oop\SnakeGame\SnakeGame\HighScores.txt";
 
-        public static void SaveHighScore(string user, int score)
+        public static void SaveHighScore(IPlayer player, int score)
         {
             File.AppendAllText(_filePath,
-                $"{user} - {score} - {DateTime.Now}\r\n");
+                $"{player.UserName} - {score} - {DateTime.Now}\r\n");
         }
     }
 }

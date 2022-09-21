@@ -5,7 +5,7 @@ namespace SnakeGameUnitTests
 {
     public class SnakePartUnitTests
     {
-        private SnakePart _snakeHead;
+        private Point _snakeHead;
 
         [SetUp]
         public void Setup()
