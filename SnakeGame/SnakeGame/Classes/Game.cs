@@ -8,17 +8,16 @@ namespace SnakeGame.Classes
     {
         public bool SnakeIsAlive = true;
 
+        private IScoreManager _scoreManager =
+            Factory.CreateScoreManager();
+
+        private IDiffilcultyHandler _diffilcultyHandler =
+            Factory.CreateDiffilcultyHandler();
+
+        private List<ISpawnable> _spawnables =
+            new List<ISpawnable>();
+
         private ISnake _snake;
-
-        private IScoreManager _scoreManager
-            = Factory.CreateScoreManager();
-
-        private IDiffilcultyHandler _diffilcultyHandler
-            = Factory.CreateDiffilcultyHandler();
-
-        private List<ISpawnable> spawnables 
-            = new List<ISpawnable>();
-
         private IPlayer _player;
         private bool _hasWalls;
         private int _snakeLength;
@@ -42,7 +41,7 @@ namespace SnakeGame.Classes
             _snake = Factory.CreateSnake(_snakeLength);
 
             // First apple spawn
-            spawnables.Add(FoodSpawner.Spawn("apple", _snake.Body));
+            _spawnables.Add(Spawner.SpawnApple(_snake.Body));
 
             GameLoop();
 
@@ -73,7 +72,7 @@ namespace SnakeGame.Classes
 
         private void TimerCallback(object o)
         {
-            spawnables.Add(FoodSpawner.Spawn("dollar", _snake.Body));
+            _spawnables.Add(Spawner.SpawnDollar( _snake.Body));
         }
 
         private void SetLegalDirection()
@@ -126,14 +125,7 @@ namespace SnakeGame.Classes
 
                 if (OnSpawnable())
                 {
-                    ISpawnable spawnable = GetSpawnable();
-                    spawnable.OnDevour(_snake, _scoreManager);
-                    spawnables.Remove(spawnable);
-
-                    if (spawnable is Apple)
-                    {
-                        spawnables.Add(FoodSpawner.Spawn("apple", _snake.Body));
-                    }
+                    SpawnablesHandler();
 
                     _diffilcultyHandler.CheckToRaiseLevel(_scoreManager.Score);
                 }
@@ -149,14 +141,29 @@ namespace SnakeGame.Classes
             }
         }
 
-        private bool OnSpawnable()
+        private void SpawnablesHandler()
         {
-            return spawnables.Any((s) => s.EqualsPosition(_snake.Head));
+            ISpawnable spawnable =
+                _spawnables.Find((s) => s.EqualsPosition(_snake.Head));
+
+            _spawnables.Remove(spawnable);
+
+            if (spawnable is Apple)
+            {
+                _snake.AddPart();
+                _scoreManager.Add(1);
+
+                Spawner.SpawnApple(_snake.Body);
+            }
+            else if (spawnable is Dollar)
+            {
+                _scoreManager.Add(5);
+            }
         }
 
-        private ISpawnable GetSpawnable()
+        private bool OnSpawnable()
         {
-            return spawnables.Find((s) => s.EqualsPosition(_snake.Head));
+            return _spawnables.Any((s) => s.EqualsPosition(_snake.Head));
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using SnakeGame.Classes;
-using SnakeGame.Interfaces;
+﻿using SnakeGame.Interfaces;
 using SnakeGame.Utils;
 
 namespace SnakeGame.Main
@@ -14,13 +13,13 @@ namespace SnakeGame.Main
             {
                 try
                 {
-                    IGameConfig gameConfig = Factory.CreateGameConfig();
+                    IGameConfigCapturer gameConfigCapturer =
+                        Factory.CreateGameConfigCapturer();
 
-                    (IPlayer player, bool hasWalls, int snakeLength)
-                                    = gameConfig.GetDataFromInput();
+                    IGameConfig gameConfig =
+                        gameConfigCapturer.GetDataFromInput();
 
-                    var game
-                    = Factory.CreateGame(player, hasWalls, snakeLength);
+                    var game = Factory.CreateGame(gameConfig);
 
                     game.MainProcess();
                 }

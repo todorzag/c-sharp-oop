@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Interfaces
 {
-    internal interface IGameConfig
+    public interface IGameConfig
     {
-        (IPlayer, bool, int) GetDataFromInput();
+        IPlayer Player { get; set; }
+        bool HasWalls { get; set; }
+        int SnakeLength { get; set; }
     }
 }

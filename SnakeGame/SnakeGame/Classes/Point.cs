@@ -6,7 +6,19 @@ namespace SnakeGame.Classes
     {
         public int X { get; set; }
         public int Y { get; set; }
-        public (int, int) Position { get => (X, Y); }
+        public (int, int) Position 
+        { 
+            get
+            {
+                return (X, Y);
+            }
+
+            set 
+            {
+                X = value.Item1;
+                Y = value.Item2;
+            }
+        }
 
         public Point(int x, int y)
         {

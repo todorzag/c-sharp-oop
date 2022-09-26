@@ -2,21 +2,19 @@
 
 namespace SnakeGame.Classes
 {
-    internal class MoveChecker
+    internal class SnakeMoveChecker
     {
         public static bool IsValid(List<IPoint> snakeBody, IPoint newPosition, bool gameHasWalls)
         {
             bool isValid = true;
 
+            // добави exception class
             if (CheckIfOutOfBounds(newPosition) && !gameHasWalls)
             {
                 isValid = false;
             }
-            else if (CheckIfOutOfBounds(newPosition) && gameHasWalls)
-            {
-                throw new Exception("End Game");
-            }
-            else if (CheckIfHitItself(snakeBody, newPosition)) 
+            else if (CheckIfOutOfBounds(newPosition) && gameHasWalls 
+                || CheckIfHitItself(snakeBody, newPosition))
             {
                 throw new Exception("End Game");
             }

@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Classes
 {
-    public class GameConfigCapturer : IGameConfig
+    public class GameConfigCapturer : IGameConfigCapturer
     {
-        public (IPlayer, bool, int) GetDataFromInput()
+        public IGameConfig GetDataFromInput()
         {
             try
             {
@@ -18,7 +18,8 @@ namespace SnakeGame.Classes
                 bool hasWalls = GetHasWalls();
                 int snakeLength = GetSnakeLength();
 
-                return (player, hasWalls, snakeLength);
+                return Factory.CreateGameConfig(
+                    player, hasWalls, snakeLength);
             }
             catch (ArgumentOutOfRangeException)
             {
@@ -56,7 +57,7 @@ namespace SnakeGame.Classes
             StandardMessages.SnakeLength();
             int SnakeLength = int.Parse(Console.ReadLine());
 
-            if(Validator.ValidateSnakeLength(SnakeLength) == false)
+            if (Validator.ValidateSnakeLength(SnakeLength) == false)
             {
                 throw new ArgumentOutOfRangeException(
                     "Snake length must be greater than 0 and less than 10!");

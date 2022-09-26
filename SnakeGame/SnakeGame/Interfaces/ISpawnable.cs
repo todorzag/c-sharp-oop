@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Classes
 {
-    interface ISpawnable : IPoint
-    {
-        public void Render();
-
-        public void OnDevour(ISnake snake, IScoreManager scoreManager);
-    }
+     public interface ISpawnable : IPoint
+     {
+        string Symbol { get; }
+     }
 }

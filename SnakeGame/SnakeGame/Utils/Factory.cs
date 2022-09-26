@@ -30,14 +30,20 @@ namespace SnakeGame.Utils
             return new Snake(length);
         }
 
-        public static IGameConfig CreateGameConfig()
+        public static IGameConfig CreateGameConfig(IPlayer player, bool hasWalls, int snakeLength)
+        {
+            return new GameConfig(player, hasWalls, snakeLength);
+        }
+
+        public static IGameConfigCapturer CreateGameConfigCapturer()
         {
             return new GameConfigCapturer();
         }
 
-        public static IGame CreateGame(IPlayer player, bool hasWalls, int snakeLength)
+        public static IGame CreateGame(IGameConfig gameConfig)
         {
-            return new Game(player, hasWalls, snakeLength);
+            return new Game(
+                gameConfig.Player, gameConfig.HasWalls, gameConfig.SnakeLength);
         }
 
         public static IPoint CreatePoint(int x, int y)

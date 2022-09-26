@@ -6,6 +6,8 @@ namespace SnakeGame.Classes
     public class Snake : ISnake
     {
         private (int, int) _lastBodyPartPosition;
+        private IPoint _newPosition =
+            Factory.CreatePoint(0, 0);
 
         public IPoint Head { get => Body[0]; }
         public List<IPoint> Body { get; private set; }
@@ -43,31 +45,29 @@ namespace SnakeGame.Classes
 
         public void MoveX(int value, bool gameHasWalls)
         {
-            IPoint newPosition 
-                = Factory.CreatePoint(Head.X + value, Head.Y);
+            _newPosition.Position = (Head.X + value, Head.Y);
 
-            if (MoveChecker.IsValid(Body, newPosition, gameHasWalls))
+            if (SnakeMoveChecker.IsValid(Body, _newPosition, gameHasWalls))
             {
                 Head.X += value;
             }
             else
             {
-                Teleport(newPosition);
+                Teleport();
             }
         }
 
         public void MoveY(int value, bool gameHasWalls)
         {
-            IPoint newPosition
-                = Factory.CreatePoint(Head.X, Head.Y + value);
+            _newPosition.Position = (Head.X, Head.Y + value);
 
-            if (MoveChecker.IsValid(Body, newPosition, gameHasWalls))
+            if (SnakeMoveChecker.IsValid(Body, _newPosition, gameHasWalls))
             {
                 Head.Y += value;
             }
             else
             {
-                Teleport(newPosition);
+                Teleport();
             }
         }
 
@@ -107,24 +107,24 @@ namespace SnakeGame.Classes
             Writer.WriteAt(y, x, " ");
         }
 
-        private void Teleport(IPoint newPosition)
+        private void Teleport()
         {
             int bottomBorderIndex = Console.WindowHeight - 1;
             int rightBorderIndex = Console.WindowWidth - 1;
 
-            if (newPosition.X < 0)
+            if (_newPosition.X < 0)
             {
                 Head.X = bottomBorderIndex;
             }
-            else if (newPosition.X > bottomBorderIndex)
+            else if (_newPosition.X > bottomBorderIndex)
             {
                 Head.X = 0;
             }
-            else if (newPosition.Y < 0)
+            else if (_newPosition.Y < 0)
             {
                 Head.Y = rightBorderIndex;
             }
-            else if (newPosition.Y > rightBorderIndex)
+            else if (_newPosition.Y > rightBorderIndex)
             {
                 Head.Y = 0;
             }
