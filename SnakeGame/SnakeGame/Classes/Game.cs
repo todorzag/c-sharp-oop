@@ -16,11 +16,13 @@ namespace SnakeGame.Classes
         private IDiffilcultyHandler _diffilcultyHandler
             = Factory.CreateDiffilcultyHandler();
 
+        private List<ISpawnable> spawnables 
+            = new List<ISpawnable>();
+
         private IPlayer _player;
         private bool _hasWalls;
         private int _snakeLength;
 
-        private IPoint _apple;
         private string _keyPressed;
         private Directions _direction = Directions.RightArrow;
 
@@ -33,14 +35,14 @@ namespace SnakeGame.Classes
 
         public void MainProcess()
         {
-            Console.CursorVisible = false; ;
+            Console.CursorVisible = false;
 
             Menu.StartingScreen();
 
             _snake = Factory.CreateSnake(_snakeLength);
 
             // First apple spawn
-            _apple = FoodSpawner.SpawnApple(_snake.Body);
+            spawnables.Add(FoodSpawner.Spawn("apple", _snake.Body));
 
             GameLoop();
 
@@ -50,6 +52,8 @@ namespace SnakeGame.Classes
 
         private void GameLoop()
         {
+            Timer timer = new Timer(TimerCallback, null, 0, 20000);
+
             while (SnakeIsAlive)
             {
                 if (_keyPressed == "Escape")
@@ -62,6 +66,13 @@ namespace SnakeGame.Classes
 
                 DirectionHandler();
             }
+
+            timer.Dispose();
+        }
+
+        private void TimerCallback(object o)
+        {
+            spawnables.Add(FoodSpawner.Spawn("dollar", _snake.Body));
         }
 
         private void SetLegalDirection()
@@ -112,12 +123,16 @@ namespace SnakeGame.Classes
                     break;
                 }
 
-                if (_apple.Equals(_snake.Head))
+                if (OnSpawnable())
                 {
-                    _snake.AddPart();
-                    _scoreManager.Add(1);
+                    ISpawnable spawnable = GetSpawnable();
+                    spawnable.OnDevour(_snake, _scoreManager);
+                    spawnables.Remove(spawnable);
 
-                    _apple = FoodSpawner.SpawnApple(_snake.Body);
+                    if (spawnable is Apple)
+                    {
+                        spawnables.Add(FoodSpawner.Spawn("apple", _snake.Body));
+                    }
 
                     _diffilcultyHandler.CheckToRaiseLevel(_scoreManager.Score);
                 }
@@ -131,6 +146,16 @@ namespace SnakeGame.Classes
             {
                 _keyPressed = Console.ReadKey(true).Key.ToString();
             }
+        }
+
+        private bool OnSpawnable()
+        {
+            return spawnables.Any((s) => s.EqualsPosition(_snake.Head));
+        }
+
+        private ISpawnable GetSpawnable()
+        {
+            return spawnables.Find((s) => s.EqualsPosition(_snake.Head));
         }
     }
 }

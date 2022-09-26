@@ -8,13 +8,9 @@ namespace SnakeGame.Utils
 {
     public class Validator
     {
-        public static void ValidateSnakeLength(int snakeLength)
+        public static bool ValidateSnakeLength(int snakeLength)
         {
-            if (snakeLength < 0 || snakeLength > 10)
-            {
-                throw new ArgumentOutOfRangeException
-                    ("Snake length must be greater than 0 and lesser than 10");
-            };
+            return snakeLength > 0 && snakeLength < 10;
         }
     }
 }

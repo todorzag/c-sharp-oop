@@ -44,5 +44,15 @@ namespace SnakeGame.Utils
         {
             return new Point(x, y);
         }
+
+        public static ISpawnable CreateApple(int x, int y)
+        {
+            return new Apple(x, y);
+        }
+
+        public static ISpawnable CreateDollar(int x, int y)
+        {
+            return new Dollar(x, y);
+        }
     }
 }

@@ -10,7 +10,14 @@ namespace SnakeGame.Classes
 {
     internal class FoodSpawner
     {
-        public static IPoint SpawnApple(List<IPoint> snakeBody)
+        public static Dictionary<string, Func<int,int, ISpawnable>> spawnables 
+            = new Dictionary<string, Func<int, int, ISpawnable>>
+            {
+                {"apple", (int x, int y) => Factory.CreateApple(x, y) },
+                {"dollar", (int x, int y) => Factory.CreateDollar(x, y) }
+            };
+
+        public static ISpawnable Spawn(string toSpawn, List<IPoint> snakeBody)
         {
             Random random = new Random();
 
@@ -19,13 +26,13 @@ namespace SnakeGame.Classes
                 int x = random.Next(1, Console.WindowHeight - 1);
                 int y = random.Next(1, Console.WindowWidth - 1);
 
-                IPoint apple = Factory.CreatePoint(x, y);
+                ISpawnable spawnable = spawnables[toSpawn](x, y);
 
-                if (!snakeBody.Any(x => x.Position == apple.Position))
+                if (!snakeBody.Any(x => x.Equals(spawnable)))
                 {
-                    Writer.WriteAt(y, x, "@");
+                    spawnable.Render();
 
-                    return apple;
+                    return spawnable;
                 }
             }
         }

@@ -14,7 +14,7 @@ namespace SnakeGame.Classes
             Y = y;
         }
 
-        public bool Equals(IPoint point)
+        public bool EqualsPosition(IPoint point)
         {
             return (Position == point.Position);
         }

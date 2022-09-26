@@ -12,15 +12,23 @@ namespace SnakeGame.Main
 
             Thread thread = new Thread(() =>
             {
-                IGameConfig gameConfig = Factory.CreateGameConfig();
+                try
+                {
+                    IGameConfig gameConfig = Factory.CreateGameConfig();
 
-                (IPlayer player, bool hasWalls, int snakeLength) 
-                = gameConfig.GetDataFromInput();
+                    (IPlayer player, bool hasWalls, int snakeLength)
+                                    = gameConfig.GetDataFromInput();
 
-                var game
-                = Factory.CreateGame(player, hasWalls, snakeLength);
+                    var game
+                    = Factory.CreateGame(player, hasWalls, snakeLength);
 
-                game.MainProcess();
+                    game.MainProcess();
+                }
+                catch (ArgumentOutOfRangeException e)
+                {
+                    StandardMessages.Error(e);
+                }
+                
             });
 
             thread.Start();
