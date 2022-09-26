@@ -153,7 +153,7 @@ namespace SnakeGame.Classes
                 _snake.AddPart();
                 _scoreManager.Add(1);
 
-                Spawner.SpawnApple(_snake.Body);
+                _spawnables.Add(Spawner.SpawnApple(_snake.Body));
             }
             else if (spawnable is Dollar)
             {
