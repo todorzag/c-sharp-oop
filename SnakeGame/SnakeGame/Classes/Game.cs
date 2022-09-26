@@ -52,6 +52,7 @@ namespace SnakeGame.Classes
 
         private void GameLoop()
         {
+            // Timer for Dollar spawnable
             Timer timer = new Timer(TimerCallback, null, 0, 20000);
 
             while (SnakeIsAlive)

@@ -11,11 +11,10 @@ namespace SnakeGame.Utils
     {
         private int _level = 1;
 
-        public int Miliseconds { get; set; }
+        public int Miliseconds { get; set; } = 75;
 
         public DiffilcultyHandler()
         {
-            Miliseconds = 75;
         }
 
         public void CheckToRaiseLevel(int score)

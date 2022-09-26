@@ -10,11 +10,10 @@ namespace SnakeGame.Utils
 {
     internal class ScoreManager : IScoreManager
     {
-        public int Score { get; set; }
+        public int Score { get; set; } = 0;
 
         public ScoreManager()
         {
-            Score = 0;
         }
 
         public void Add(int n)
