@@ -10,21 +10,21 @@ namespace SnakeGame.Classes
 {
     public class Spawner
     {
-        public static ISpawnable SpawnApple(List<IPoint> snakeBody)
+        public static IBonus SpawnApple(List<IPoint> snakeBody)
         {
-            ISpawnable spawnable = Factory.CreateApple(0, 0);
+            IBonus spawnable = Factory.CreateApple(0, 0);
 
             return SpawnObject(snakeBody, spawnable);
         }
 
-        public static ISpawnable SpawnDollar(List<IPoint> snakeBody)
+        public static IBonus SpawnDollar(List<IPoint> snakeBody)
         {
-            ISpawnable spawnable = Factory.CreateDollar(0, 0);
+            IBonus spawnable = Factory.CreateDollar(0, 0);
 
             return SpawnObject(snakeBody, spawnable);
         }
 
-        private static ISpawnable SpawnObject(List<IPoint> snakeBody, ISpawnable spawnable)
+        private static IBonus SpawnObject(List<IPoint> snakeBody, IBonus spawnable)
         {
             Random random = new Random();
 
@@ -33,9 +33,12 @@ namespace SnakeGame.Classes
                 int x = random.Next(1, Console.WindowHeight - 1);
                 int y = random.Next(1, Console.WindowWidth - 1);
 
+                bool outsideOfScoreRange = x > 0 && y > 10;
+
                 spawnable.Position = (x, y);
 
-                if (!snakeBody.Any(x => x.Equals(spawnable)))
+                if (!snakeBody.Any(x => x.Equals(spawnable))
+                    && outsideOfScoreRange)
                 {
                     Writer.WriteAt(y, x, spawnable.Symbol);
 

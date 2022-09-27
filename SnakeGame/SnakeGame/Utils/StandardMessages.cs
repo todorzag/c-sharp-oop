@@ -26,12 +26,12 @@ namespace SnakeGame.Utils
         public static void SnakeLength()
         {
             Console.WriteLine("How long would you like the snake to be?");
-            Console.WriteLine("Minimum of 0, Maximum of 10");
+            Console.WriteLine("Minimum of 1, Maximum of 10");
         }
 
-        public static void Error(Exception e)
+        public static void SnakeLengthError()
         {
-            Console.WriteLine(e.Message);
+            Console.WriteLine("Snake length must be greater than 0 and less than 10!");
         }
     }
 }

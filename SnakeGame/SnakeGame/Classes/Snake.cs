@@ -1,4 +1,5 @@
-﻿using SnakeGame.Interfaces;
+﻿using SnakeGame.Constants;
+using SnakeGame.Interfaces;
 using SnakeGame.Utils;
 
 namespace SnakeGame.Classes
@@ -43,7 +44,29 @@ namespace SnakeGame.Classes
             Body.Add(new Point(x, y));
         }
 
-        public void MoveX(int value, bool gameHasWalls)
+        public void Move(Directions direction, bool hasWalls)
+        {
+            switch (direction)
+            {
+                case Directions.RightArrow:
+                    MoveY(1, hasWalls);
+                    break;
+
+                case Directions.LeftArrow:
+                    MoveY(-1, hasWalls);
+                    break;
+
+                case Directions.DownArrow:
+                    MoveX(1, hasWalls);
+                    break;
+
+                case Directions.UpArrow:
+                    MoveX(-1, hasWalls);
+                    break;
+            }
+        }
+
+        private void MoveX(int value, bool gameHasWalls)
         {
             _newPosition.Position = (Head.X + value, Head.Y);
 
@@ -57,7 +80,7 @@ namespace SnakeGame.Classes
             }
         }
 
-        public void MoveY(int value, bool gameHasWalls)
+        private void MoveY(int value, bool gameHasWalls)
         {
             _newPosition.Position = (Head.X, Head.Y + value);
 

@@ -10,7 +10,7 @@ namespace SnakeGame.Utils
     {
         public static bool ValidateSnakeLength(int snakeLength)
         {
-            return snakeLength > 0 && snakeLength < 10;
+            return snakeLength > 0 && snakeLength < 11;
         }
     }
 }

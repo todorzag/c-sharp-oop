@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Constants
 {
-    enum Directions
+    public enum Directions
     {
         RightArrow,
         LeftArrow,

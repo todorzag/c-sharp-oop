@@ -1,4 +1,5 @@
-﻿using SnakeGame.Interfaces;
+﻿using SnakeGame.Constants;
+using SnakeGame.Interfaces;
 
 namespace SnakeGame.Classes
 {
@@ -9,8 +10,7 @@ namespace SnakeGame.Classes
         IPoint Head { get; }
 
         void AddPart();
-        void MoveX(int value, bool gameHasWalls);
-        void MoveY(int value, bool gameHasWalls);
+        void Move(Directions direction, bool hasWalls);
         void Render();
         void UpdateBodyPosition();
     }

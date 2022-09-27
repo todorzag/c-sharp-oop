@@ -23,9 +23,9 @@ namespace SnakeGame.Main
 
                     game.MainProcess();
                 }
-                catch (ArgumentOutOfRangeException e)
+                catch (ArgumentOutOfRangeException)
                 {
-                    StandardMessages.Error(e);
+                    StandardMessages.SnakeLengthError();
                 }
                 
             });

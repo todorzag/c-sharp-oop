@@ -18,6 +18,12 @@ namespace SnakeGame.Classes
             Console.Clear();
         }
 
+        public static void GameOverScreen(IScoreManager scoreManager)
+        {
+            Console.WriteLine(Logos.GameOverLogo);
+            scoreManager.RenderLogo();
+        }
+
         private static void PrintStartingLogo()
         {
             Console.Clear();
@@ -28,12 +34,6 @@ namespace SnakeGame.Classes
         {
             while (Console.KeyAvailable == false)
                 Thread.Sleep(250);
-        }
-
-        public static void GameOverScreen(IScoreManager scoreManager)
-        {
-            Console.WriteLine(Logos.GameOverLogo);
-            scoreManager.RenderLogo();
         }
     }
 }

@@ -14,9 +14,9 @@ namespace SnakeGame.Classes
         {
             try
             {
-                IPlayer player = GetPlayer();
-                bool hasWalls = GetHasWalls();
-                int snakeLength = GetSnakeLength();
+                IPlayer player = AskPlayer();
+                bool hasWalls = AskHasWalls();
+                int snakeLength = AskSnakeLength();
 
                 return Factory.CreateGameConfig(
                     player, hasWalls, snakeLength);
@@ -27,7 +27,7 @@ namespace SnakeGame.Classes
             }
         }
 
-        private IPlayer GetPlayer()
+        private IPlayer AskPlayer()
         {
             StandardMessages.PlayerFirstName();
             string firstName = Console.ReadLine();
@@ -38,7 +38,7 @@ namespace SnakeGame.Classes
             return Factory.CreatePlayer(firstName, lastName);
         }
 
-        private bool GetHasWalls()
+        private bool AskHasWalls()
         {
             StandardMessages.HasWalls();
             string answer = Console.ReadLine();
@@ -52,15 +52,14 @@ namespace SnakeGame.Classes
             return hasWalls;
         }
 
-        private int GetSnakeLength()
+        private int AskSnakeLength()
         {
             StandardMessages.SnakeLength();
             int SnakeLength = int.Parse(Console.ReadLine());
 
             if (Validator.ValidateSnakeLength(SnakeLength) == false)
             {
-                throw new ArgumentOutOfRangeException(
-                    "Snake length must be greater than 0 and less than 10!");
+                throw new ArgumentOutOfRangeException();
             };
 
             return SnakeLength;

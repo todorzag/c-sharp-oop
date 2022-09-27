@@ -8,12 +8,14 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Classes
 {
-    internal class Apple : Point , ISpawnable 
+    internal class Apple : Point, IBonus
     {
         public Apple(int x, int y) : base(x, y)
         {
         }
 
         public string Symbol { get => "@"; }
+
+        public int ScoreValue { get => 1; }
     }
 }

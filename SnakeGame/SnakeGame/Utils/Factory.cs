@@ -42,8 +42,7 @@ namespace SnakeGame.Utils
 
         public static IGame CreateGame(IGameConfig gameConfig)
         {
-            return new Game(
-                gameConfig.Player, gameConfig.HasWalls, gameConfig.SnakeLength);
+            return new Game(gameConfig);
         }
 
         public static IPoint CreatePoint(int x, int y)
@@ -51,12 +50,12 @@ namespace SnakeGame.Utils
             return new Point(x, y);
         }
 
-        public static ISpawnable CreateApple(int x, int y)
+        public static IBonus CreateApple(int x, int y)
         {
             return new Apple(x, y);
         }
 
-        public static ISpawnable CreateDollar(int x, int y)
+        public static IBonus CreateDollar(int x, int y)
         {
             return new Dollar(x, y);
         }

@@ -6,7 +6,7 @@ namespace SnakeGame.Classes
 {
     public class Game : IGame
     {
-        public bool SnakeIsAlive = true;
+        public bool snakeIsAlive = true;
 
         private IScoreManager _scoreManager =
             Factory.CreateScoreManager();
@@ -14,22 +14,18 @@ namespace SnakeGame.Classes
         private IDiffilcultyHandler _diffilcultyHandler =
             Factory.CreateDiffilcultyHandler();
 
-        private List<ISpawnable> _spawnables =
-            new List<ISpawnable>();
+        private List<IBonus> _bonuses =
+            new List<IBonus>();
 
         private ISnake _snake;
-        private IPlayer _player;
-        private bool _hasWalls;
-        private int _snakeLength;
+        private IGameConfig _config;
 
         private string _keyPressed;
         private Directions _direction = Directions.RightArrow;
 
-        public Game(IPlayer player, bool hasWalls, int snakeLength)
+        public Game(IGameConfig gameConfig)
         {
-            _player = player;
-            _hasWalls = hasWalls;
-            _snakeLength = snakeLength;
+            _config = gameConfig;
         }
 
         public void MainProcess()
@@ -38,33 +34,33 @@ namespace SnakeGame.Classes
 
             Menu.StartingScreen();
 
-            _snake = Factory.CreateSnake(_snakeLength);
+            _snake = Factory.CreateSnake(_config.SnakeLength);
 
             // First apple spawn
-            _spawnables.Add(Spawner.SpawnApple(_snake.Body));
+            _bonuses.Add(Spawner.SpawnApple(_snake.Body));
 
             GameLoop();
 
-            FileManager.SaveHighScore(_player, _scoreManager.Score);
+            FileManager.SaveHighScore(_config.Player, _scoreManager.Score);
             Menu.GameOverScreen(_scoreManager);
         }
 
         private void GameLoop()
         {
             // Timer for Dollar spawnable
-            Timer timer = new Timer(TimerCallback, null, 0, 20000);
+            Timer timer = new(TimerCallback, null, 0, 20000);
 
-            while (SnakeIsAlive)
+            while (snakeIsAlive)
             {
                 if (_keyPressed == "Escape")
                 {
-                    SnakeIsAlive = false;
+                    snakeIsAlive = false;
                     break;
                 }
 
                 SetLegalDirection();
 
-                DirectionHandler();
+                OnAction();
             }
 
             timer.Dispose();
@@ -72,7 +68,7 @@ namespace SnakeGame.Classes
 
         private void TimerCallback(object o)
         {
-            _spawnables.Add(Spawner.SpawnDollar( _snake.Body));
+            _bonuses.Add(Spawner.SpawnDollar( _snake.Body));
         }
 
         private void SetLegalDirection()
@@ -83,29 +79,8 @@ namespace SnakeGame.Classes
             }
         }
 
-        private void DirectionHandler()
-        {
-            switch (_direction)
-            {
-                case Directions.RightArrow:
-                    MoveSnake(1, _snake.MoveY);
-                    break;
-
-                case Directions.LeftArrow:
-                    MoveSnake(-1, _snake.MoveY);
-                    break;
-
-                case Directions.DownArrow:
-                    MoveSnake(1, _snake.MoveX);
-                    break;
-
-                case Directions.UpArrow:
-                    MoveSnake(-1, _snake.MoveX);
-                    break;
-            }
-        }
-
-        private void MoveSnake(int directionNum, Action<int, bool> moveMethod)
+        // Move to Snake
+        private void OnAction()
         {
             while (Console.KeyAvailable == false)
             {
@@ -115,15 +90,15 @@ namespace SnakeGame.Classes
 
                 try
                 {
-                    moveMethod(directionNum, _hasWalls);
+                    _snake.Move(_direction, _config.HasWalls);
                 }
-                catch (Exception)
+                catch (GameEndException)
                 {
-                    SnakeIsAlive = false;
+                    snakeIsAlive = false;
                     break;
                 }
 
-                if (OnSpawnable())
+                if (OnBonus())
                 {
                     SpawnablesHandler();
 
@@ -135,7 +110,7 @@ namespace SnakeGame.Classes
                 Thread.Sleep(_diffilcultyHandler.Miliseconds);
             }
 
-            if (SnakeIsAlive)
+            if (snakeIsAlive)
             {
                 _keyPressed = Console.ReadKey(true).Key.ToString();
             }
@@ -143,27 +118,32 @@ namespace SnakeGame.Classes
 
         private void SpawnablesHandler()
         {
-            ISpawnable spawnable =
-                _spawnables.Find((s) => s.EqualsPosition(_snake.Head));
+            IBonus bonus =
+                _bonuses.Find((s) => s.EqualsPosition(_snake.Head));
 
-            _spawnables.Remove(spawnable);
+            _bonuses.Remove(bonus);
 
-            if (spawnable is Apple)
+            // Interfaces for add snake and and score (different type bonus)
+            // checker for max length
+            // add for maximum length width * heigth
+
+            if (bonus is Apple)
             {
                 _snake.AddPart();
                 _scoreManager.Add(1);
 
-                _spawnables.Add(Spawner.SpawnApple(_snake.Body));
+                _bonuses.Add(Spawner.SpawnApple(_snake.Body));
             }
-            else if (spawnable is Dollar)
+            else if (bonus is Dollar)
             {
                 _scoreManager.Add(5);
             }
         }
 
-        private bool OnSpawnable()
+        // In Snake?
+        private bool OnBonus()
         {
-            return _spawnables.Any((s) => s.EqualsPosition(_snake.Head));
+            return _bonuses.Any((s) => s.EqualsPosition(_snake.Head));
         }
     }
 }
