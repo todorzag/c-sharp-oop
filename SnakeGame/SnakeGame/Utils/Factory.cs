@@ -50,12 +50,12 @@ namespace SnakeGame.Utils
             return new Point(x, y);
         }
 
-        public static IBonus CreateApple(int x, int y)
+        public static IBasicBonus CreateApple(int x, int y)
         {
             return new Apple(x, y);
         }
 
-        public static IBonus CreateDollar(int x, int y)
+        public static IBasicBonus CreateDollar(int x, int y)
         {
             return new Dollar(x, y);
         }

@@ -1,6 +1,6 @@
 ﻿namespace SnakeGame.Interfaces
 {
-    internal interface IScoreManager
+    public interface IScoreManager
     {
         int Score { get; set; }
 

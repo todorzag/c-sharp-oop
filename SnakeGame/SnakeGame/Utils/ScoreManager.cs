@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Utils
 {
+
+    // IRenderable
     internal class ScoreManager : IScoreManager
     {
         public int Score { get; set; } = 0;

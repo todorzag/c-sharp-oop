@@ -14,8 +14,11 @@ namespace SnakeGame.Classes
         private IDiffilcultyHandler _diffilcultyHandler =
             Factory.CreateDiffilcultyHandler();
 
-        private List<IBonus> _bonuses =
-            new List<IBonus>();
+        private List<IBasicBonus> _basicBonuses =
+            new List<IBasicBonus>();
+
+        private List<IComplexBonus> _complexBonuses =
+            new List<IComplexBonus>();
 
         private ISnake _snake;
         private IGameConfig _config;
@@ -37,7 +40,7 @@ namespace SnakeGame.Classes
             _snake = Factory.CreateSnake(_config.SnakeLength);
 
             // First apple spawn
-            _bonuses.Add(Spawner.SpawnApple(_snake.Body));
+            _basicBonuses.Add(Apple.Spawn(_snake.Body));
 
             GameLoop();
 
@@ -68,7 +71,7 @@ namespace SnakeGame.Classes
 
         private void TimerCallback(object o)
         {
-            _bonuses.Add(Spawner.SpawnDollar( _snake.Body));
+            _basicBonuses.Add(Dollar.Spawn(_snake.Body));
         }
 
         private void SetLegalDirection()
@@ -98,9 +101,21 @@ namespace SnakeGame.Classes
                     break;
                 }
 
-                if (OnBonus())
+                if (OnBasicBonus() || OnComplexBonus())
                 {
-                    SpawnablesHandler();
+                    IBasicBonus bonus = GetBonus();
+
+                    _scoreManager.Add(bonus.ScoreValue);
+
+                    if (OnBasicBonus())
+                    {
+                        BonusesEngine.BasicBonus(_basicBonuses, _scoreManager, _snake);
+                    }
+                    else if (OnComplexBonus())
+                    {
+                        BonusesEngine.ComplexBonus(_complexBonuses, _scoreManager, _snake);
+                    }
+                    
 
                     _diffilcultyHandler.CheckToRaiseLevel(_scoreManager.Score);
                 }
@@ -116,34 +131,29 @@ namespace SnakeGame.Classes
             }
         }
 
-        private void SpawnablesHandler()
+        // In Snake?
+        private bool OnBasicBonus()
         {
-            IBonus bonus =
-                _bonuses.Find((s) => s.EqualsPosition(_snake.Head));
-
-            _bonuses.Remove(bonus);
-
-            // Interfaces for add snake and and score (different type bonus)
-            // checker for max length
-            // add for maximum length width * heigth
-
-            if (bonus is Apple)
-            {
-                _snake.AddPart();
-                _scoreManager.Add(1);
-
-                _bonuses.Add(Spawner.SpawnApple(_snake.Body));
-            }
-            else if (bonus is Dollar)
-            {
-                _scoreManager.Add(5);
-            }
+            return _basicBonuses.Any((s) => s.EqualsPosition(_snake.Head));
         }
 
-        // In Snake?
-        private bool OnBonus()
+        private bool OnComplexBonus()
         {
-            return _bonuses.Any((s) => s.EqualsPosition(_snake.Head));
+            return _complexBonuses.Any((s) => s.EqualsPosition(_snake.Head));
+        }
+
+        private IBasicBonus GetBonus()
+        {
+            IBasicBonus bonus =
+                _basicBonuses.Find((s) => s.EqualsPosition(_snake.Head));
+
+            if (bonus == null)
+            {
+                bonus =
+                    _complexBonuses.Find((s) => s.EqualsPosition(_snake.Head));
+            }
+
+            return bonus;
         }
     }
 }
