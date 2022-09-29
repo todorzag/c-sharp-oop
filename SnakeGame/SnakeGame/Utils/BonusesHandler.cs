@@ -12,10 +12,11 @@ namespace SnakeGame.Classes
     {
         private BonusesHandler() { }
 
-        private static BonusesHandler instance = null;
-
         private static List<IBonus> _bonuses =
             new List<IBonus>();
+
+        private static BonusesHandler instance = null;
+
         public static BonusesHandler Instance
         {
             get
@@ -34,8 +35,9 @@ namespace SnakeGame.Classes
             IBonus bonus = GetBonus(snake.Head);
 
             Remove(bonus);
+
             scoreManager.Add(bonus.ScoreValue);
-            bonus.Consume(snake);
+            bonus.PerformConsume(snake);
         }
 
         public void Add(IBonus bonus)

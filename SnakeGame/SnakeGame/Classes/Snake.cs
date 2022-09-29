@@ -4,7 +4,7 @@ using SnakeGame.Utils;
 
 namespace SnakeGame.Classes
 {
-    public class Snake : ISnake
+    public class Snake : ISnake, IRenderable
     {
         private (int, int) _lastBodyPartPosition;
         private IPoint _newPosition =
@@ -20,11 +20,6 @@ namespace SnakeGame.Classes
 
         public IPoint Head { get => Body[0]; }
         public List<IPoint> Body { get; private set; }
-
-        public (int, int) CurrentPosition
-        {
-            get => Head.Position;
-        }
 
         public Snake(int lenght)
         {

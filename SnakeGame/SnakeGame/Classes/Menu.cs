@@ -6,10 +6,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace SnakeGame.Classes
 {
-    internal class Menu
+    internal class ScreenRenderer
     {
         public static void StartingScreen()
         {
@@ -21,7 +22,10 @@ namespace SnakeGame.Classes
         public static void GameOverScreen(IScoreManager scoreManager)
         {
             Console.WriteLine(Logos.GameOverLogo);
-            scoreManager.RenderLogo();
+
+            Console.WriteLine(Logos.ScoreWordLogo);
+            Console.WriteLine(Logos.GenerateScoreLogo(scoreManager.Score));
+            Console.WriteLine();
         }
 
         private static void PrintStartingLogo()

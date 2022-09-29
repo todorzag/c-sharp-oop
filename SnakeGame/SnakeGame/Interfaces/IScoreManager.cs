@@ -7,7 +7,5 @@
         void Add(int n);
 
         void Render();
-
-        void RenderLogo();
     }
 }

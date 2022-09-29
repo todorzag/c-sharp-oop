@@ -27,12 +27,5 @@ namespace SnakeGame.Utils
         {
             Writer.WriteAt(0, 0, $"Score: {Score}");
         }
-
-        public void RenderLogo()
-        {
-            Console.WriteLine(Logos.ScoreWordLogo);
-            Console.WriteLine(Logos.GenerateScoreLogo(Score));
-            Console.WriteLine();
-        }
     }
 }

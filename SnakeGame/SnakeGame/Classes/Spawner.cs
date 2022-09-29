@@ -12,7 +12,7 @@ namespace SnakeGame.Classes
     {
         public static IBonus Spawn(
             List<IPoint> snakeBody,
-            IOnConsume onConsumeStrategy)
+            IBonus bonus)
         {
             Random random = new Random();
 
@@ -23,17 +23,12 @@ namespace SnakeGame.Classes
 
                 bool outsideOfScoreRange = x > 0 && y > 10;
 
-                IBonus bonus = new Bonus(
-                    x,
-                    y,
-                    onConsumeStrategy.Symbol,
-                    onConsumeStrategy.ScoreValue,
-                    onConsumeStrategy);
+                bonus.Position = (x, y);
 
-                if (!snakeBody.Any(x => x.Equals(bonus))
+                if (!snakeBody.Any(x => x.EqualsPosition(bonus))
                     && outsideOfScoreRange)
                 {
-                    Writer.WriteAt(y, x, bonus.Symbol);
+                    bonus.Render();
 
                     return bonus;
                 }

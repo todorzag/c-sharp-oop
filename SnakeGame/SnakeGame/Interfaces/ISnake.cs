@@ -7,7 +7,6 @@ namespace SnakeGame.Classes
     {
         int MaxLength { get; }
         List<IPoint> Body { get; }
-        (int, int) CurrentPosition { get; }
         IPoint Head { get; }
 
         void AddPart();

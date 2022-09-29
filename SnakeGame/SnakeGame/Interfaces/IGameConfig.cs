@@ -10,6 +10,6 @@ namespace SnakeGame.Interfaces
     {
         IPlayer Player { get; set; }
         bool HasWalls { get; set; }
-        int SnakeLength { get; set; }
+        int InitalSnakeLength { get; set; }
     }
 }

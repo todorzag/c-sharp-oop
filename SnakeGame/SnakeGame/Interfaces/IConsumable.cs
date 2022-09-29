@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Interfaces
 {
-    public interface IOnConsume
+    public interface IConsumable
     {
-        public string Symbol { get; }
-        public int ScoreValue { get; }
-        void Consume(object obj);
+        void PerformConsume(object obj);
     }
 }

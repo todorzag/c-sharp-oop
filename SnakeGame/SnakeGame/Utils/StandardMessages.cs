@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Utils
 {
-    public class StandardMessages
+    public class StandardMessagesWriter
     {
         public static void PlayerFirstName()
         {
@@ -29,7 +29,7 @@ namespace SnakeGame.Utils
             Console.WriteLine("Minimum of 1, Maximum of 10");
         }
 
-        public static void SnakeLengthError()
+        public static void InitalSnakeLengthError()
         {
             Console.WriteLine("Snake length must be greater than 0 and less than 10!");
         }

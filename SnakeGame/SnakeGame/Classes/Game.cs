@@ -1,4 +1,6 @@
-﻿using SnakeGame.Constants;
+﻿using SnakeGame.Classes.Bonuses;
+using SnakeGame.Classes.Strategies;
+using SnakeGame.Constants;
 using SnakeGame.Interfaces;
 using SnakeGame.Utils;
 
@@ -18,7 +20,8 @@ namespace SnakeGame.Classes
         private string _keyPressed;
         private Directions _direction = Directions.RightArrow;
 
-        public Game(IGameConfig gameConfig, 
+        public Game(
+            IGameConfig gameConfig, 
             IDiffilcultyHandler diffilcultyHandler,
             IBonusesHandler bonusesHandler,
             IScoreManager scoreManager,
@@ -35,21 +38,25 @@ namespace SnakeGame.Classes
         {
             Console.CursorVisible = false;
 
-            Menu.StartingScreen();
+            ScreenRenderer.StartingScreen();
 
-            // First apple spawn
-            _bonusesHandler.Add(Spawner.Spawn(_snake.Body, new AppleStrategy()));
+            // Initial apple spawn
+            _bonusesHandler.Add(
+                Spawner.Spawn(
+                    _snake.Body, Factory.CreateApple()
+                    ));
 
             GameLoop();
 
             FileManager.SaveHighScore(_config.Player, _scoreManager.Score);
-            Menu.GameOverScreen(_scoreManager);
+            ScreenRenderer.GameOverScreen(_scoreManager);
         }
 
         private void GameLoop()
         {
             // Timer for Dollar spawnable
-            Timer timer = new(TimerCallback, null, 0, 20000);
+            Timer dollarTimer = new(DollarTimerCallback, null, 0, 20000);
+            Timer crossTimer = new(CrossTimerCallback, null, 5000, 10000);
 
             while (snakeIsAlive)
             {
@@ -64,12 +71,24 @@ namespace SnakeGame.Classes
                 OnAction();
             }
 
-            timer.Dispose();
+            dollarTimer.Dispose();
+            crossTimer.Dispose();
         }
 
-        private void TimerCallback(object o)
+        private void DollarTimerCallback(object o)
         {
-            _bonusesHandler.Add(Spawner.Spawn(_snake.Body, new DollarStrategy()));
+            _bonusesHandler.Add(
+                Spawner.Spawn(
+                    _snake.Body, Factory.CreateDollar()
+                    ));
+        }
+
+        private void CrossTimerCallback(object o)
+        {
+            _bonusesHandler.Add(
+                Spawner.Spawn(
+                    _snake.Body, Factory.CreateCross()
+                    ));
         }
 
         private void SetLegalDirection()

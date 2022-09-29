@@ -29,10 +29,10 @@ namespace SnakeGame.Classes
 
         private IPlayer AskPlayer()
         {
-            StandardMessages.PlayerFirstName();
+            StandardMessagesWriter.PlayerFirstName();
             string firstName = Console.ReadLine();
 
-            StandardMessages.PlayerLastName();
+            StandardMessagesWriter.PlayerLastName();
             string lastName = Console.ReadLine();
 
             return Factory.CreatePlayer(firstName, lastName);
@@ -40,7 +40,7 @@ namespace SnakeGame.Classes
 
         private bool AskHasWalls()
         {
-            StandardMessages.HasWalls();
+            StandardMessagesWriter.HasWalls();
             string answer = Console.ReadLine();
             bool hasWalls = false;
 
@@ -54,10 +54,10 @@ namespace SnakeGame.Classes
 
         private int AskSnakeLength()
         {
-            StandardMessages.SnakeLength();
+            StandardMessagesWriter.SnakeLength();
             int SnakeLength = int.Parse(Console.ReadLine());
 
-            if (Validator.ValidateSnakeLength(SnakeLength) == false)
+            if (Validator.ValidateInitalSnakeLength(SnakeLength) == false)
             {
                 throw new ArgumentOutOfRangeException();
             };

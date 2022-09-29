@@ -1,4 +1,5 @@
 ﻿using SnakeGame.Interfaces;
+using SnakeGame.Utils;
 
 namespace SnakeGame.Classes
 {
@@ -9,14 +10,13 @@ namespace SnakeGame.Classes
         {
             bool isValid = true;
 
-            // добави exception class
-            if (CheckIfOutOfBounds(newPosition) && !gameHasWalls)
+            if (!gameHasWalls && CheckIfOutOfBounds(newPosition))
             {
                 isValid = false;
             }
-            else if (CheckIfOutOfBounds(newPosition) && gameHasWalls 
+            else if (CheckIfOutOfBounds(newPosition) && gameHasWalls
                 || CheckIfHitItself(snake.Body, newPosition)
-                || snake.Body.Count == snake.MaxLength)
+                || Validator.ValidateMaxSnakeLength(snake))
             {
                 throw new GameEndException();
             }
