@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Classes
 {
-     public interface IBasicBonus : IPoint
+     public interface IBonus : IPoint, IOnConsume
      {
-        string Symbol { get; }
-        int ScoreValue { get; }
      }
 }

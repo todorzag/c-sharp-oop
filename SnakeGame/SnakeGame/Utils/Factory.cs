@@ -40,9 +40,14 @@ namespace SnakeGame.Utils
             return new GameConfigCapturer();
         }
 
-        public static IGame CreateGame(IGameConfig gameConfig)
+        public static IGame CreateGame(
+            IGameConfig gameConfig,
+            IDiffilcultyHandler diffilcultyHandler,
+            IBonusesHandler bonusesHandler,
+            IScoreManager scoreManager,
+            ISnake snake)
         {
-            return new Game(gameConfig);
+            return new Game(gameConfig , diffilcultyHandler, bonusesHandler, scoreManager, snake);
         }
 
         public static IPoint CreatePoint(int x, int y)
@@ -50,14 +55,9 @@ namespace SnakeGame.Utils
             return new Point(x, y);
         }
 
-        public static IBasicBonus CreateApple(int x, int y)
+        public static IBonusesHandler GetBonusesHandler()
         {
-            return new Apple(x, y);
-        }
-
-        public static IBasicBonus CreateDollar(int x, int y)
-        {
-            return new Dollar(x, y);
+            return BonusesHandler.Instance;
         }
     }
 }

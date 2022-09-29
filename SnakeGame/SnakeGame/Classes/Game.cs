@@ -8,27 +8,27 @@ namespace SnakeGame.Classes
     {
         public bool snakeIsAlive = true;
 
-        private IScoreManager _scoreManager =
-            Factory.CreateScoreManager();
-
-        private IDiffilcultyHandler _diffilcultyHandler =
-            Factory.CreateDiffilcultyHandler();
-
-        private List<IBasicBonus> _basicBonuses =
-            new List<IBasicBonus>();
-
-        private List<IComplexBonus> _complexBonuses =
-            new List<IComplexBonus>();
-
+        private IScoreManager _scoreManager;
+        private IDiffilcultyHandler _diffilcultyHandler;
+        private IBonusesHandler _bonusesHandler;
         private ISnake _snake;
+
         private IGameConfig _config;
 
         private string _keyPressed;
         private Directions _direction = Directions.RightArrow;
 
-        public Game(IGameConfig gameConfig)
+        public Game(IGameConfig gameConfig, 
+            IDiffilcultyHandler diffilcultyHandler,
+            IBonusesHandler bonusesHandler,
+            IScoreManager scoreManager,
+            ISnake snake)
         {
             _config = gameConfig;
+            _diffilcultyHandler = diffilcultyHandler;
+            _bonusesHandler = bonusesHandler;
+            _scoreManager = scoreManager;
+            _snake = snake;
         }
 
         public void MainProcess()
@@ -37,10 +37,8 @@ namespace SnakeGame.Classes
 
             Menu.StartingScreen();
 
-            _snake = Factory.CreateSnake(_config.SnakeLength);
-
             // First apple spawn
-            _basicBonuses.Add(Apple.Spawn(_snake.Body));
+            _bonusesHandler.Add(Spawner.Spawn(_snake.Body, new AppleStrategy()));
 
             GameLoop();
 
@@ -71,7 +69,7 @@ namespace SnakeGame.Classes
 
         private void TimerCallback(object o)
         {
-            _basicBonuses.Add(Dollar.Spawn(_snake.Body));
+            _bonusesHandler.Add(Spawner.Spawn(_snake.Body, new DollarStrategy()));
         }
 
         private void SetLegalDirection()
@@ -82,7 +80,6 @@ namespace SnakeGame.Classes
             }
         }
 
-        // Move to Snake
         private void OnAction()
         {
             while (Console.KeyAvailable == false)
@@ -101,21 +98,9 @@ namespace SnakeGame.Classes
                     break;
                 }
 
-                if (OnBasicBonus() || OnComplexBonus())
+                if (_bonusesHandler.OnBonus(_snake.Head))
                 {
-                    IBasicBonus bonus = GetBonus();
-
-                    _scoreManager.Add(bonus.ScoreValue);
-
-                    if (OnBasicBonus())
-                    {
-                        BonusesEngine.BasicBonus(_basicBonuses, _scoreManager, _snake);
-                    }
-                    else if (OnComplexBonus())
-                    {
-                        BonusesEngine.ComplexBonus(_complexBonuses, _scoreManager, _snake);
-                    }
-                    
+                    _bonusesHandler.Handle(_snake, _scoreManager);
 
                     _diffilcultyHandler.CheckToRaiseLevel(_scoreManager.Score);
                 }
@@ -129,31 +114,6 @@ namespace SnakeGame.Classes
             {
                 _keyPressed = Console.ReadKey(true).Key.ToString();
             }
-        }
-
-        // In Snake?
-        private bool OnBasicBonus()
-        {
-            return _basicBonuses.Any((s) => s.EqualsPosition(_snake.Head));
-        }
-
-        private bool OnComplexBonus()
-        {
-            return _complexBonuses.Any((s) => s.EqualsPosition(_snake.Head));
-        }
-
-        private IBasicBonus GetBonus()
-        {
-            IBasicBonus bonus =
-                _basicBonuses.Find((s) => s.EqualsPosition(_snake.Head));
-
-            if (bonus == null)
-            {
-                bonus =
-                    _complexBonuses.Find((s) => s.EqualsPosition(_snake.Head));
-            }
-
-            return bonus;
         }
     }
 }

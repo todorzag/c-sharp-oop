@@ -1,4 +1,5 @@
-﻿using SnakeGame.Interfaces;
+﻿using SnakeGame.Classes;
+using SnakeGame.Interfaces;
 using SnakeGame.Utils;
 
 namespace SnakeGame.Main
@@ -19,7 +20,24 @@ namespace SnakeGame.Main
                     IGameConfig gameConfig =
                         gameConfigCapturer.GetDataFromInput();
 
-                    var game = Factory.CreateGame(gameConfig);
+                    IDiffilcultyHandler diffilcultyHandler =
+                        Factory.CreateDiffilcultyHandler();
+
+                    IBonusesHandler bonusesHandler =
+                        Factory.GetBonusesHandler();
+
+                    IScoreManager scoreManager =
+                        Factory.CreateScoreManager();
+
+                    ISnake snake =
+                        Factory.CreateSnake(gameConfig.SnakeLength);
+
+                    var game = Factory.CreateGame(
+                        gameConfig,
+                        diffilcultyHandler,
+                        bonusesHandler,
+                        scoreManager,
+                        snake);
 
                     game.MainProcess();
                 }

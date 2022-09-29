@@ -8,42 +8,19 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Classes
 {
-    internal class Apple : ComplexBonus
+    internal class AppleStrategy : IOnConsume
     {
-        public Apple(int x, int y) : base(x, y)
+        public string Symbol { get => "@";}
+
+        public int ScoreValue { get => 1;}
+
+        public void Consume(object obj)
         {
-        }
-
-        public override string Symbol { get => "@"; }
-
-        public override int ScoreValue { get => 1; }
-
-        public static IComplexBonus Spawn(List<IPoint> snakeBody)
-        {
-            Random random = new Random();
-
-            while (true)
-            {
-                int x = random.Next(1, Console.WindowHeight - 1);
-                int y = random.Next(1, Console.WindowWidth - 1);
-
-                bool outsideOfScoreRange = x > 0 && y > 10;
-
-                IComplexBonus apple = new Apple(x, y);
-
-                if (!snakeBody.Any(x => x.Equals(apple))
-                    && outsideOfScoreRange)
-                {
-                    Writer.WriteAt(y, x, apple.Symbol);
-
-                    return apple;
-                }
-            }
-        }
-
-        public override void OnDevour(ISnake snake)
-        {
+            ISnake snake = (ISnake)obj;
             snake.AddPart();
+
+            IBonusesHandler bonusesHandler = Factory.GetBonusesHandler();
+            bonusesHandler.Add(Spawner.Spawn(snake.Body, new AppleStrategy()));
         }
     }
 }

@@ -5,7 +5,7 @@ namespace SnakeGame.Classes
     internal class SnakeMoveChecker
     {
         public static bool IsValid(
-            List<IPoint> snakeBody, IPoint newPosition, bool gameHasWalls)
+            ISnake snake, IPoint newPosition, bool gameHasWalls)
         {
             bool isValid = true;
 
@@ -15,7 +15,8 @@ namespace SnakeGame.Classes
                 isValid = false;
             }
             else if (CheckIfOutOfBounds(newPosition) && gameHasWalls 
-                || CheckIfHitItself(snakeBody, newPosition))
+                || CheckIfHitItself(snake.Body, newPosition)
+                || snake.Body.Count == snake.MaxLength)
             {
                 throw new GameEndException();
             }

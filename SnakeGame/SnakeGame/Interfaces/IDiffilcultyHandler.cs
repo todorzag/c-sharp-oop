@@ -1,6 +1,6 @@
 ﻿namespace SnakeGame.Interfaces
 {
-    internal interface IDiffilcultyHandler
+    public interface IDiffilcultyHandler
     {
         int Miliseconds { get; set; }
 

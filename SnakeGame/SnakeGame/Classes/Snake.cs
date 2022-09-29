@@ -10,6 +10,14 @@ namespace SnakeGame.Classes
         private IPoint _newPosition =
             Factory.CreatePoint(0, 0);
 
+        public int MaxLength 
+        { 
+            get
+            {
+                return Console.WindowHeight - 1 * Console.WindowWidth - 1;
+            }
+        }
+
         public IPoint Head { get => Body[0]; }
         public List<IPoint> Body { get; private set; }
 
@@ -70,7 +78,7 @@ namespace SnakeGame.Classes
         {
             _newPosition.Position = (Head.X + value, Head.Y);
 
-            if (SnakeMoveChecker.IsValid(Body, _newPosition, gameHasWalls))
+            if (SnakeMoveChecker.IsValid(this, _newPosition, gameHasWalls))
             {
                 Head.X += value;
             }
@@ -84,7 +92,7 @@ namespace SnakeGame.Classes
         {
             _newPosition.Position = (Head.X, Head.Y + value);
 
-            if (SnakeMoveChecker.IsValid(Body, _newPosition, gameHasWalls))
+            if (SnakeMoveChecker.IsValid(this, _newPosition, gameHasWalls))
             {
                 Head.Y += value;
             }
