@@ -75,15 +75,15 @@ namespace SnakeGame.Classes
         private void EnableTimers()
         {
             // Timers for Bonuses
-            _timers.Add(new Timer ((e) => TimerCallback(Factory.CreateDollar), null, 1, 20000));
-            _timers.Add(new Timer((e) => TimerCallback(Factory.CreateCross), null, 5000, 10000));
+            _timers.Add(new Timer ((e) => TimerCallback(Factory.CreateDollar()), null, 1, 20000));
+            _timers.Add(new Timer((e) => TimerCallback(Factory.CreateCross()), null, 7000, 14000));
         }
 
-        private void TimerCallback(Func<IBonus> func)
+        private void TimerCallback(IBonus bonus)
         {
             _bonusesHandler.Add(
                 Spawner.Spawn(
-                    _snake.Body, func()
+                    _snake.Body, bonus
                     ));
         }
 
