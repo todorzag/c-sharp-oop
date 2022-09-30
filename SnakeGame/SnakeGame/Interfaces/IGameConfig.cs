@@ -8,8 +8,10 @@ namespace SnakeGame.Interfaces
 {
     public interface IGameConfig
     {
-        IPlayer Player { get; set; }
-        bool HasWalls { get; set; }
-        int InitalSnakeLength { get; set; }
+        static IPlayer Player { get; set; }
+        static bool HasWalls { get; set; }
+        static int InitalSnakeLength { get; set; }
+
+        void SetConfigData(IPlayer player, bool hasWalls, int snakeLength);
     }
 }

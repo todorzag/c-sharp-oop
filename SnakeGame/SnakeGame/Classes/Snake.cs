@@ -44,36 +44,36 @@ namespace SnakeGame.Classes
         public void AddPart()
         {
             (int x, int y) = _lastBodyPartPosition;
-            Body.Add(new Point(x, y));
+            Body.Add(Factory.CreatePoint(x, y));
         }
 
-        public void Move(Directions direction, bool hasWalls)
+        public void Move(Directions direction)
         {
             switch (direction)
             {
                 case Directions.RightArrow:
-                    MoveY(1, hasWalls);
+                    MoveY(1);
                     break;
 
                 case Directions.LeftArrow:
-                    MoveY(-1, hasWalls);
+                    MoveY(-1);
                     break;
 
                 case Directions.DownArrow:
-                    MoveX(1, hasWalls);
+                    MoveX(1);
                     break;
 
                 case Directions.UpArrow:
-                    MoveX(-1, hasWalls);
+                    MoveX(-1);
                     break;
             }
         }
 
-        private void MoveX(int value, bool gameHasWalls)
+        private void MoveX(int value)
         {
             _newPosition.Position = (Head.X + value, Head.Y);
 
-            if (SnakeMoveChecker.IsValid(this, _newPosition, gameHasWalls))
+            if (SnakeMoveChecker.IsValid(this, _newPosition))
             {
                 Head.X += value;
             }
@@ -83,11 +83,11 @@ namespace SnakeGame.Classes
             }
         }
 
-        private void MoveY(int value, bool gameHasWalls)
+        private void MoveY(int value)
         {
             _newPosition.Position = (Head.X, Head.Y + value);
 
-            if (SnakeMoveChecker.IsValid(this, _newPosition, gameHasWalls))
+            if (SnakeMoveChecker.IsValid(this, _newPosition))
             {
                 Head.Y += value;
             }
@@ -117,7 +117,7 @@ namespace SnakeGame.Classes
 
             for (int i = snakeLenght; i >= 0; i--)
             {
-                snakeParts.Add(new Point(1, i));
+                snakeParts.Add(Factory.CreatePoint(1,i));
             }
 
             return snakeParts;

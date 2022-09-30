@@ -14,8 +14,6 @@ namespace SnakeGame.Main
             {
                 try
                 {
-                    
-
                     var game = Factory.CreateGame();
 
                     game.MainProcess();

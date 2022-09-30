@@ -8,9 +8,7 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Utils
 {
-
-    // IRenderable
-    internal class ScoreManager : IScoreManager
+    internal class ScoreManager : IScoreManager, IRenderable
     {
         public int Score { get; set; } = 0;
 
@@ -26,6 +24,14 @@ namespace SnakeGame.Utils
         public void Render()
         {
             Writer.WriteAt(0, 0, $"Score: {Score}");
+        }
+
+        public void CheckScoreUnderZero()
+        {
+            if (Score < 0)
+            {
+                throw new GameEndException();
+            }
         }
     }
 }

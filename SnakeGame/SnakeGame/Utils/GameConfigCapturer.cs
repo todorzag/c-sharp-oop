@@ -1,16 +1,15 @@
 ﻿using SnakeGame.Interfaces;
-using SnakeGame.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SnakeGame.Classes
+namespace SnakeGame.Utils
 {
     public class GameConfigCapturer : IGameConfigCapturer
     {
-        public IGameConfig GetDataFromInput()
+        public void GetDataFromInput()
         {
             try
             {
@@ -18,8 +17,7 @@ namespace SnakeGame.Classes
                 bool hasWalls = AskHasWalls();
                 int snakeLength = AskSnakeLength();
 
-                return Factory.CreateGameConfig(
-                    player, hasWalls, snakeLength);
+                GameConfig.SetConfigData(player, hasWalls, snakeLength);
             }
             catch (ArgumentOutOfRangeException)
             {

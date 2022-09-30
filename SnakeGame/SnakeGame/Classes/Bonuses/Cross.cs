@@ -15,6 +15,6 @@ namespace SnakeGame.Classes.Bonuses
 
         public override string Symbol => "X";
 
-        public override int ScoreValue => -5;
+        public override int ScoreValue => -30;
     }
 }

@@ -2,6 +2,6 @@
 {
     public interface IGameConfigCapturer
     {
-        IGameConfig GetDataFromInput();
+        void GetDataFromInput();
     }
 }

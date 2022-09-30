@@ -17,7 +17,7 @@ namespace SnakeGame.Utils
 
             IGameConfigCapturer gameConfigCapturer = CreateGameConfigCapturer();
 
-            IGameConfig gameConfig = gameConfigCapturer.GetDataFromInput();
+            gameConfigCapturer.GetDataFromInput();
 
             IDiffilcultyHandler diffilcultyHandler = CreateDiffilcultyHandler();
 
@@ -25,9 +25,9 @@ namespace SnakeGame.Utils
 
             IScoreManager scoreManager = CreateScoreManager();
 
-            ISnake snake = CreateSnake(gameConfig.InitalSnakeLength);
+            ISnake snake = CreateSnake(GameConfig.InitalSnakeLength);
 
-            return new Game(gameConfig, diffilcultyHandler, bonusesHandler, scoreManager, snake);
+            return new Game(diffilcultyHandler, bonusesHandler, scoreManager, snake);
         }
 
         public static IDiffilcultyHandler CreateDiffilcultyHandler()
@@ -48,11 +48,6 @@ namespace SnakeGame.Utils
         public static ISnake CreateSnake(int length)
         {
             return new Snake(length);
-        }
-
-        public static IGameConfig CreateGameConfig(IPlayer player, bool hasWalls, int initialSnakeLength)
-        {
-            return new GameConfig(player, hasWalls, initialSnakeLength);
         }
 
         public static IGameConfigCapturer CreateGameConfigCapturer()

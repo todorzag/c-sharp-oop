@@ -1,12 +1,11 @@
 ﻿using SnakeGame.Interfaces;
-using SnakeGame.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SnakeGame.Classes
+namespace SnakeGame.Utils
 {
     public class BonusesHandler : IBonusesHandler
     {
@@ -15,7 +14,7 @@ namespace SnakeGame.Classes
         private static List<IBonus> _bonuses =
             new List<IBonus>();
 
-        private static BonusesHandler instance = null;
+        private static BonusesHandler instance;
 
         public static BonusesHandler Instance
         {
@@ -45,9 +44,14 @@ namespace SnakeGame.Classes
             _bonuses.Add(bonus);
         }
 
-        public bool OnBonus(IPoint snakeHead)
+        public bool SnakeOnBonus(IPoint snakeHead)
         {
-            return _bonuses.Any((s) => s.EqualsPosition(snakeHead));
+            return _bonuses.Any((b) => b.EqualsPosition(snakeHead));
+        }
+
+        public bool OnBonus(IBonus bonus)
+        {
+            return _bonuses.Any((b) => b.EqualsPosition(bonus));
         }
 
         private void Remove(IBonus bonus)

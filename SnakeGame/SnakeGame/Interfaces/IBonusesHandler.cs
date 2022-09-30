@@ -1,11 +1,10 @@
-﻿using SnakeGame.Interfaces;
-
-namespace SnakeGame.Classes
+﻿namespace SnakeGame.Interfaces
 {
     public interface IBonusesHandler
     {
         void Add(IBonus bonus);
         void Handle(ISnake snake, IScoreManager scoreManager);
-        bool OnBonus(IPoint snakeHead);
+        bool SnakeOnBonus(IPoint snakeHead);
+        bool OnBonus(IBonus bonus);
     }
 }

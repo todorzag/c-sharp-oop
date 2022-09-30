@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SnakeGame.Classes
+namespace SnakeGame.Utils
 {
     public class GameEndException : Exception
     {
-        public GameEndException() 
+        public GameEndException()
         {
         }
     }

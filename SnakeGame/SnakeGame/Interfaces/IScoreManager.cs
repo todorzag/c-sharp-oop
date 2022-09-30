@@ -5,7 +5,7 @@
         int Score { get; set; }
 
         void Add(int n);
-
         void Render();
+        void CheckScoreUnderZero();
     }
 }

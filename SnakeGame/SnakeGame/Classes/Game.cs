@@ -15,19 +15,17 @@ namespace SnakeGame.Classes
         private IBonusesHandler _bonusesHandler;
         private ISnake _snake;
 
-        private IGameConfig _config;
+        private List<Timer> _timers = new List<Timer>();
 
         private string _keyPressed;
         private Directions _direction = Directions.RightArrow;
 
         public Game(
-            IGameConfig gameConfig, 
             IDiffilcultyHandler diffilcultyHandler,
             IBonusesHandler bonusesHandler,
             IScoreManager scoreManager,
             ISnake snake)
         {
-            _config = gameConfig;
             _diffilcultyHandler = diffilcultyHandler;
             _bonusesHandler = bonusesHandler;
             _scoreManager = scoreManager;
@@ -40,23 +38,23 @@ namespace SnakeGame.Classes
 
             ScreenRenderer.StartingScreen();
 
-            // Initial apple spawn
-            _bonusesHandler.Add(
-                Spawner.Spawn(
-                    _snake.Body, Factory.CreateApple()
-                    ));
-
             GameLoop();
 
-            FileManager.SaveHighScore(_config.Player, _scoreManager.Score);
+            FileManager.SaveHighScore(GameConfig.Player, _scoreManager.Score);
             ScreenRenderer.GameOverScreen(_scoreManager);
         }
 
         private void GameLoop()
         {
-            // Timer for Dollar spawnable
-            Timer dollarTimer = new(DollarTimerCallback, null, 0, 20000);
-            Timer crossTimer = new(CrossTimerCallback, null, 5000, 10000);
+            EnableTimers();
+
+            // Initial apple spawn and score render
+            _bonusesHandler.Add(
+                Spawner.Spawn(
+                    _snake.Body, Factory.CreateApple()
+                    ));
+
+            _scoreManager.Render();
 
             while (snakeIsAlive)
             {
@@ -71,24 +69,27 @@ namespace SnakeGame.Classes
                 OnAction();
             }
 
-            dollarTimer.Dispose();
-            crossTimer.Dispose();
+            DisableTimers();
         }
 
-        private void DollarTimerCallback(object o)
+        private void EnableTimers()
+        {
+            // Timers for Bonuses
+            _timers.Add(new Timer ((e) => TimerCallback(Factory.CreateDollar), null, 1, 20000));
+            _timers.Add(new Timer((e) => TimerCallback(Factory.CreateCross), null, 5000, 10000));
+        }
+
+        private void TimerCallback(Func<IBonus> func)
         {
             _bonusesHandler.Add(
                 Spawner.Spawn(
-                    _snake.Body, Factory.CreateDollar()
+                    _snake.Body, func()
                     ));
         }
 
-        private void CrossTimerCallback(object o)
+        private void DisableTimers()
         {
-            _bonusesHandler.Add(
-                Spawner.Spawn(
-                    _snake.Body, Factory.CreateCross()
-                    ));
+            _timers.ForEach((t) => t.Dispose());
         }
 
         private void SetLegalDirection()
@@ -103,13 +104,12 @@ namespace SnakeGame.Classes
         {
             while (Console.KeyAvailable == false)
             {
-                _scoreManager.Render();
-
                 _snake.UpdateBodyPosition();
 
                 try
                 {
-                    _snake.Move(_direction, _config.HasWalls);
+                    _snake.Move(_direction);
+                    _scoreManager.CheckScoreUnderZero();
                 }
                 catch (GameEndException)
                 {
@@ -117,11 +117,13 @@ namespace SnakeGame.Classes
                     break;
                 }
 
-                if (_bonusesHandler.OnBonus(_snake.Head))
+                if (_bonusesHandler.SnakeOnBonus(_snake.Head))
                 {
                     _bonusesHandler.Handle(_snake, _scoreManager);
 
                     _diffilcultyHandler.CheckToRaiseLevel(_scoreManager.Score);
+
+                    _scoreManager.Render();
                 }
 
                 _snake.Render();

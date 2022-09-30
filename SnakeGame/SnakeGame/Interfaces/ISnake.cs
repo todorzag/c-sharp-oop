@@ -1,7 +1,6 @@
 ﻿using SnakeGame.Constants;
-using SnakeGame.Interfaces;
 
-namespace SnakeGame.Classes
+namespace SnakeGame.Interfaces
 {
     public interface ISnake
     {
@@ -10,7 +9,7 @@ namespace SnakeGame.Classes
         IPoint Head { get; }
 
         void AddPart();
-        void Move(Directions direction, bool hasWalls);
+        void Move(Directions direction);
         void Render();
         void UpdateBodyPosition();
     }

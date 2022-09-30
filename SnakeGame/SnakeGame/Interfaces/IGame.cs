@@ -1,4 +1,4 @@
-﻿namespace SnakeGame.Classes
+﻿namespace SnakeGame.Interfaces
 {
     public interface IGame
     {

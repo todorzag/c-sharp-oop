@@ -1,4 +1,4 @@
-﻿using SnakeGame.Classes;
+﻿using SnakeGame.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Utils
 {
-    public class Validator
+    public class Validator 
     {
         public static bool ValidateInitalSnakeLength(int snakeLength)
         {
