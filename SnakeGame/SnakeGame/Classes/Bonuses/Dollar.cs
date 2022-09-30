@@ -11,7 +11,7 @@ namespace SnakeGame.Classes.Bonuses
     internal class Dollar : Bonus
     {
         public Dollar(
-            IConsumable onConsumeStrategy,
+            Action<object> onConsumeStrategy,
             int x = 0,
             int y = 0) 
                 : base(onConsumeStrategy, x, y)

@@ -10,10 +10,10 @@ namespace SnakeGame.Classes.Bonuses
 {
     public abstract class Bonus : Point, IBonus
     {
-        private IConsumable _onConsumeStrategy;
+        private Action<object> _onConsumeStrategy;
 
         protected Bonus(
-             IConsumable onConsumeStrategy,
+             Action<object> onConsumeStrategy,
              int x = 0,
              int y = 0)
                  : base(x, y)
@@ -27,7 +27,7 @@ namespace SnakeGame.Classes.Bonuses
 
         public void PerformConsume(object obj)
         {
-            _onConsumeStrategy.PerformConsume(obj);
+            _onConsumeStrategy(obj);
         }
 
         public void Render()

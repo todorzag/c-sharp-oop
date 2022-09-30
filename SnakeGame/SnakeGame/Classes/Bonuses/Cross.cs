@@ -6,7 +6,7 @@ namespace SnakeGame.Classes.Bonuses
     public class Cross : Bonus
     {
         public Cross(
-            IConsumable onConsumeStrategy,
+            Action<object> onConsumeStrategy,
             int x = 0,
             int y = 0)
                 : base(onConsumeStrategy, x, y)

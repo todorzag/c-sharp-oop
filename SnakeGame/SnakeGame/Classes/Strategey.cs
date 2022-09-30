@@ -6,11 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SnakeGame.Classes.Strategies
+namespace SnakeGame.Classes
 {
-    public class AddSnakePartStrategy : IConsumable
+    internal class Strategey
     {
-        public void PerformConsume(object obj)
+        public static void AddSnakePartStrategy(object obj)
         {
             ISnake snake = (ISnake)obj;
             snake.AddPart();
@@ -18,7 +18,12 @@ namespace SnakeGame.Classes.Strategies
             RespawnBonus(snake);
         }
 
-        private void RespawnBonus(ISnake snake)
+        public static void DoNothingStrategy(object obj)
+        {
+            return;
+        }
+
+        private static void RespawnBonus(ISnake snake)
         {
             IBonusesHandler handler = Factory.GetBonusesHandler();
 

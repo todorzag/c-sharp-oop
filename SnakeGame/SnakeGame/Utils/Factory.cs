@@ -67,17 +67,17 @@ namespace SnakeGame.Utils
 
         public static IBonus CreateDollar()
         {
-            return new Dollar(new DoNothingStrategy());
+            return new Dollar(Strategey.DoNothingStrategy);
         }
 
         public static IBonus CreateApple()
         {
-            return new Apple(new AddSnakePartStrategy());
+            return new Apple(Strategey.AddSnakePartStrategy);
         }
 
         internal static IBonus CreateCross()
         {
-            return new Cross(new DoNothingStrategy());
+            return new Cross(Strategey.DoNothingStrategy);
         }
     }
 }
