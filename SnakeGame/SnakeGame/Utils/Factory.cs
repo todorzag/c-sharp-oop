@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Utils
 {
-    internal class Factory
+    public class Factory
     {
         public static IGame CreateGame()
         {

@@ -14,7 +14,10 @@ namespace SnakeGame.Utils
         public static bool HasWalls { get; set; }
         public static int InitalSnakeLength { get; set; }
 
-        public static void SetConfigData(IPlayer player, bool hasWalls, int snakeLength)
+        public static void SetConfigData(
+            IPlayer player,
+            bool hasWalls,
+            int snakeLength)
         {
             Player = player;
             HasWalls = hasWalls;

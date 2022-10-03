@@ -20,7 +20,6 @@ namespace SnakeGame.Classes
 
         public static void DoNothingStrategy(object obj)
         {
-            return;
         }
 
         private static void RespawnBonus(ISnake snake)
