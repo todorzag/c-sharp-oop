@@ -1,5 +1,4 @@
 ﻿using SnakeGame.Classes;
-using SnakeGame.Classes.Bonuses;
 using SnakeGame.Classes.Strategies;
 using SnakeGame.Interfaces;
 using System;
@@ -65,19 +64,19 @@ namespace SnakeGame.Utils
             return BonusesHandler.Instance;
         }
 
-        public static IBonus CreateDollar()
+        public static IBonus CreateSwitch()
         {
-            return new Dollar(Strategey.DoNothingStrategy);
+            return new Bonus(new SwitchDirectionStrategy(), "⟷");
         }
 
         public static IBonus CreateApple()
         {
-            return new Apple(Strategey.AddSnakePartStrategy);
+            return new Bonus(new AddSnakePartStrategy(), "@");
         }
 
         internal static IBonus CreateCross()
         {
-            return new Cross(Strategey.DoNothingStrategy);
+            return new Bonus(new RemoveSnakePartStrategy(), "X");
         }
     }
 }

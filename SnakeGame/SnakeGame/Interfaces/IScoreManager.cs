@@ -1,11 +1,11 @@
 ﻿namespace SnakeGame.Interfaces
 {
-    public interface IScoreManager
+    public interface IScoreManager : IRenderable
     {
         int Score { get; set; }
 
-        void Add(int n);
         void Render();
+        void Set(List<IPoint> snakeBody);
         void CheckScoreUnderZero();
     }
 }

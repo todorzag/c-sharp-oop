@@ -20,7 +20,7 @@ namespace SnakeGame.Main
                 }
                 catch (ArgumentOutOfRangeException)
                 {
-                    StandardMessagesWriter.InitalSnakeLengthError();
+                    StandardMessages.InitalSnakeLengthError();
                 }
                 
             });

@@ -8,24 +8,11 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Classes.Strategies
 {
-    public class AddSnakePartStrategy : IConsumable
+    public class AddSnakePartStrategy : IStrategy
     {
-        public void PerformConsume(object obj)
+        public void PerformConsume(ISnake snake)
         {
-            ISnake snake = (ISnake)obj;
             snake.AddPart();
-
-            RespawnBonus(snake);
-        }
-
-        private void RespawnBonus(ISnake snake)
-        {
-            IBonusesHandler handler = Factory.GetBonusesHandler();
-
-            handler.Add(
-                Spawner.Spawn(
-                    snake.Body, Factory.CreateApple()
-                    ));
         }
     }
 }

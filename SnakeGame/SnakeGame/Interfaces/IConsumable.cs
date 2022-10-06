@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Interfaces
 {
-    public interface IConsumable
+    public interface IStrategy
     {
-        void PerformConsume(object obj);
+        void PerformConsume(ISnake snake);
     }
 }

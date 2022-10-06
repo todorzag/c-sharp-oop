@@ -26,8 +26,8 @@ namespace SnakeGame.Utils
 
                 bonus.Position = (x, y);
 
-                if (!snakeBody.Any(x => x.EqualsPosition(bonus))
-                    && !bonusesHandler.OnBonus(bonus)
+                if ((snakeBody.Any(x => x.EqualsPosition(bonus)) == false)
+                    && bonusesHandler.OnBonus(bonus) == false
                     && outsideOfScoreRange)
                 {
                     bonus.Render();

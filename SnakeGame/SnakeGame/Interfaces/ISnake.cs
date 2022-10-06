@@ -7,9 +7,11 @@ namespace SnakeGame.Interfaces
         int MaxLength { get; }
         List<IPoint> Body { get; }
         IPoint Head { get; }
+        Directions Direction { get; set; }
 
         void AddPart();
-        void Move(Directions direction);
+        void Move();
+        void RemovePart();
         void Render();
         void UpdateBodyPosition();
     }

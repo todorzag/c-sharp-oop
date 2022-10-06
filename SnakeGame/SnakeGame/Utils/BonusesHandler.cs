@@ -35,7 +35,6 @@ namespace SnakeGame.Utils
 
             Remove(bonus);
 
-            scoreManager.Add(bonus.ScoreValue);
             bonus.PerformConsume(snake);
         }
 

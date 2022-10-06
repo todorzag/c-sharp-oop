@@ -6,7 +6,8 @@ namespace SnakeGame.Classes
 {
     public class Snake : ISnake, IRenderable
     {
-        private (int, int) _lastBodyPartPosition;
+        private IPoint _lastBodyPart = Factory.CreatePoint(0, 0);
+
         private IPoint _newPosition =
             Factory.CreatePoint(0, 0);
 
@@ -20,6 +21,8 @@ namespace SnakeGame.Classes
 
         public IPoint Head { get => Body[0]; }
         public List<IPoint> Body { get; private set; }
+        public Directions Direction { get; set; }
+            = Directions.RightArrow;
 
         public Snake(int lenght)
         {
@@ -32,24 +35,30 @@ namespace SnakeGame.Classes
             {
                 if (i != 0)
                 {
-                    Writer.WriteAt(Body[i].Y, Body[i].X, "●");
+                    Writer.ConsoleWriteAt(Body[i].Y, Body[i].X, "●");
                 }
                 else
                 {
-                    Writer.WriteAt(Head.Y, Head.X, "○");
+                    Writer.ConsoleWriteAt(Head.Y, Head.X, "○");
                 }
             }
         }
 
         public void AddPart()
         {
-            (int x, int y) = _lastBodyPartPosition;
+            (int x, int y) = _lastBodyPart.Position;
             Body.Add(Factory.CreatePoint(x, y));
         }
 
-        public void Move(Directions direction)
+        public void RemovePart()
         {
-            switch (direction)
+            ClearLastBodyPart();
+            Body.RemoveAt(Body.Count - 1);
+        }
+
+        public void Move()
+        {
+            switch (Direction)
             {
                 case Directions.RightArrow:
                     MoveY(1);
@@ -128,9 +137,9 @@ namespace SnakeGame.Classes
             // Save last snake part position
             IPoint lastSnakePart = Body.Last();
             (int x, int y) = lastSnakePart.Position;
-            _lastBodyPartPosition = (x, y);
+            _lastBodyPart.Position = (x, y);
 
-            Writer.WriteAt(y, x, " ");
+            Writer.ConsoleWriteAt(y, x, " ");
         }
 
         private void Teleport()

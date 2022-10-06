@@ -8,22 +8,23 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Utils
 {
-    internal class ScoreManager : IScoreManager, IRenderable
+    // get snake length for score
+    internal class ScoreManager : IScoreManager
     {
-        public int Score { get; set; } = 0;
+        public int Score { get; set; }
 
         public ScoreManager()
         {
         }
 
-        public void Add(int n)
+        public void Set(List<IPoint> snakeBody)
         {
-            Score += n;
+            Score = (snakeBody.Count - 1) - GameConfig.InitalSnakeLength;
         }
 
         public void Render()
         {
-            Writer.WriteAt(0, 0, $"Score: {Score}");
+            Writer.ConsoleWriteAt(0, 0, $"Score: {Score}");
         }
 
         public void CheckScoreUnderZero()

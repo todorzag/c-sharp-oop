@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Classes.Strategies
 {
-    public class DoNothingStrategy : IConsumable
+    internal class RemoveSnakePartStrategy : IStrategy
     {
-        public void PerformConsume(object obj)
+        public void PerformConsume(ISnake snake)
         {
-            return;
+            snake.RemovePart();
         }
     }
 }

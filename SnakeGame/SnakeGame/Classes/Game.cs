@@ -1,8 +1,8 @@
-﻿using SnakeGame.Classes.Bonuses;
-using SnakeGame.Classes.Strategies;
+﻿using SnakeGame.Classes.Strategies;
 using SnakeGame.Constants;
 using SnakeGame.Interfaces;
 using SnakeGame.Utils;
+using System.Xml.Linq;
 
 namespace SnakeGame.Classes
 {
@@ -18,7 +18,6 @@ namespace SnakeGame.Classes
         private List<Timer> _timers = new List<Timer>();
 
         private string _keyPressed;
-        private Directions _direction = Directions.RightArrow;
 
         public Game(
             IDiffilcultyHandler diffilcultyHandler,
@@ -40,7 +39,7 @@ namespace SnakeGame.Classes
 
             GameLoop();
 
-            FileManager.SaveHighScore(GameConfig.Player, _scoreManager.Score);
+            Writer.FileWrite(GameConfig.Player, _scoreManager.Score);
             ScreenRenderer.GameOverScreen(_scoreManager);
         }
 
@@ -74,9 +73,17 @@ namespace SnakeGame.Classes
 
         private void EnableTimers()
         {
+            // try with tasks
             // Timers for Bonuses
-            _timers.Add(new Timer ((e) => TimerCallback(Factory.CreateDollar()), null, 1, 20000));
-            _timers.Add(new Timer((e) => TimerCallback(Factory.CreateCross()), null, 7000, 14000));
+            Task t1 = new Task(() =>
+                _timers.Add(new Timer((e) => TimerCallback(Factory.CreateSwitch()), null, 5000, 7000)));
+
+            t1.Start();
+
+            Task t2 = new Task(() =>
+                _timers.Add(new Timer((e) => TimerCallback(Factory.CreateCross()), null, 1000, 4000)));
+
+            t2.Start();
         }
 
         private void TimerCallback(IBonus bonus)
@@ -96,7 +103,7 @@ namespace SnakeGame.Classes
         {
             if (Enum.TryParse<Directions>(_keyPressed, out var legalDirection))
             {
-                _direction = legalDirection;
+                _snake.Direction = legalDirection;
             }
         }
 
@@ -108,7 +115,7 @@ namespace SnakeGame.Classes
 
                 try
                 {
-                    _snake.Move(_direction);
+                    _snake.Move();
                     _scoreManager.CheckScoreUnderZero();
                 }
                 catch (GameEndException)
@@ -123,6 +130,7 @@ namespace SnakeGame.Classes
 
                     _diffilcultyHandler.CheckToRaiseLevel(_scoreManager.Score);
 
+                    _scoreManager.Set(_snake.Body);
                     _scoreManager.Render();
                 }
 

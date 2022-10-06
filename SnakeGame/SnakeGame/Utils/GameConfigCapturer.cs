@@ -27,10 +27,10 @@ namespace SnakeGame.Utils
 
         private IPlayer AskPlayer()
         {
-            StandardMessagesWriter.PlayerFirstName();
+            Writer.WriteMessage(StandardMessages.PlayerFirstName());
             string firstName = Console.ReadLine();
 
-            StandardMessagesWriter.PlayerLastName();
+            Writer.WriteMessage(StandardMessages.PlayerLastName());
             string lastName = Console.ReadLine();
 
             return Factory.CreatePlayer(firstName, lastName);
@@ -38,7 +38,7 @@ namespace SnakeGame.Utils
 
         private bool AskHasWalls()
         {
-            StandardMessagesWriter.HasWalls();
+            Writer.WriteMessage(StandardMessages.HasWalls());
             string answer = Console.ReadLine();
             bool hasWalls = false;
 
@@ -52,7 +52,7 @@ namespace SnakeGame.Utils
 
         private int AskSnakeLength()
         {
-            StandardMessagesWriter.SnakeLength();
+            Writer.WriteMessage(StandardMessages.SnakeLength());
             int SnakeLength = int.Parse(Console.ReadLine());
 
             if (Validator.ValidateInitalSnakeLength(SnakeLength) == false)

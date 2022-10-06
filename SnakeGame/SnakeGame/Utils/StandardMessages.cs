@@ -6,32 +6,32 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Utils
 {
-    public class StandardMessagesWriter
+    public class StandardMessages
     {
-        public static void PlayerFirstName()
+        public static string PlayerFirstName()
         {
-            Console.WriteLine("Please enter first name:");
+            return ("Please enter first name:");
         }
 
-        public static void PlayerLastName()
+        public static string PlayerLastName()
         {
-            Console.WriteLine("Please enter last name:");
+            return ("Please enter last name:");
         }
 
-        public static void HasWalls()
+        public static string HasWalls()
         {
-            Console.WriteLine("Would you like the board to have walls?");
+            return ("Would you like the board to have walls?");
         }
         
-        public static void SnakeLength()
+        public static string SnakeLength()
         {
-            Console.WriteLine("How long would you like the snake to be?");
-            Console.WriteLine("Minimum of 1, Maximum of 10");
+            return ("How long would you like the snake to be?" +
+                "\nMinimum of 1, Maximum of 10");
         }
 
-        public static void InitalSnakeLengthError()
+        public static string InitalSnakeLengthError()
         {
-            Console.WriteLine("Snake length must be greater than 0 and less than 10!");
+            return ("Snake length must be greater than 0 and less than 10!");
         }
     }
 }

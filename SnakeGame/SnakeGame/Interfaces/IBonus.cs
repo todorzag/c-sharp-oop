@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Interfaces
 {
-    public interface IBonus : IPoint, IConsumable, IRenderable
+    public interface IBonus : IPoint, IStrategy, IRenderable
     {
         string Symbol { get; }
-        int ScoreValue { get; }
     }
 }
