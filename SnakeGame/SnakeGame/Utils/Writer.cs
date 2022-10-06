@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Utils
 {
-    // console writer, file writer, add writer for standard messages
     internal class Writer
     {
         private static string _filePath 

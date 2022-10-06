@@ -124,6 +124,8 @@ namespace SnakeGame.Classes
                     break;
                 }
 
+                _snake.Render();
+
                 if (_bonusesHandler.SnakeOnBonus(_snake.Head))
                 {
                     _bonusesHandler.Handle(_snake, _scoreManager);
@@ -133,8 +135,6 @@ namespace SnakeGame.Classes
                     _scoreManager.Set(_snake.Body);
                     _scoreManager.Render();
                 }
-
-                _snake.Render();
 
                 Thread.Sleep(_diffilcultyHandler.Miliseconds);
             }

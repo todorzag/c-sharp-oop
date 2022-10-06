@@ -17,9 +17,10 @@ namespace SnakeGame.Utils
         {
         }
 
+        // bug from 5 to 4 and back to 5
         public void CheckToRaiseLevel(int score)
         {
-            if (score % 10 == 0 && score != 0)
+            if (score % 5 == 0 && score != 0)
             {
                 LevelUp();
             }

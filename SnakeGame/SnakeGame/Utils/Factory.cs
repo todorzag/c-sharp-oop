@@ -66,7 +66,7 @@ namespace SnakeGame.Utils
 
         public static IBonus CreateSwitch()
         {
-            return new Bonus(new SwitchDirectionStrategy(), "⟷");
+            return new Bonus(new SwitchDirectionStrategy(), "&");
         }
 
         public static IBonus CreateApple()
