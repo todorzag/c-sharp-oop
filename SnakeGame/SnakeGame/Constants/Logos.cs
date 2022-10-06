@@ -5,6 +5,11 @@
         private static Dictionary<string, string[]> _scoreLogos
             = new Dictionary<string, string[]>
             {
+                {"-", new string[]{
+                    "    ",
+                    "▀▀▀▀",
+                    "    "}
+                },
                 {"0", new string[] {
                     "█▀▀█",
                     "█▄▀█",
@@ -100,7 +105,14 @@
             {
                 for (int i = 0; i < scoreLogo.Length; i++)
                 {
-                    scoreLogo[i] += " " + _scoreLogos[digit][i];
+                    if (digit == "-")
+                    {
+                        scoreLogo[i] += " " + _scoreLogos["-"][i];
+                    }
+                    else
+                    {
+                        scoreLogo[i] += " " + _scoreLogos[digit][i];
+                    }
                 }
             }
 
