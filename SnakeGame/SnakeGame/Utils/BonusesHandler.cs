@@ -53,6 +53,15 @@ namespace SnakeGame.Utils
             return _bonuses.Any((b) => b.EqualsPosition(bonus));
         }
 
+        // try observer pattern?
+        public void Render()
+        {
+            for (int i = 0; i < _bonuses.Count; i++)
+            {
+                _bonuses[i].Render();
+            }
+        }
+
         private void Remove(IBonus bonus)
         {
             _bonuses.Remove(bonus);

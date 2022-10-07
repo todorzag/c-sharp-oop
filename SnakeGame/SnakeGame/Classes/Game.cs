@@ -49,7 +49,7 @@ namespace SnakeGame.Classes
 
             // Initial apple spawn and score render
             _bonusesHandler.Add(
-                Spawner.Spawn(
+                Spawner.SetRandomPosition(
                     _snake.Body, Factory.CreateApple()
                     ));
 
@@ -75,21 +75,15 @@ namespace SnakeGame.Classes
         {
             // try with tasks
             // Timers for Bonuses
-            Task t1 = new Task(() =>
-                _timers.Add(new Timer((e) => TimerCallback(Factory.CreateSwitch()), null, 5000, 7000)));
 
-            t1.Start();
-
-            Task t2 = new Task(() =>
-                _timers.Add(new Timer((e) => TimerCallback(Factory.CreateCross()), null, 1000, 4000)));
-
-            t2.Start();
+            _timers.Add(new Timer((e) => TimerCallback(Factory.CreateSwitch()), null, 5000, 7000));
+            _timers.Add(new Timer((e) => TimerCallback(Factory.CreateCross()), null, 1000, 4000));
         }
 
         private void TimerCallback(IBonus bonus)
         {
             _bonusesHandler.Add(
-                Spawner.Spawn(
+                Spawner.SetRandomPosition(
                     _snake.Body, bonus
                     ));
         }
@@ -125,6 +119,7 @@ namespace SnakeGame.Classes
                 }
 
                 _snake.Render();
+                _bonusesHandler.Render();
 
                 if (_bonusesHandler.SnakeOnBonus(_snake.Head))
                 {

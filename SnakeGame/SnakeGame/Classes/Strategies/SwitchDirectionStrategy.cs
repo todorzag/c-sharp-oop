@@ -14,6 +14,8 @@ namespace SnakeGame.Classes.Strategies
         public void PerformConsume(ISnake snake)
         {
             snake.AddPart();
+            snake.AddPart();
+
             snake.Body.Reverse();
 
             switch (snake.Direction)

@@ -12,7 +12,7 @@ namespace SnakeGame.Utils
     {
         private static Random _random = new Random();
 
-        public static IBonus Spawn(
+        public static IBonus SetRandomPosition(
             List<IPoint> snakeBody,
             IBonus bonus)
         {
@@ -30,8 +30,6 @@ namespace SnakeGame.Utils
                     && bonusesHandler.OnBonus(bonus) == false
                     && outsideOfScoreRange)
                 {
-                    bonus.Render();
-
                     return bonus;
                 }
             }
