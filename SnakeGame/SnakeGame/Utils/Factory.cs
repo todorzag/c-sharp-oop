@@ -20,13 +20,13 @@ namespace SnakeGame.Utils
 
             IDiffilcultyHandler diffilcultyHandler = CreateDiffilcultyHandler();
 
-            IBonusesHandler bonusesHandler = GetBonusesHandler();
+            IFoodHandler foodHandler = GetFoodHandler();
 
             IScoreManager scoreManager = CreateScoreManager();
 
             ISnake snake = CreateSnake(GameConfig.InitalSnakeLength);
 
-            return new Game(diffilcultyHandler, bonusesHandler, scoreManager, snake);
+            return new Game(diffilcultyHandler, foodHandler, scoreManager, snake);
         }
 
         public static IDiffilcultyHandler CreateDiffilcultyHandler()
@@ -59,24 +59,24 @@ namespace SnakeGame.Utils
             return new Point(x, y);
         }
 
-        public static IBonusesHandler GetBonusesHandler()
+        public static IFoodHandler GetFoodHandler()
         {
-            return BonusesHandler.Instance;
+            return FoodHandler.Instance;
         }
 
-        public static IBonus CreateSwitch()
+        public static IFood CreateSwitch()
         {
-            return new Bonus(new SwitchDirectionStrategy(), "&");
+            return new Food(new SwitchDirectionStrategy(), "&");
         }
 
-        public static IBonus CreateApple()
+        public static IFood CreateApple()
         {
-            return new Bonus(new AddSnakePartStrategy(), "@");
+            return new Food(new AddSnakePartStrategy(), "@");
         }
 
-        internal static IBonus CreateCross()
+        internal static IFood CreateCross()
         {
-            return new Bonus(new RemoveSnakePartStrategy(), "X");
+            return new Food(new RemoveSnakePartStrategy(), "X");
         }
     }
 }

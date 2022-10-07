@@ -25,8 +25,8 @@ namespace SnakeGame.Utils
         
         public static string SnakeLength()
         {
-            return ("How long would you like the snake to be?" +
-                "\nMinimum of 1, Maximum of 10");
+            return ("How long would you like the snake to be?\n" +
+                "Minimum of 1, Maximum of 10");
         }
 
         public static string InitalSnakeLengthError()

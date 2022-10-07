@@ -12,25 +12,25 @@ namespace SnakeGame.Utils
     {
         private static Random _random = new Random();
 
-        public static IBonus SetRandomPosition(
+        public static IFood SetRandomPosition(
             List<IPoint> snakeBody,
-            IBonus bonus)
+            IFood food)
         {
             while (true)
             {
                 int x = _random.Next(1, Console.WindowHeight - 1);
                 int y = _random.Next(1, Console.WindowWidth - 1);
 
-                IBonusesHandler bonusesHandler = Factory.GetBonusesHandler();
+                IFoodHandler foodHandler = Factory.GetFoodHandler();
                 bool outsideOfScoreRange = x > 0 && y > 10;
 
-                bonus.Position = (x, y);
+                food.Position = (x, y);
 
-                if ((snakeBody.Any(x => x.EqualsPosition(bonus)) == false)
-                    && bonusesHandler.OnBonus(bonus) == false
+                if ((snakeBody.Any(x => x.EqualsPosition(food)) == false)
+                    && foodHandler.OnFood(food) == false
                     && outsideOfScoreRange)
                 {
-                    return bonus;
+                    return food;
                 }
             }
         }

@@ -7,22 +7,22 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Utils
 {
-    public class BonusesHandler : IBonusesHandler
+    public class FoodHandler : IFoodHandler
     {
-        private BonusesHandler() { }
+        private FoodHandler() { }
 
-        private static List<IBonus> _bonuses =
-            new List<IBonus>();
+        private static List<IFood> _foods =
+            new List<IFood>();
 
-        private static BonusesHandler instance;
+        private static FoodHandler instance;
 
-        public static BonusesHandler Instance
+        public static FoodHandler Instance
         {
             get
             {
                 if (instance == null)
                 {
-                    instance = new BonusesHandler();
+                    instance = new FoodHandler();
                 }
 
                 return instance;
@@ -31,45 +31,45 @@ namespace SnakeGame.Utils
 
         public void Handle(ISnake snake, IScoreManager scoreManager)
         {
-            IBonus bonus = GetBonus(snake.Head);
+            IFood food = GetFood(snake.Head);
 
-            Remove(bonus);
+            Remove(food);
 
-            bonus.PerformConsume(snake);
+            food.PerformConsume(snake);
         }
 
-        public void Add(IBonus bonus)
+        public void Add(IFood food)
         {
-            _bonuses.Add(bonus);
+            _foods.Add(food);
         }
 
-        public bool SnakeOnBonus(IPoint snakeHead)
+        public bool SnakeOnFood(IPoint snakeHead)
         {
-            return _bonuses.Any((b) => b.EqualsPosition(snakeHead));
+            return _foods.Any((b) => b.EqualsPosition(snakeHead));
         }
 
-        public bool OnBonus(IBonus bonus)
+        public bool OnFood(IFood food)
         {
-            return _bonuses.Any((b) => b.EqualsPosition(bonus));
+            return _foods.Any((b) => b.EqualsPosition(food));
         }
 
         // try observer pattern?
         public void Render()
         {
-            for (int i = 0; i < _bonuses.Count; i++)
+            for (int i = 0; i < _foods.Count; i++)
             {
-                _bonuses[i].Render();
+                _foods[i].Render();
             }
         }
 
-        private void Remove(IBonus bonus)
+        private void Remove(IFood food)
         {
-            _bonuses.Remove(bonus);
+            _foods.Remove(food);
         }
 
-        private IBonus GetBonus(IPoint snakeHead)
+        private IFood GetFood(IPoint snakeHead)
         {
-            return _bonuses.Find((s) => s.EqualsPosition(snakeHead));
+            return _foods.Find((s) => s.EqualsPosition(snakeHead));
         }
     }
 }

@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Classes
 {
-    public class Bonus : Point, IBonus
+    public class Food : Point, IFood
     {
         private IStrategy _onConsumeStrategy;
 
-        public Bonus(
+        public Food(
              IStrategy onConsumeStrategy,
              string symbol,
              int x = 0,

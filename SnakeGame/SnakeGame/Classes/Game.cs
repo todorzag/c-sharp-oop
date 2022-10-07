@@ -12,7 +12,7 @@ namespace SnakeGame.Classes
 
         private IScoreManager _scoreManager;
         private IDiffilcultyHandler _diffilcultyHandler;
-        private IBonusesHandler _bonusesHandler;
+        private IFoodHandler _foodHandler;
         private ISnake _snake;
 
         private List<Timer> _timers = new List<Timer>();
@@ -21,12 +21,12 @@ namespace SnakeGame.Classes
 
         public Game(
             IDiffilcultyHandler diffilcultyHandler,
-            IBonusesHandler bonusesHandler,
+            IFoodHandler foodHandler,
             IScoreManager scoreManager,
             ISnake snake)
         {
             _diffilcultyHandler = diffilcultyHandler;
-            _bonusesHandler = bonusesHandler;
+            _foodHandler = foodHandler;
             _scoreManager = scoreManager;
             _snake = snake;
         }
@@ -48,7 +48,7 @@ namespace SnakeGame.Classes
             EnableTimers();
 
             // Initial apple spawn and score render
-            _bonusesHandler.Add(
+            _foodHandler.Add(
                 Spawner.SetRandomPosition(
                     _snake.Body, Factory.CreateApple()
                     ));
@@ -74,17 +74,16 @@ namespace SnakeGame.Classes
         private void EnableTimers()
         {
             // try with tasks
-            // Timers for Bonuses
-
+            // Timers for Foods
             _timers.Add(new Timer((e) => TimerCallback(Factory.CreateSwitch()), null, 5000, 7000));
             _timers.Add(new Timer((e) => TimerCallback(Factory.CreateCross()), null, 1000, 4000));
         }
 
-        private void TimerCallback(IBonus bonus)
+        private void TimerCallback(IFood food)
         {
-            _bonusesHandler.Add(
+            _foodHandler.Add(
                 Spawner.SetRandomPosition(
-                    _snake.Body, bonus
+                    _snake.Body, food
                     ));
         }
 
@@ -119,11 +118,11 @@ namespace SnakeGame.Classes
                 }
 
                 _snake.Render();
-                _bonusesHandler.Render();
+                _foodHandler.Render();
 
-                if (_bonusesHandler.SnakeOnBonus(_snake.Head))
+                if (_foodHandler.SnakeOnFood(_snake.Head))
                 {
-                    _bonusesHandler.Handle(_snake, _scoreManager);
+                    _foodHandler.Handle(_snake, _scoreManager);
 
                     _diffilcultyHandler.CheckToRaiseLevel(_scoreManager.Score);
 

@@ -1,10 +1,10 @@
 ﻿namespace SnakeGame.Interfaces
 {
-    public interface IBonusesHandler : IRenderable
+    public interface IFoodHandler : IRenderable
     {
-        void Add(IBonus bonus);
+        void Add(IFood food);
         void Handle(ISnake snake, IScoreManager scoreManager);
-        bool SnakeOnBonus(IPoint snakeHead);
-        bool OnBonus(IBonus bonus);
+        bool SnakeOnFood(IPoint snakeHead);
+        bool OnFood(IFood food);
     }
 }

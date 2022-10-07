@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Utils
 {
-    // get snake length for score
     internal class ScoreManager : IScoreManager
     {
         public int Score { get; set; }
