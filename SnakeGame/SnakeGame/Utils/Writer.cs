@@ -16,6 +16,7 @@ namespace SnakeGame.Utils
 
         public static void ConsoleWriteAt(int y, int x, string str)
         {
+            // else try again
             if(_isRendering == false)
             {
                 _isRendering = true;

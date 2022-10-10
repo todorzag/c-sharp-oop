@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Interfaces
 {
-    public interface IOnRespawn
+    public interface IFood : IPoint, IOnConsume, IRenderable
     {
-        void Respawn(IFood food);
+        string Symbol { get; }
     }
 }

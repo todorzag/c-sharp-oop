@@ -35,8 +35,11 @@ namespace SnakeGame.Utils
             Remove(food);
 
             food.PerformConsume(snake);
-            food = Spawner.SetRandomPosition(snake.Body, food);
-            food.Respawn(food);
+
+            if (food.Symbol == "@")
+            {
+                Spawner.Spawn(snake.Body, Factory.CreateApple());
+            }
         }
 
         public void Add(IFood food)

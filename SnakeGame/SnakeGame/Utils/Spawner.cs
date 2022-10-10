@@ -12,7 +12,16 @@ namespace SnakeGame.Utils
     {
         private static Random _random = new Random();
 
-        public static IFood SetRandomPosition(
+        public static void Spawn(List<IPoint> snakeBody, IFood food)
+        {
+            IFoodHandler foodHandler = Factory.GetFoodHandler();
+            SetRandomPosition(snakeBody, food);
+
+            foodHandler.Add(food);
+            food.Render();
+        }
+
+        private static IFood SetRandomPosition(
             List<IPoint> snakeBody,
             IFood food)
         {
@@ -33,15 +42,6 @@ namespace SnakeGame.Utils
                     return food;
                 }
             }
-        }
-
-        public static void Spawn(List<IPoint> snakeBody, IFood food)
-        {
-            IFoodHandler foodHandler = Factory.GetFoodHandler();
-            SetRandomPosition(snakeBody, food);
-
-             foodHandler.Add(food);
-            food.Render();
         }
     }
 }

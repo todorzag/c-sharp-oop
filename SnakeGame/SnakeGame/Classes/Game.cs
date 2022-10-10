@@ -15,6 +15,9 @@ namespace SnakeGame.Classes
         private IFoodHandler _foodHandler;
         private ISnake _snake;
 
+        private List<Timer> _timers =
+            new List<Timer>();
+
         private string _keyPressed;
 
         public Game(
@@ -44,7 +47,8 @@ namespace SnakeGame.Classes
         private void GameLoop()
         {
             // Initial apple spawn and score render
-            InitalSpawns();
+            EnableTimers();
+            Spawner.Spawn(_snake.Body, Factory.CreateApple());
             _scoreManager.Render();
 
             while (snakeIsAlive)
@@ -59,29 +63,27 @@ namespace SnakeGame.Classes
 
                 OnAction();
             }
+
+            DisableTimers();
         }
 
-        private void InitalSpawns()
+        private void EnableTimers()
         {
-            var cts = new CancellationTokenSource();
+            _timers.Add(new Timer((e) 
+                => TimerCallback(Factory.CreateSwitch), null, 7000, 7000));
 
-            SpawnTask(Factory.CreateCross, cts.Token);
-            SpawnTask(Factory.CreateSwitch, cts.Token);
-
-            Spawner.Spawn(_snake.Body, Factory.CreateApple());
+            _timers.Add(new Timer((e) 
+                => TimerCallback(Factory.CreateCross), null, 5000, 5000));
         }
 
-        private void SpawnTask(Func<IFood> create, CancellationToken token)
+        private void TimerCallback(Func<IFood> create)
         {
-            Task.Run(async () =>
-            {
-                while (!token.IsCancellationRequested)
-                {
-                    IFood food = create();
-                    await Task.Delay(food.TimeDelay);
-                    Spawner.Spawn(_snake.Body, food);
-                }
-            }, token);
+            Spawner.Spawn(_snake.Body, create());
+        }
+
+        private void DisableTimers()
+        {
+            _timers.ForEach((t) => t.Dispose());
         }
 
         private void SetLegalDirection()
