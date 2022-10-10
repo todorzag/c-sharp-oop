@@ -53,7 +53,7 @@ namespace SnakeGame.Utils
         private int AskSnakeLength()
         {
             Writer.WriteMessage(StandardMessages.SnakeLength());
-            int SnakeLength = int.Parse(Console.ReadLine());
+             int SnakeLength = int.Parse(Console.ReadLine());
 
             if (Validator.ValidateInitalSnakeLength(SnakeLength) == false)
             {

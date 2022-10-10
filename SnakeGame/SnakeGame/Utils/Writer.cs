@@ -9,13 +9,20 @@ namespace SnakeGame.Utils
 {
     internal class Writer
     {
-        private static string _filePath 
+        private static bool _isRendering = false;
+
+        private static string _filePath
             = @"C:\Users\todor.zagorov\source\repos\c-sharp-oop\SnakeGame\SnakeGame\HighScores.txt";
 
         public static void ConsoleWriteAt(int y, int x, string str)
         {
-            Console.SetCursorPosition(y, x);
-            Console.Write(str);
+            if(_isRendering == false)
+            {
+                _isRendering = true;
+                Console.SetCursorPosition(y, x);
+                Console.Write(str);
+                _isRendering = false;
+            } 
         }
 
         public static void FileWrite(IPlayer player, int score)

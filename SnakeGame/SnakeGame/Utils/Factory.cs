@@ -66,17 +66,29 @@ namespace SnakeGame.Utils
 
         public static IFood CreateSwitch()
         {
-            return new Food(new SwitchDirectionStrategy(), "&");
+            return new Food(
+                new SwitchDirectionStrategy(),
+                new TimerRespawnStrategy(),
+                "&",
+                10000);
         }
 
         public static IFood CreateApple()
         {
-            return new Food(new AddSnakePartStrategy(), "@");
+            return new Food(
+                new AddSnakePartStrategy(),
+                new OnEatRespawnStrategy(),
+                "@",
+                0);
         }
 
         internal static IFood CreateCross()
         {
-            return new Food(new RemoveSnakePartStrategy(), "X");
+            return new Food(
+                new RemoveSnakePartStrategy(),
+                new TimerRespawnStrategy(),
+                "X",
+                5000);
         }
     }
 }

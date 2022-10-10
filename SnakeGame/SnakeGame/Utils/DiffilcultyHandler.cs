@@ -9,9 +9,7 @@ namespace SnakeGame.Utils
 {
     public class DiffilcultyHandler : IDiffilcultyHandler
     {
-        private int _level = 1;
-
-        public int Miliseconds { get; set; } = 75;
+        public int Miliseconds { get; set; } = 30;
 
         public DiffilcultyHandler()
         {
@@ -32,8 +30,6 @@ namespace SnakeGame.Utils
             {
                 Miliseconds -= 5;
             }
-            
-            _level++;
         }
     }
 }

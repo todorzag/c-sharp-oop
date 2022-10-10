@@ -23,7 +23,7 @@ namespace SnakeGame.Utils
 
         public void Render()
         {
-            Writer.ConsoleWriteAt(0, 0, $"Score: {Score}");
+            Writer.ConsoleWriteAt(0, 0, $"Score: {Score} ");
         }
 
         public void CheckScoreUnderZero()

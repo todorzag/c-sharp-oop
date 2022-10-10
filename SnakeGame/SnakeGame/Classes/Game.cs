@@ -15,8 +15,6 @@ namespace SnakeGame.Classes
         private IFoodHandler _foodHandler;
         private ISnake _snake;
 
-        private List<Timer> _timers = new List<Timer>();
-
         private string _keyPressed;
 
         public Game(
@@ -45,14 +43,8 @@ namespace SnakeGame.Classes
 
         private void GameLoop()
         {
-            EnableTimers();
-
             // Initial apple spawn and score render
-            _foodHandler.Add(
-                Spawner.SetRandomPosition(
-                    _snake.Body, Factory.CreateApple()
-                    ));
-
+            InitalSpawns();
             _scoreManager.Render();
 
             while (snakeIsAlive)
@@ -67,29 +59,29 @@ namespace SnakeGame.Classes
 
                 OnAction();
             }
-
-            DisableTimers();
         }
 
-        private void EnableTimers()
+        private void InitalSpawns()
         {
-            // try with tasks
-            // Timers for Foods
-            _timers.Add(new Timer((e) => TimerCallback(Factory.CreateSwitch()), null, 5000, 7000));
-            _timers.Add(new Timer((e) => TimerCallback(Factory.CreateCross()), null, 1000, 4000));
+            var cts = new CancellationTokenSource();
+
+            SpawnTask(Factory.CreateCross, cts.Token);
+            SpawnTask(Factory.CreateSwitch, cts.Token);
+
+            Spawner.Spawn(_snake.Body, Factory.CreateApple());
         }
 
-        private void TimerCallback(IFood food)
+        private void SpawnTask(Func<IFood> create, CancellationToken token)
         {
-            _foodHandler.Add(
-                Spawner.SetRandomPosition(
-                    _snake.Body, food
-                    ));
-        }
-
-        private void DisableTimers()
-        {
-            _timers.ForEach((t) => t.Dispose());
+            Task.Run(async () =>
+            {
+                while (!token.IsCancellationRequested)
+                {
+                    IFood food = create();
+                    await Task.Delay(food.TimeDelay);
+                    Spawner.Spawn(_snake.Body, food);
+                }
+            }, token);
         }
 
         private void SetLegalDirection()
@@ -118,7 +110,6 @@ namespace SnakeGame.Classes
                 }
 
                 _snake.Render();
-                _foodHandler.Render();
 
                 if (_foodHandler.SnakeOnFood(_snake.Head))
                 {

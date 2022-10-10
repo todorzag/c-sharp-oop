@@ -32,10 +32,11 @@ namespace SnakeGame.Utils
         public void Handle(ISnake snake, IScoreManager scoreManager)
         {
             IFood food = GetFood(snake.Head);
-
             Remove(food);
 
             food.PerformConsume(snake);
+            food = Spawner.SetRandomPosition(snake.Body, food);
+            food.Respawn(food);
         }
 
         public void Add(IFood food)
@@ -51,15 +52,6 @@ namespace SnakeGame.Utils
         public bool OnFood(IFood food)
         {
             return _foods.Any((b) => b.EqualsPosition(food));
-        }
-
-        // try observer pattern?
-        public void Render()
-        {
-            for (int i = 0; i < _foods.Count; i++)
-            {
-                _foods[i].Render();
-            }
         }
 
         private void Remove(IFood food)

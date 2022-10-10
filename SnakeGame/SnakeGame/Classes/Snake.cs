@@ -135,8 +135,7 @@ namespace SnakeGame.Classes
         private void ClearLastBodyPart()
         {
             // Save last snake part position
-            IPoint lastSnakePart = Body.Last();
-            (int x, int y) = lastSnakePart.Position;
+            (int x, int y) = Body.Last().Position;
             _lastBodyPart.Position = (x, y);
 
             Writer.ConsoleWriteAt(y, x, " ");

@@ -34,5 +34,14 @@ namespace SnakeGame.Utils
                 }
             }
         }
+
+        public static void Spawn(List<IPoint> snakeBody, IFood food)
+        {
+            IFoodHandler foodHandler = Factory.GetFoodHandler();
+            SetRandomPosition(snakeBody, food);
+
+             foodHandler.Add(food);
+            food.Render();
+        }
     }
 }

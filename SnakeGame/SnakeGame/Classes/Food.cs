@@ -5,25 +5,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace SnakeGame.Classes
 {
     public class Food : Point, IFood
     {
-        private IStrategy _onConsumeStrategy;
+        private IOnConsume _onConsumeStrategy;
+        private IOnRespawn _onRespawnStrategy;
 
         public Food(
-             IStrategy onConsumeStrategy,
+             IOnConsume onConsumeStrategy,
+             IOnRespawn onRespawnStrategy,
              string symbol,
+             int timeDelay,
              int x = 0,
              int y = 0)
                  : base(x, y)
         {
             Symbol = symbol;
+            TimeDelay = timeDelay;
             _onConsumeStrategy = onConsumeStrategy;
+            _onRespawnStrategy = onRespawnStrategy;
         }
 
         public string Symbol { get; }
+        public int TimeDelay { get; }
 
         public void PerformConsume(ISnake snake)
         {
@@ -33,6 +40,11 @@ namespace SnakeGame.Classes
         public void Render()
         {
             Writer.ConsoleWriteAt(Y, X, Symbol);
+        }
+
+        public void Respawn(IFood food)
+        {
+            _onRespawnStrategy.Respawn(food);
         }
     }
 }
