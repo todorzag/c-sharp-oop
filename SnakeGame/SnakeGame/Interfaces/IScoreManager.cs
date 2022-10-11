@@ -2,10 +2,10 @@
 {
     public interface IScoreManager : IRenderable
     {
-        int Score { get; set; }
+        int CurrentScore { get; set; }
 
         void Render();
-        void Set(List<IPoint> snakeBody);
+        void Set(List<IPoint> snakeBody, IDiffilcultyHandler diffilcultyHandler);
         void CheckScoreUnderZero();
     }
 }

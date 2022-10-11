@@ -9,6 +9,6 @@ namespace SnakeGame.Interfaces
 {
     public interface IOnConsume
     {
-        void PerformConsume(ISnake snake);
+        void PerformConsume(ISnake snake, int scoreValue);
     }
 }

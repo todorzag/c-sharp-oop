@@ -10,25 +10,30 @@ namespace SnakeGame.Utils
 {
     internal class ScoreManager : IScoreManager
     {
-        public int Score { get; set; }
+        public int CurrentScore { get; set; }
+        public int PreviousScore { get; set; }
 
         public ScoreManager()
         {
         }
 
-        public void Set(List<IPoint> snakeBody)
+        public void Set(
+            List<IPoint> snakeBody,
+            IDiffilcultyHandler diffilcultyHandler)
         {
-            Score = (snakeBody.Count - 1) - GameConfig.InitalSnakeLength;
+            PreviousScore = CurrentScore;
+            CurrentScore = (snakeBody.Count - 1) - GameConfig.InitalSnakeLength;
+            diffilcultyHandler.CheckToDecreaseLevel(CurrentScore, PreviousScore);
         }
 
         public void Render()
         {
-            Writer.ConsoleWriteAt(0, 0, $"Score: {Score} ");
+            Writer.ConsoleWriteAt(0, 0, $"Score: {CurrentScore} ");
         }
 
         public void CheckScoreUnderZero()
         {
-            if (Score < 0)
+            if (CurrentScore < 0)
             {
                 throw new GameEndException();
             }

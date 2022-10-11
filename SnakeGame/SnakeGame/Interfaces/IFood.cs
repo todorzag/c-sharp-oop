@@ -9,5 +9,6 @@ namespace SnakeGame.Interfaces
     public interface IFood : IPoint, IOnConsume, IRenderable
     {
         string Symbol { get; }
+        int ScoreValue { get; }
     }
 }

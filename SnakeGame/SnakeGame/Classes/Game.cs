@@ -40,7 +40,7 @@ namespace SnakeGame.Classes
 
             GameLoop();
 
-            Writer.FileWrite(GameConfig.Player, _scoreManager.Score);
+            Writer.FileWrite(GameConfig.Player, _scoreManager.CurrentScore);
             ScreenRenderer.GameOverScreen(_scoreManager);
         }
 
@@ -70,7 +70,7 @@ namespace SnakeGame.Classes
         private void EnableTimers()
         {
             _timers.Add(new Timer((e) 
-                => TimerCallback(Factory.CreateSwitch), null, 7000, 7000));
+                => TimerCallback(Factory.CreateSwitch), null, 10000, 10000));
 
             _timers.Add(new Timer((e) 
                 => TimerCallback(Factory.CreateCross), null, 5000, 5000));
@@ -115,12 +115,17 @@ namespace SnakeGame.Classes
 
                 if (_foodHandler.SnakeOnFood(_snake.Head))
                 {
-                    _foodHandler.Handle(_snake, _scoreManager);
+                    _foodHandler.Handle(
+                        _snake,
+                        _scoreManager);
 
-                    _diffilcultyHandler.CheckToRaiseLevel(_scoreManager.Score);
-
-                    _scoreManager.Set(_snake.Body);
+                    _scoreManager.Set(_snake.Body, _diffilcultyHandler);
                     _scoreManager.Render();
+
+                    _diffilcultyHandler
+                        .CheckToRaiseLevel(
+                        _scoreManager.CurrentScore);
+                    
                 }
 
                 Thread.Sleep(_diffilcultyHandler.Miliseconds);

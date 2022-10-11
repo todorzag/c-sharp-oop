@@ -16,19 +16,22 @@ namespace SnakeGame.Classes
         public Food(
              IOnConsume onConsumeStrategy,
              string symbol,
+             int scoreValue,
              int x = 0,
              int y = 0)
                  : base(x, y)
         {
             Symbol = symbol;
+            ScoreValue = scoreValue;
             _onConsumeStrategy = onConsumeStrategy;
         }
 
         public string Symbol { get; }
+        public int ScoreValue { get; }
 
-        public void PerformConsume(ISnake snake)
+        public void PerformConsume(ISnake snake, int scoreValue)
         {
-            _onConsumeStrategy.PerformConsume(snake);
+            _onConsumeStrategy.PerformConsume(snake, scoreValue);
         }
 
         public void Render()

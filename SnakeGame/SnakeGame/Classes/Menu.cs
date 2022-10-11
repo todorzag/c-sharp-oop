@@ -24,7 +24,7 @@ namespace SnakeGame.Classes
             Console.WriteLine(Logos.GameOverLogo);
 
             Console.WriteLine(Logos.ScoreWordLogo);
-            Console.WriteLine(Logos.GenerateScoreLogo(scoreManager.Score));
+            Console.WriteLine(Logos.GenerateScoreLogo(scoreManager.CurrentScore));
             Console.WriteLine();
         }
 

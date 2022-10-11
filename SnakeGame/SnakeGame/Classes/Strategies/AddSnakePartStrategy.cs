@@ -10,9 +10,12 @@ namespace SnakeGame.Classes.Strategies
 {
     public class AddSnakePartStrategy : IOnConsume
     {
-        public void PerformConsume(ISnake snake)
+        public void PerformConsume(ISnake snake, int scoreValue)
         {
-            snake.AddPart();
+            for (int i = 0; i < scoreValue; i++)
+            {
+                snake.AddPart();
+            }   
         }
     }
 }

@@ -29,12 +29,14 @@ namespace SnakeGame.Utils
             }
         }
 
-        public void Handle(ISnake snake, IScoreManager scoreManager)
+        public void Handle(
+            ISnake snake,
+            IScoreManager scoreManager)
         {
             IFood food = GetFood(snake.Head);
-            Remove(food);
 
-            food.PerformConsume(snake);
+            food.PerformConsume(snake, food.ScoreValue);
+            Remove(food);
 
             if (food.Symbol == "@")
             {

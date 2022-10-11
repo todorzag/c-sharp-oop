@@ -11,31 +11,18 @@ namespace SnakeGame.Classes.Strategies
 {
     internal class SwitchDirectionStrategy : IOnConsume
     {
-        public void PerformConsume(ISnake snake)
+        public void PerformConsume(ISnake snake, int scoreValue)
         {
-            snake.AddPart();
-            snake.AddPart();
+            for (int i = 0; i < scoreValue; i++)
+            {
+                snake.AddPart();
+            }
 
             snake.Body.Reverse();
 
-            switch (snake.Direction)
-            {
-                case Directions.RightArrow:
-                    snake.Direction = Directions.LeftArrow;
-                    break;
-
-                case Directions.LeftArrow:
-                    snake.Direction = Directions.RightArrow;
-                    break;
-
-                case Directions.DownArrow:
-                    snake.Direction = Directions.UpArrow;
-                    break;
-
-                case Directions.UpArrow:
-                    snake.Direction = Directions.DownArrow;
-                    break;
-            }
+            (int x, int y) = snake.Head.Position;
+            snake.Direction =
+                SnakeMoveChecker.GetSafeDirection(snake, x, y + 1, 0);
         }
     }
 }

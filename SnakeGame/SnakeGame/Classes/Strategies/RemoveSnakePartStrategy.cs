@@ -9,9 +9,12 @@ namespace SnakeGame.Classes.Strategies
 {
     internal class RemoveSnakePartStrategy : IOnConsume
     {
-        public void PerformConsume(ISnake snake)
+        public void PerformConsume(ISnake snake, int scoreValue)
         {
-            snake.RemovePart();
+            for (int i = 0; i < scoreValue; i++)
+            {
+                snake.RemovePart();
+            }
         }
     }
 }

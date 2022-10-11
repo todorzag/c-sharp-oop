@@ -9,27 +9,43 @@ namespace SnakeGame.Utils
 {
     public class DiffilcultyHandler : IDiffilcultyHandler
     {
+        private int _level = 0;
         public int Miliseconds { get; set; } = 75;
 
         public DiffilcultyHandler()
         {
         }
 
-        // bug from 5 to 4 and back to 5
-        public void CheckToRaiseLevel(int score)
+        public void CheckToRaiseLevel(int currentScore)
         {
-            if (score % 5 == 0 && score != 0)
+            if (GetFirstDigit(currentScore) > _level)
             {
-                LevelUp();
+                if (Miliseconds > 5)
+                {
+                    Miliseconds -= 5;
+                    _level++;
+                }
             }
         }
 
-        private void LevelUp()
+        public void CheckToDecreaseLevel(int currentScore, int previousScore)
         {
-            if (Miliseconds > 10)
+            if (GetFirstDigit(currentScore) < GetFirstDigit(previousScore))
             {
-                Miliseconds -= 5;
+                Miliseconds += 5;
+                _level--;
             }
+        }
+
+        private int GetFirstDigit(int value)
+        {
+            if (value < 10)
+            {
+                return 0;
+            }
+
+            value = (int)(value / Math.Pow(10, (int)Math.Floor(Math.Log10(value))));
+            return value;
         }
     }
 }

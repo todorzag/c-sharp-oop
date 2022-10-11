@@ -1,4 +1,5 @@
 ﻿using SnakeGame.Classes;
+using SnakeGame.Constants;
 using SnakeGame.Interfaces;
 
 namespace SnakeGame.Utils
@@ -50,6 +51,29 @@ namespace SnakeGame.Utils
             }
 
             return false;
+        }
+
+        public static Directions GetSafeDirection(
+            ISnake snake,
+            int x,
+            int y,
+            int i)
+        {
+            Directions direction;
+
+            try
+            {
+                IsValid(snake, Factory.CreatePoint(x, y));
+                direction = (Directions)i;
+            }
+            catch (GameEndException)
+            {
+                return GetSafeDirection(snake, x, y - 1, i + 1);
+                return GetSafeDirection(snake, x + 1, y, i + 2);
+                return GetSafeDirection(snake, x - 1, y, i + 3);
+            }
+
+            return direction;
         }
     }
 }
