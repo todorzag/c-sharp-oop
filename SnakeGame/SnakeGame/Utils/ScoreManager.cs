@@ -31,11 +31,11 @@ namespace SnakeGame.Utils
             Writer.ConsoleWriteAt(0, 0, $"Score: {CurrentScore} ");
         }
 
-        public void CheckScoreUnderZero()
+        public void CheckScoreUnderZero(ISnake snake)
         {
             if (CurrentScore < 0)
             {
-                throw new GameEndException();
+                snake.IsAlive = false;
             }
         }
     }

@@ -20,9 +20,8 @@ namespace SnakeGame.Classes.Strategies
 
             snake.Body.Reverse();
 
-            (int x, int y) = snake.Head.Position;
             snake.Direction =
-                SnakeMoveChecker.GetSafeDirection(snake, x, y + 1, 0);
+                SnakeMoveChecker.FindSafeDirection(snake);
         }
     }
 }

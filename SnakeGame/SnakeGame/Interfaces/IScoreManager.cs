@@ -6,6 +6,6 @@
 
         void Render();
         void Set(List<IPoint> snakeBody, IDiffilcultyHandler diffilcultyHandler);
-        void CheckScoreUnderZero();
+        void CheckScoreUnderZero(ISnake snake);
     }
 }

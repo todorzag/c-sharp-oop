@@ -1,15 +1,16 @@
 ﻿using SnakeGame.Classes;
 using SnakeGame.Constants;
 using SnakeGame.Interfaces;
+using System.Xml.Linq;
 
 namespace SnakeGame.Utils
 {
     internal class SnakeMoveChecker
     {
-        public static bool IsValid(
+        public static bool? Check(
             ISnake snake, IPoint newPosition)
         {
-            bool isValid = true;
+            bool? isValid = true;
 
             if (!GameConfig.HasWalls && CheckIfOutOfBounds(newPosition))
             {
@@ -19,10 +20,35 @@ namespace SnakeGame.Utils
                 || CheckIfHitItself(snake.Body, newPosition)
                 || Validator.ValidateMaxSnakeLength(snake))
             {
-                throw new GameEndException();
+                isValid = null;
             }
 
             return isValid;
+        }
+
+        public static Directions FindSafeDirection(ISnake snake)
+        {
+            Directions direction = Directions.RightArrow;
+            (int x, int y) = snake.Head.Position;
+
+            if (Check(snake, Factory.CreatePoint(x, y + 1)) != null)
+            {
+                direction = Directions.RightArrow;
+            }
+            else if (Check(snake, Factory.CreatePoint(x, y - 1)) != null)
+            {
+                direction = Directions.LeftArrow;
+            }
+            else if (Check(snake, Factory.CreatePoint(x + 1, y)) != null)
+            {
+                direction = Directions.DownArrow;
+            }
+            else if (Check(snake, Factory.CreatePoint(x - 1, y)) != null)
+            {
+                direction = Directions.UpArrow;
+            }
+
+            return direction;
         }
 
         private static bool CheckIfOutOfBounds(IPoint newPosition)
@@ -51,29 +77,6 @@ namespace SnakeGame.Utils
             }
 
             return false;
-        }
-
-        public static Directions GetSafeDirection(
-            ISnake snake,
-            int x,
-            int y,
-            int i)
-        {
-            Directions direction;
-
-            try
-            {
-                IsValid(snake, Factory.CreatePoint(x, y));
-                direction = (Directions)i;
-            }
-            catch (GameEndException)
-            {
-                return GetSafeDirection(snake, x, y - 1, i + 1);
-                return GetSafeDirection(snake, x + 1, y, i + 2);
-                return GetSafeDirection(snake, x - 1, y, i + 3);
-            }
-
-            return direction;
         }
     }
 }

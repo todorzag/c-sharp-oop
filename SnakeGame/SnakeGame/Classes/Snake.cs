@@ -6,10 +6,13 @@ namespace SnakeGame.Classes
 {
     public class Snake : ISnake, IRenderable
     {
-        private IPoint _lastBodyPart = Factory.CreatePoint(0, 0);
+        private IPoint _lastBodyPart =
+            Factory.CreatePoint(0, 0);
 
         private IPoint _newPosition =
             Factory.CreatePoint(0, 0);
+
+        public bool IsAlive { get; set; } = true;
 
         public int MaxLength 
         { 
@@ -23,7 +26,7 @@ namespace SnakeGame.Classes
         public List<IPoint> Body { get; private set; }
         public Directions Direction { get; set; }
             = Directions.RightArrow;
-
+        
         public Snake(int lenght)
         {
             Body = GenerateBody(lenght);
@@ -82,13 +85,19 @@ namespace SnakeGame.Classes
         {
             _newPosition.Position = (Head.X + value, Head.Y);
 
-            if (SnakeMoveChecker.IsValid(this, _newPosition))
+            var isValid = SnakeMoveChecker.Check(this, _newPosition);
+
+            if (isValid == true)
             {
                 Head.X += value;
             }
-            else
+            else if (isValid == false)
             {
                 Teleport();
+            }
+            else
+            {
+                IsAlive = false;
             }
         }
 
@@ -96,13 +105,19 @@ namespace SnakeGame.Classes
         {
             _newPosition.Position = (Head.X, Head.Y + value);
 
-            if (SnakeMoveChecker.IsValid(this, _newPosition))
+            var isValid = SnakeMoveChecker.Check(this, _newPosition);
+
+            if (isValid == true)
             {
                 Head.Y += value;
             }
-            else
+            else if (isValid == false)
             {
                 Teleport();
+            }
+            else
+            {
+                IsAlive = false;
             }
         }
 

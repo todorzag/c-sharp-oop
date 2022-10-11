@@ -8,7 +8,6 @@ namespace SnakeGame.Classes
 {
     public class Game : IGame
     {
-        public bool snakeIsAlive = true;
 
         private IScoreManager _scoreManager;
         private IDiffilcultyHandler _diffilcultyHandler;
@@ -51,11 +50,11 @@ namespace SnakeGame.Classes
             Spawner.Spawn(_snake.Body, Factory.CreateApple());
             _scoreManager.Render();
 
-            while (snakeIsAlive)
+            while (_snake.IsAlive)
             {
                 if (_keyPressed == "Escape")
                 {
-                    snakeIsAlive = false;
+                    _snake.IsAlive = false;
                     break;
                 }
 
@@ -69,10 +68,10 @@ namespace SnakeGame.Classes
 
         private void EnableTimers()
         {
-            _timers.Add(new Timer((e) 
+            _timers.Add(new Timer((e)
                 => TimerCallback(Factory.CreateSwitch), null, 10000, 10000));
 
-            _timers.Add(new Timer((e) 
+            _timers.Add(new Timer((e)
                 => TimerCallback(Factory.CreateCross), null, 5000, 5000));
         }
 
@@ -100,16 +99,8 @@ namespace SnakeGame.Classes
             {
                 _snake.UpdateBodyPosition();
 
-                try
-                {
-                    _snake.Move();
-                    _scoreManager.CheckScoreUnderZero();
-                }
-                catch (GameEndException)
-                {
-                    snakeIsAlive = false;
-                    break;
-                }
+                _snake.Move();
+                _scoreManager.CheckScoreUnderZero(_snake);
 
                 _snake.Render();
 
@@ -125,13 +116,18 @@ namespace SnakeGame.Classes
                     _diffilcultyHandler
                         .CheckToRaiseLevel(
                         _scoreManager.CurrentScore);
-                    
+
+                }
+
+                if (_snake.IsAlive == false)
+                {
+                    break;
                 }
 
                 Thread.Sleep(_diffilcultyHandler.Miliseconds);
             }
 
-            if (snakeIsAlive)
+            if (_snake.IsAlive)
             {
                 _keyPressed = Console.ReadKey(true).Key.ToString();
             }
