@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Classes.Strategies
 {
-    public class AddSnakePartStrategy : IOnConsume
+    public class AddSnakePartStrategy : IConsumable
     {
         public void PerformConsume(ISnake snake, int scoreValue)
         {

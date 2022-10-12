@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Utils
 {
-    public class Validator 
+    public class SnakeLengthValidator 
     {
         public static bool ValidateInitalSnakeLength(int snakeLength)
         {

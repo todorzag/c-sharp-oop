@@ -64,22 +64,22 @@ namespace SnakeGame.Utils
             return FoodHandler.Instance;
         }
 
-        public static IFood CreateSwitch()
-        {
-            return new Food(
-                new SwitchDirectionStrategy(), "&", 2);
-        }
-
         public static IFood CreateApple()
         {
             return new Food(
                 new AddSnakePartStrategy(), "@", 1);
         }
 
+        public static IFood CreateSwitch()
+        {
+            return new Food(
+                new SwitchDirectionStrategy(), "&", 2);
+        }
+
         internal static IFood CreateCross()
         {
             return new Food(
-                new RemoveSnakePartStrategy(), "X", 3);
+                new RemoveSnakePartStrategy(), "X", 10);
         }
     }
 }

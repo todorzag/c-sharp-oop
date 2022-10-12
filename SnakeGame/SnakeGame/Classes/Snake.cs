@@ -53,9 +53,9 @@ namespace SnakeGame.Classes
             Body.Add(Factory.CreatePoint(x, y));
         }
 
-        public void RemovePart()
+        public void RemoveTail()
         {
-            ClearLastBodyPart();
+            ClearTailFromScreen();
             Body.RemoveAt(Body.Count - 1);
         }
 
@@ -123,7 +123,7 @@ namespace SnakeGame.Classes
 
         public void UpdateBodyPosition()
         {
-            ClearLastBodyPart();
+            ClearTailFromScreen();
 
             for (int i = Body.Count - 1; i > 0; i--)
             {
@@ -147,7 +147,7 @@ namespace SnakeGame.Classes
             return snakeParts;
         }
 
-        private void ClearLastBodyPart()
+        private void ClearTailFromScreen()
         {
             // Save last snake part position
             (int x, int y) = Body.Last().Position;

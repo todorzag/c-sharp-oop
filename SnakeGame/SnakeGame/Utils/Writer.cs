@@ -16,18 +16,17 @@ namespace SnakeGame.Utils
 
         public static void ConsoleWriteAt(int y, int x, string str)
         {
-            while (true)
+            if (_isRendering == false)
             {
-                if (_isRendering == false)
-                {
-                    _isRendering = true;
-                    Console.SetCursorPosition(y, x);
-                    Console.Write(str);
-                    _isRendering = false;
-
-                    break;
-                }
-            };
+                _isRendering = true;
+                Console.SetCursorPosition(y, x);
+                Console.Write(str);
+                _isRendering = false;
+            }
+            else
+            {
+                ConsoleWriteAt(y, x, str);
+            }
         }
 
         public static void FileWrite(IPlayer player, int score)

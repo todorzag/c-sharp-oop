@@ -10,26 +10,25 @@ namespace SnakeGame.Utils
 {
     internal class ScreenRenderer
     {
-        public static void StartingScreen()
+        public static void RenderStartingScreen()
         {
             PrintStartingLogo();
             WaitForKeyPress();
             Console.Clear();
         }
 
-        public static void GameOverScreen(IScoreManager scoreManager)
+        public static void GameOverScreen(int score)
         {
-            Console.WriteLine(Logos.GameOverLogo);
+            Writer.WriteMessage(Logos.GameOverLogo);
 
-            Console.WriteLine(Logos.ScoreWordLogo);
-            Console.WriteLine(Logos.GenerateScoreLogo(scoreManager.CurrentScore));
-            Console.WriteLine();
+            Writer.WriteMessage(Logos.ScoreWordLogo);
+            Writer.WriteMessage(Logos.GenerateScoreLogo(score));
         }
 
         private static void PrintStartingLogo()
         {
             Console.Clear();
-            Console.WriteLine(Logos.GameStartLogo);
+            Writer.WriteMessage(Logos.GameStartLogo);
         }
 
         private static void WaitForKeyPress()

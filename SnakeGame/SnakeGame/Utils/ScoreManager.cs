@@ -17,13 +17,10 @@ namespace SnakeGame.Utils
         {
         }
 
-        public void Set(
-            List<IPoint> snakeBody,
-            IDiffilcultyHandler diffilcultyHandler)
+        public void Set(List<IPoint> snakeBody)
         {
             PreviousScore = CurrentScore;
             CurrentScore = (snakeBody.Count - 1) - GameConfig.InitalSnakeLength;
-            diffilcultyHandler.CheckToDecreaseLevel(CurrentScore, PreviousScore);
         }
 
         public void Render()
@@ -31,12 +28,9 @@ namespace SnakeGame.Utils
             Writer.ConsoleWriteAt(0, 0, $"Score: {CurrentScore} ");
         }
 
-        public void CheckScoreUnderZero(ISnake snake)
+        public bool CheckScoreUnderZero()
         {
-            if (CurrentScore < 0)
-            {
-                snake.IsAlive = false;
-            }
+            return CurrentScore < 0;
         }
     }
 }

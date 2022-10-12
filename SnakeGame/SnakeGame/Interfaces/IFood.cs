@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Interfaces
 {
-    public interface IFood : IPoint, IOnConsume, IRenderable
+    public interface IFood : IPoint, IConsumable, IRenderable
     {
         string Symbol { get; }
         int ScoreValue { get; }

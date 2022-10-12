@@ -9,12 +9,12 @@ using System.Xml.Linq;
 
 namespace SnakeGame.Classes
 {
-    public class Food : Point, IFood
+    public class Food : Point, IFood, IRenderable
     {
-        private IOnConsume _onConsumeStrategy;
+        private IConsumable _onConsumeStrategy;
 
         public Food(
-             IOnConsume onConsumeStrategy,
+             IConsumable onConsumeStrategy,
              string symbol,
              int scoreValue,
              int x = 0,

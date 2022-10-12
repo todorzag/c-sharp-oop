@@ -45,22 +45,22 @@ namespace SnakeGame.Classes
 
         private void GameLoop()
         {
-            // Initial apple spawn and score render
+            // Initial apple spawn and renders
             EnableTimers();
             Spawner.Spawn(_snake.Body, Factory.CreateApple());
             _scoreManager.Render();
 
             while (_snake.IsAlive)
             {
+                SetLegalDirection();
+
+                OnAction();
+
                 if (_keyPressed == "Escape")
                 {
                     _snake.IsAlive = false;
                     break;
                 }
-
-                SetLegalDirection();
-
-                OnAction();
             }
 
             DisableTimers();
@@ -69,10 +69,10 @@ namespace SnakeGame.Classes
         private void EnableTimers()
         {
             _timers.Add(new Timer((e)
-                => TimerCallback(Factory.CreateSwitch), null, 10000, 10000));
+                => TimerCallback(Factory.CreateSwitch), null, (int)Times.Switch, (int)Times.Switch));
 
             _timers.Add(new Timer((e)
-                => TimerCallback(Factory.CreateCross), null, 5000, 5000));
+                => TimerCallback(Factory.CreateCross), null, (int)Times.Cross, (int)Times.Cross));
         }
 
         private void TimerCallback(Func<IFood> create)
@@ -95,13 +95,10 @@ namespace SnakeGame.Classes
 
         private void OnAction()
         {
-            while (Console.KeyAvailable == false)
+            while (Console.KeyAvailable == false && _snake.IsAlive)
             {
                 _snake.UpdateBodyPosition();
-
                 _snake.Move();
-                _scoreManager.CheckScoreUnderZero(_snake);
-
                 _snake.Render();
 
                 if (_foodHandler.SnakeOnFood(_snake.Head))
@@ -110,18 +107,18 @@ namespace SnakeGame.Classes
                         _snake,
                         _scoreManager);
 
-                    _scoreManager.Set(_snake.Body, _diffilcultyHandler);
+                    _scoreManager.Set(_snake.Body);
                     _scoreManager.Render();
 
-                    _diffilcultyHandler
-                        .CheckToRaiseLevel(
-                        _scoreManager.CurrentScore);
-
+                    _diffilcultyHandler.
+                        CheckToChangeLevel(
+                        _scoreManager.CurrentScore,
+                        _scoreManager.PreviousScore);
                 }
 
-                if (_snake.IsAlive == false)
+                if (_scoreManager.CheckScoreUnderZero())
                 {
-                    break;
+                    _snake.IsAlive = false;
                 }
 
                 Thread.Sleep(_diffilcultyHandler.Miliseconds);

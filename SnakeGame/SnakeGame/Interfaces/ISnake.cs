@@ -13,7 +13,7 @@ namespace SnakeGame.Interfaces
 
         void AddPart();
         void Move();
-        void RemovePart();
+        void RemoveTail();
         void Render();
         void UpdateBodyPosition();
     }

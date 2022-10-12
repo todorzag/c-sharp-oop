@@ -16,7 +16,9 @@ namespace SnakeGame.Utils
         {
         }
 
-        public void CheckToRaiseLevel(int currentScore)
+        public void CheckToChangeLevel(
+            int currentScore,
+            int previousScore)
         {
             if (GetFirstDigit(currentScore) > _level)
             {
@@ -26,15 +28,13 @@ namespace SnakeGame.Utils
                     _level++;
                 }
             }
-        }
-
-        public void CheckToDecreaseLevel(int currentScore, int previousScore)
-        {
-            if (GetFirstDigit(currentScore) < GetFirstDigit(previousScore))
+            else if (GetFirstDigit(currentScore) 
+                < GetFirstDigit(previousScore))
             {
                 Miliseconds += 5;
                 _level--;
             }
+
         }
 
         private int GetFirstDigit(int value)

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Classes.Strategies
 {
-    internal class SwitchDirectionStrategy : IOnConsume
+    internal class SwitchDirectionStrategy : IConsumable
     {
         public void PerformConsume(ISnake snake, int scoreValue)
         {
