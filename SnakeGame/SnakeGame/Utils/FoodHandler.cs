@@ -29,9 +29,7 @@ namespace SnakeGame.Utils
             }
         }
 
-        public void Handle(
-            ISnake snake,
-            IScoreManager scoreManager)
+        public void Handle(ISnake snake)
         {
             IFood food = GetFood(snake.Head);
 

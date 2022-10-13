@@ -4,7 +4,6 @@ namespace SnakeGame.Interfaces
 {
     public interface ISnake
     {
-        int MaxLength { get; }
         bool IsAlive { get; set; }
         List<IPoint> Body { get; }
         IPoint Head { get; }

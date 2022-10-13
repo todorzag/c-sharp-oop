@@ -68,11 +68,14 @@ namespace SnakeGame.Classes
 
         private void EnableTimers()
         {
-            _timers.Add(new Timer((e)
-                => TimerCallback(Factory.CreateSwitch), null, (int)Times.Switch, (int)Times.Switch));
+            var switchTime = 10000;
+            var crossTime = 5000;
 
             _timers.Add(new Timer((e)
-                => TimerCallback(Factory.CreateCross), null, (int)Times.Cross, (int)Times.Cross));
+                => TimerCallback(Factory.CreateSwitch), null, switchTime, switchTime));
+
+            _timers.Add(new Timer((e)
+                => TimerCallback(Factory.CreateCross), null, crossTime, crossTime));
         }
 
         private void TimerCallback(Func<IFood> create)
@@ -104,8 +107,7 @@ namespace SnakeGame.Classes
                 if (_foodHandler.SnakeOnFood(_snake.Head))
                 {
                     _foodHandler.Handle(
-                        _snake,
-                        _scoreManager);
+                        _snake);
 
                     _scoreManager.Set(_snake.Body);
                     _scoreManager.Render();

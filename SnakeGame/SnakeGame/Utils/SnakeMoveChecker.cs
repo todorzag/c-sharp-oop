@@ -7,44 +7,44 @@ namespace SnakeGame.Utils
 {
     internal class SnakeMoveChecker
     {
-        public static bool? Check(
-            ISnake snake,
+        public static TriState Check(
+            List<IPoint> snakeBody,
             IPoint newPosition)
         {
-            bool? isValid = true;
+            var state = TriState.True;
 
             if (!GameConfig.HasWalls && CheckIfOutOfBounds(newPosition))
             {
-                isValid = false;
+                state = TriState.False;
             }
             else if (CheckIfOutOfBounds(newPosition) && GameConfig.HasWalls
-                || CheckIfHitItself(snake.Body, newPosition)
-                || SnakeLengthValidator.ValidateMaxSnakeLength(snake))
+                || CheckIfHitItself(snakeBody, newPosition)
+                || SnakeLengthValidator.ValidateMaxSnakeLength(snakeBody))
             {
-                isValid = null;
+                state = TriState.GameEnding;
             }
 
-            return isValid;
+            return state;
         }
 
-        public static Directions FindSafeDirection(ISnake snake)
+        public static Directions FindSafeDirection(List<IPoint> snakeBody)
         {
             Directions direction = Directions.RightArrow;
-            (int x, int y) = snake.Head.Position;
+            (int x, int y) = snakeBody[0].Position;
 
-            if (Check(snake, Factory.CreatePoint(x, y + 1)) != null)
+            if (Check(snakeBody, Factory.CreatePoint(x, y + 1)) != TriState.GameEnding)
             {
                 direction = Directions.RightArrow;
             }
-            else if (Check(snake, Factory.CreatePoint(x, y - 1)) != null)
+            else if (Check(snakeBody, Factory.CreatePoint(x, y - 1)) != TriState.GameEnding)
             {
                 direction = Directions.LeftArrow;
             }
-            else if (Check(snake, Factory.CreatePoint(x + 1, y)) != null)
+            else if (Check(snakeBody, Factory.CreatePoint(x + 1, y)) != TriState.GameEnding)
             {
                 direction = Directions.DownArrow;
             }
-            else if (Check(snake, Factory.CreatePoint(x - 1, y)) != null)
+            else if (Check(snakeBody, Factory.CreatePoint(x - 1, y)) != TriState.GameEnding)
             {
                 direction = Directions.UpArrow;
             }

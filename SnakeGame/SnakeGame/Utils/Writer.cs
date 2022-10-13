@@ -16,6 +16,8 @@ namespace SnakeGame.Utils
 
         public static void ConsoleWriteAt(int y, int x, string str)
         {
+            // To fix bug where Console would write set position 
+            // at the same time for two different renderables
             if (_isRendering == false)
             {
                 _isRendering = true;

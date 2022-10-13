@@ -6,6 +6,9 @@ namespace SnakeGame.Classes
 {
     public class Snake : ISnake, IRenderable
     {
+        private const int Forward = 1;
+        private const int Backward = -1;
+
         private IPoint _lastBodyPart =
             Factory.CreatePoint(0, 0);
 
@@ -13,14 +16,6 @@ namespace SnakeGame.Classes
             Factory.CreatePoint(0, 0);
 
         public bool IsAlive { get; set; } = true;
-
-        public int MaxLength 
-        { 
-            get
-            {
-                return Console.WindowHeight - 1 * Console.WindowWidth - 1;
-            }
-        }
 
         public IPoint Head { get => Body[0]; }
         public List<IPoint> Body { get; private set; }
@@ -64,19 +59,19 @@ namespace SnakeGame.Classes
             switch (Direction)
             {
                 case Directions.RightArrow:
-                    MoveY(1);
+                    MoveY(Forward);
                     break;
 
                 case Directions.LeftArrow:
-                    MoveY(-1);
+                    MoveY(Backward);
                     break;
 
                 case Directions.DownArrow:
-                    MoveX(1);
+                    MoveX(Forward);
                     break;
 
                 case Directions.UpArrow:
-                    MoveX(-1);
+                    MoveX(Backward);
                     break;
             }
         }
@@ -85,13 +80,13 @@ namespace SnakeGame.Classes
         {
             _newPosition.Position = (Head.X + value, Head.Y);
 
-            var isValid = SnakeMoveChecker.Check(this, _newPosition);
+            var isValid = SnakeMoveChecker.Check(Body, _newPosition);
 
-            if (isValid == true)
+            if (isValid == TriState.True)
             {
                 Head.X += value;
             }
-            else if (isValid == false)
+            else if (isValid == TriState.False)
             {
                 Teleport();
             }
@@ -105,13 +100,13 @@ namespace SnakeGame.Classes
         {
             _newPosition.Position = (Head.X, Head.Y + value);
 
-            var isValid = SnakeMoveChecker.Check(this, _newPosition);
+            var isValid = SnakeMoveChecker.Check(Body, _newPosition);
 
-            if (isValid == true)
+            if (isValid == TriState.True)
             {
                 Head.Y += value;
             }
-            else if (isValid == false)
+            else if (isValid == TriState.False)
             {
                 Teleport();
             }
