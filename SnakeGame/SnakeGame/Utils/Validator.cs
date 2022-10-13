@@ -9,12 +9,12 @@ namespace SnakeGame.Utils
 {
     public class SnakeLengthValidator 
     {
-        public static bool ValidateInitalSnakeLength(int snakeLength)
+        public static bool ValidateInitalLength(int snakeLength)
         {
             return snakeLength > 0 && snakeLength < 11;
         }
 
-        public static bool ValidateMaxSnakeLength(List<IPoint> snakeBody)
+        public static bool ValidateMaxLength(List<IPoint> snakeBody)
         {
             int maxLength = Console.WindowHeight - 1 * Console.WindowWidth - 1;
 

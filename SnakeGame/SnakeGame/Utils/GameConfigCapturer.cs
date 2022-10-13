@@ -55,7 +55,7 @@ namespace SnakeGame.Utils
             Writer.WriteMessage(StandardMessages.SnakeLength());
              int SnakeLength = int.Parse(Console.ReadLine());
 
-            if (SnakeLengthValidator.ValidateInitalSnakeLength(SnakeLength) == false)
+            if (SnakeLengthValidator.ValidateInitalLength(SnakeLength) == false)
             {
                 throw new ArgumentOutOfRangeException();
             };
