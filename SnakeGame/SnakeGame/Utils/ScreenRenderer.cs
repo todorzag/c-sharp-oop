@@ -12,12 +12,12 @@ namespace SnakeGame.Utils
     {
         public static void RenderStartingScreen()
         {
-            PrintStartingLogo();
+            RenderStartingLogo();
             WaitForKeyPress();
             Console.Clear();
         }
 
-        public static void GameOverScreen(int score)
+        public static void RenderGameOverScreen(int score)
         {
             Writer.WriteMessage(Logos.GameOverLogo);
 
@@ -25,7 +25,7 @@ namespace SnakeGame.Utils
             Writer.WriteMessage(Logos.GenerateScoreLogo(score));
         }
 
-        private static void PrintStartingLogo()
+        private static void RenderStartingLogo()
         {
             Console.Clear();
             Writer.WriteMessage(Logos.GameStartLogo);
