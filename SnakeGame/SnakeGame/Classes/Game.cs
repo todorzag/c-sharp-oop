@@ -2,6 +2,7 @@
 using SnakeGame.Constants;
 using SnakeGame.Interfaces;
 using SnakeGame.Utils;
+using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 
 namespace SnakeGame.Classes
@@ -113,12 +114,12 @@ namespace SnakeGame.Classes
                     _scoreManager.Render();
 
                     _diffilcultyHandler.
-                        CheckToChangeLevel(
-                        _scoreManager.CurrentScore,
-                        _scoreManager.PreviousScore);
+                        CheckToChangeLevel(_snake.CurrentLength);
                 }
 
-                if (_scoreManager.CheckScoreUnderZero())
+                // Snake max length and score under zero checks
+                if (_snake.CurrentLength < 0
+                    || SnakeLengthValidator.ValidateMaxLength(_snake.Body.Count))
                 {
                     _snake.IsAlive = false;
                 }

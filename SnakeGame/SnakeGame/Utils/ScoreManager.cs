@@ -19,18 +19,12 @@ namespace SnakeGame.Utils
 
         public void Set(List<IPoint> snakeBody)
         {
-            PreviousScore = CurrentScore;
             CurrentScore = (snakeBody.Count - 1) - GameConfig.InitalSnakeLength;
         }
 
         public void Render()
         {
             Writer.ConsoleWriteAt(0, 0, $"Score: {CurrentScore} ");
-        }
-
-        public bool CheckScoreUnderZero()
-        {
-            return CurrentScore < 0;
         }
     }
 }

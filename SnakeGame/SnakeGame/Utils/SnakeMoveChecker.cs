@@ -18,8 +18,7 @@ namespace SnakeGame.Utils
                 state = TriState.False;
             }
             else if (CheckIfOutOfBounds(newPosition) && GameConfig.HasWalls
-                || CheckIfHitItself(snakeBody, newPosition)
-                || SnakeLengthValidator.ValidateMaxLength(snakeBody))
+                || CheckIfHitItself(snakeBody, newPosition))
             {
                 state = TriState.GameEnding;
             }

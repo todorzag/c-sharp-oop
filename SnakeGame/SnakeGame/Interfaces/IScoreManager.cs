@@ -7,6 +7,5 @@
 
         void Render();
         void Set(List<IPoint> snakeBody);
-        bool CheckScoreUnderZero();
     }
 }

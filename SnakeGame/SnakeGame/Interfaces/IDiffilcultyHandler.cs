@@ -4,6 +4,6 @@
     {
         int Miliseconds { get; set; }
 
-        void CheckToChangeLevel(int currentScore, int previousScore);
+        void CheckToChangeLevel(int currentScore);
     }
 }

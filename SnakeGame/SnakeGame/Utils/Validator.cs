@@ -14,11 +14,11 @@ namespace SnakeGame.Utils
             return snakeLength > 0 && snakeLength < 11;
         }
 
-        public static bool ValidateMaxLength(List<IPoint> snakeBody)
+        public static bool ValidateMaxLength(int snakeBodyCount)
         {
             int maxLength = Console.WindowHeight - 1 * Console.WindowWidth - 1;
 
-            return snakeBody.Count == maxLength;
+            return snakeBodyCount == maxLength;
         }
     }
 }

@@ -16,12 +16,18 @@ namespace SnakeGame.Classes
             Factory.CreatePoint(0, 0);
 
         public bool IsAlive { get; set; } = true;
-
         public IPoint Head { get => Body[0]; }
         public List<IPoint> Body { get; private set; }
         public Directions Direction { get; set; }
             = Directions.RightArrow;
-        
+        public int CurrentLength 
+        { 
+            get
+            {
+                return Body.Count - GameConfig.InitalSnakeLength - 1;
+            } 
+        }
+
         public Snake(int lenght)
         {
             Body = GenerateBody(lenght);

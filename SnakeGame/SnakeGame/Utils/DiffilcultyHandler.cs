@@ -9,6 +9,9 @@ namespace SnakeGame.Utils
 {
     public class DiffilcultyHandler : IDiffilcultyHandler
     {
+        private const int LevelBreakPoint = 5;
+        private const int LevelSpeedModifier = 5;
+
         private int _level = 0;
         public int Miliseconds { get; set; } = 75;
 
@@ -16,25 +19,21 @@ namespace SnakeGame.Utils
         {
         }
 
-        public void CheckToChangeLevel(
-            int currentScore,
-            int previousScore)
+        public void CheckToChangeLevel(int currentScore)
         {
             if (GetFirstDigit(currentScore) > _level)
             {
-                if (Miliseconds > 5)
+                if (Miliseconds > LevelBreakPoint)
                 {
-                    Miliseconds -= 5;
+                    Miliseconds -= LevelSpeedModifier;
                     _level++;
                 }
             }
-            else if (GetFirstDigit(currentScore) 
-                < GetFirstDigit(previousScore))
+            else if (GetFirstDigit(currentScore) < _level)
             {
-                Miliseconds += 5;
+                Miliseconds += LevelSpeedModifier;
                 _level--;
             }
-
         }
 
         private int GetFirstDigit(int value)
