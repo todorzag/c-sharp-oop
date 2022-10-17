@@ -1,0 +1,21 @@
+USE pc
+
+CREATE INDEX IX_Maker
+ON product (maker)
+
+USE ships
+
+CREATE INDEX IX_Ship_Class
+ON SHIPS (NAME, CLASS)
+
+CREATE INDEX IX_Class_Country
+ON CLASSES (CLASS, COUNTRY)
+
+CREATE INDEX IX_Battle_Ship
+ON OUTCOMES (BATTLE, SHIP)
+
+DROP INDEX IX_Maker
+
+DROP INDEX IX_Ship_Class
+DROP INDEX IX_Class_Country
+DROP INDEX IX_Battle_Ship
