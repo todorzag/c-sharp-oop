@@ -36,12 +36,12 @@ namespace SnakeGame.Classes
         {
             Console.CursorVisible = false;
 
-            ScreenRenderer.StartingScreen();
+            ScreenRenderer.RenderStartingScreen();
 
             GameLoop();
 
             Writer.FileWrite(GameConfig.Player, _scoreManager.CurrentScore);
-            ScreenRenderer.GameOverScreen(_scoreManager);
+            ScreenRenderer.RenderGameOverScreen(_snake.CurrentLength);
         }
 
         private void GameLoop()

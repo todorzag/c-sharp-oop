@@ -2,7 +2,7 @@
 {
     public class Logos
     {
-        private static Dictionary<string, string[]> _scoreLogos
+        public static Dictionary<string, string[]> ScoreLogos
             = new Dictionary<string, string[]>
             {
                 {"-", new string[]{
@@ -90,33 +90,6 @@
             "\r\n█▀▀▀█ █▀▀ █▀▀█ █▀▀█ █▀▀ ▄" +
             "\r\n▀▀▀▄▄ █   █  █ █▄▄▀ █▀▀  " +
             "\r\n█▄▄▄█ ▀▀▀ ▀▀▀▀ ▀ ▀▀ ▀▀▀ ▀";
-        }
-
-        public static string GenerateScoreLogo(int scoreInt)
-        {
-            string[] scoreLogo = new string[3];
-
-            string[] scoreString = scoreInt
-                .ToString()
-                .Select(d => d.ToString())
-                .ToArray();
-
-            foreach (string digit in scoreString)
-            {
-                for (int i = 0; i < scoreLogo.Length; i++)
-                {
-                    if (digit == "-")
-                    {
-                        scoreLogo[i] += " " + _scoreLogos["-"][i];
-                    }
-                    else
-                    {
-                        scoreLogo[i] += " " + _scoreLogos[digit][i];
-                    }
-                }
-            }
-
-            return string.Join("\r\n", scoreLogo);
         }
     }
 }

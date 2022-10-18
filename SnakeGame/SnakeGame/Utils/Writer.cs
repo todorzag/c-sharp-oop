@@ -18,16 +18,16 @@ namespace SnakeGame.Utils
         {
             // To fix bug where Console would write set position 
             // at the same time for two different renderables
-            if (_isRendering == false)
+            while(true)
             {
-                _isRendering = true;
-                Console.SetCursorPosition(y, x);
-                Console.Write(str);
-                _isRendering = false;
-            }
-            else
-            {
-                ConsoleWriteAt(y, x, str);
+                if (_isRendering == false)
+                {
+                    _isRendering = true;
+                    Console.SetCursorPosition(y, x);
+                    Console.Write(str);
+                    _isRendering = false;
+                    break;
+                }
             }
         }
 
