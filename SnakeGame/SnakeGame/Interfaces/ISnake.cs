@@ -4,6 +4,7 @@ namespace SnakeGame.Interfaces
 {
     public interface ISnake
     {
+        bool DiscoMode { get; set; }
         bool IsAlive { get; set; }
         int CurrentLength { get; }
         List<IPoint> Body { get; }

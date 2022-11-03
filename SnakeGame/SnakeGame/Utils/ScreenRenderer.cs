@@ -22,7 +22,7 @@ namespace SnakeGame.Utils
             Writer.WriteMessage(Logos.GameOverLogo);
 
             Writer.WriteMessage(Logos.ScoreWordLogo);
-            Writer.WriteMessage(Logos.GenerateScoreLogo(score));
+            Writer.WriteMessage(LogoGenerator.GenerateScoreLogo(score));
         }
 
         private static void RenderStartingLogo()

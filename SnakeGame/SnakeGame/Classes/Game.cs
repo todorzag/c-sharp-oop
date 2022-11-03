@@ -69,14 +69,18 @@ namespace SnakeGame.Classes
 
         private void EnableTimers()
         {
-            var switchTime = 10000;
             var crossTime = 5000;
+            var switchTime = 10000;
+            var diamondTime = 230000;
 
             _timers.Add(new Timer((e)
                 => TimerCallback(Factory.CreateSwitch), null, switchTime, switchTime));
 
             _timers.Add(new Timer((e)
                 => TimerCallback(Factory.CreateCross), null, crossTime, crossTime));
+
+            _timers.Add(new Timer((e)
+                => TimerCallback(Factory.CreateDiamond), null, 0, diamondTime));
         }
 
         private void TimerCallback(Func<IFood> create)

@@ -9,13 +9,29 @@ namespace SnakeGame.Utils
 {
     public class DiffilcultyHandler : IDiffilcultyHandler
     {
+        private static DiffilcultyHandler _instance;
+
         private const int LevelBreakPoint = 5;
         private const int LevelSpeedModifier = 5;
 
         private int _level = 0;
+
+        public static DiffilcultyHandler Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new DiffilcultyHandler();
+                }
+
+                return _instance;
+            }
+        }
+
         public int Miliseconds { get; set; } = 75;
 
-        public DiffilcultyHandler()
+        private DiffilcultyHandler()
         {
         }
 
@@ -34,6 +50,16 @@ namespace SnakeGame.Utils
                 Miliseconds += LevelSpeedModifier;
                 _level--;
             }
+        }
+
+        public void EnableDiscoSpeed()
+        {
+            Miliseconds /= 2;
+        }
+
+        public void DisableDiscoSpeed()
+        {
+            Miliseconds *= 2;
         }
 
         private int GetFirstDigit(int value)

@@ -18,7 +18,7 @@ namespace SnakeGame.Utils
 
             gameConfigCapturer.GetDataFromInput();
 
-            IDiffilcultyHandler diffilcultyHandler = CreateDiffilcultyHandler();
+            IDiffilcultyHandler diffilcultyHandler = GetDiffilcultyHandler();
 
             IFoodHandler foodHandler = GetFoodHandler();
 
@@ -29,9 +29,9 @@ namespace SnakeGame.Utils
             return new Game(diffilcultyHandler, foodHandler, scoreManager, snake);
         }
 
-        public static IDiffilcultyHandler CreateDiffilcultyHandler()
+        public static IDiffilcultyHandler GetDiffilcultyHandler()
         {
-            return new DiffilcultyHandler();
+            return DiffilcultyHandler.Instance;
         }
 
         public static IScoreManager CreateScoreManager()
@@ -76,10 +76,16 @@ namespace SnakeGame.Utils
                SwitchDirectionStrategy.GetStrategy, "&", 2);
         }
 
-        internal static IFood CreateCross()
+        public static IFood CreateCross()
         {
             return new Food(
                 RemoveSnakePartStrategy.GetStrategy, "X", 10);
+        }
+
+        public static IFood CreateDiamond()
+        {
+            return new Food(
+                DiscoModeStrategy.GetStrategy, "◆", 0);
         }
     }
 }

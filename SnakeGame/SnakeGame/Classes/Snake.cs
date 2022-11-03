@@ -28,6 +28,8 @@ namespace SnakeGame.Classes
             } 
         }
 
+        public bool DiscoMode { get; set; } = false;
+
         public Snake(int lenght)
         {
             Body = GenerateBody(lenght);
@@ -37,6 +39,11 @@ namespace SnakeGame.Classes
         {
             for (int i = 0; i < Body.Count; i++)
             {
+                if (DiscoMode)
+                {
+                    ColorChanger.ChangeForeground();
+                }
+
                 if (i != 0)
                 {
                     Writer.ConsoleWriteAt(Body[i].Y, Body[i].X, "●");
@@ -45,6 +52,8 @@ namespace SnakeGame.Classes
                 {
                     Writer.ConsoleWriteAt(Head.Y, Head.X, "○");
                 }
+
+                ColorChanger.ToDefault();
             }
         }
 
